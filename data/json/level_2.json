@@ -1,0 +1,70 @@
+{
+    "level_name": "digging hard",
+
+    "defs":
+    {
+        "R":
+        {
+            "role": "Rock",
+            "class": "TkBDRockSprite",
+            "module": "tkbd_rock_sprite",
+            "images_dir": "rock"
+        },
+
+        ".":
+        {
+            "role": "Earth",
+            "class": "TkBDEarthSprite",
+            "module": "tkbd_earth_sprite",
+            "images_dir": "earth"
+        },
+
+        "*":
+        {
+            "role": "Diamond",
+            "class": "TkBDDiamondSprite",
+            "module": "tkbd_diamond_sprite",
+            "images_dir": "diamond"
+        },
+
+        "X":
+        {
+            "role": "Wall",
+            "class": "TkBDWallSprite",
+            "module": "tkbd_wall_sprite",
+            "images_dir": "wall"
+        },
+
+        "P":
+        {
+            "role": "Player",
+            "class": "TkBDPlayerSprite",
+            "module": "tkbd_player_sprite",
+            "images_dir": "player"
+        }
+    },
+
+    "matrix":
+    [
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "X........RR.........RR..RR.R..X...R............R...R..RR*.RX",
+        "X.....X..*.......R...*........X......R..R...X..*........R..X",
+        "X..R..XR...R.RR.R*R...RR.R.R.........*......X......RR......X",
+        "X.....X*......................X.RR.RR.RR.R..X..RR..........X",
+        "X..R..XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX..........R...X",
+        "X..............X.........X*R.....*........R*X....R.R.R.*...X",
+        "X..RR*R.RRR..R.X...XXXXX.X....R.RR.R..X.....X..............X",
+        "X..............X...X.*R..X*R...R...R..XXXXXXXXXXXXXXX.XXXXXX",
+        "X......R...RR......X..R..XRRR....X......R*..X.*............X",
+        "X.RRR.XXXXXXXXXXXXXX.............X*.........XXXXXXXXXX.....X",
+        "X..*R.X..*.........XRRRR.R.......X......R*.RX...R....X..XXXX",
+        "X.....X.....R......XR*R.RRR...*.*X..*....RR.X..R*R...X.....X",
+        "XRR.R.X.....*R.....X.XXXXXX.XXXXXXXXXXXXXXXXX..............X",
+        "X*....X..R...*R...........R.RRX.P.*.X.R...RR..R.R..RRR...R.X",
+        "X...RRX.......RRR.R..R..R.....X..X..XXXXXXXXXXXXXXXXXXXX...X",
+        "X...R*X....XXXXXXXXXXXXXXXXXXXX..X..X*R.....R.RRX...*......X",
+        "X...R.X..........X*R....R..R..X..X..X.....X.....X..........X",
+        "X.....X....X.........X..........*X........XR*...........*..X",
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    ]
+}
