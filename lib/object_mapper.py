@@ -115,11 +115,31 @@ class ObjectMapper:
                 # end if
             # end for
         # end for
-        # register events
+        # bind events
+        self.bind_events()
+    # end def
+
+
+    def bind_events (self, *args, **kw):
+        """
+            active les événements
+        """
+        # connecting people...
         self.events.connect_dict(
             {
                 "Canvas:Sprite:Created": self.register_sprite,
             }
+        )
+    # end def
+
+
+    def unbind_events (self, *args, **kw):
+        """
+            désactive les événements
+        """
+        # disconnecting
+        self.events.disconnect_all(
+            "Canvas:Sprite:Created",
         )
     # end def
 

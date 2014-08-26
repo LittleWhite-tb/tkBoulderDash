@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="800"
+   height="450"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="keymap.svg"
+   inkscape:export-filename="/home/rs/apps/games/tkBoulderDash/images/png/keymap.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.3266667"
+     inkscape:cx="400"
+     inkscape:cy="225"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     showgrid="true"
+     inkscape:window-width="1366"
+     inkscape:window-height="744"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2985"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="fond"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-602.36218)"
+     sodipodi:insensitive="true">
+    <rect
+       style="fill:#502d16;fill-opacity:1;stroke:none"
+       id="rect3751"
+       width="800"
+       height="450"
+       x="0"
+       y="602.36218"
+       rx="1.2836954e-15"
+       ry="1.2836954e-15" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="texte"
+     transform="translate(0,90)"
+     sodipodi:insensitive="true">
+    <text
+       xml:space="preserve"
+       style="font-size:50px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#de8787;fill-opacity:1;stroke:none;font-family:Andrea Karime;-inkscape-font-specification:Andrea Karime"
+       x="208.42343"
+       y="-2.5000007"
+       id="text3754"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3756"
+         x="208.42343"
+         y="-2.5000007">Touches du clavier</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:25px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:135.00000238%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#deaa87;fill-opacity:1;stroke:none;font-family:Andrea Karime;-inkscape-font-specification:Andrea Karime"
+       x="42.004101"
+       y="48.974312"
+       id="text3758"
+       sodipodi:linespacing="135%"><tspan
+         sodipodi:role="line"
+         x="42.004101"
+         y="48.974312"
+         id="tspan3772">Utilisez les touches fléchées du clavier pour déplacer le personnage</tspan><tspan
+         sodipodi:role="line"
+         x="42.004101"
+         y="82.724312"
+         id="tspan3024">dans les quatre directions.</tspan><tspan
+         sodipodi:role="line"
+         x="42.004101"
+         y="116.56209"
+         id="tspan3026">Pressez la barre d'espacement pour mettre le jeu en pause.</tspan><tspan
+         sodipodi:role="line"
+         x="42.004101"
+         y="150.39986"
+         id="tspan3028">PRESSEZ LA TOUCHE D'ÉCHAPPEMENT (ESC) POUR QUITTER UNE PARTIE EN</tspan><tspan
+         sodipodi:role="line"
+         x="42.004101"
+         y="184.23763"
+         id="tspan3030">COURS ET REVENIR AU MENU PRINCIPAL.</tspan><tspan
+         sodipodi:role="line"
+         x="42.004101"
+         y="218.07541"
+         id="tspan3032">UN SECOND APPUI SUR CETTE TOUCHE PROPOSE DE QUITTER L'APPLICATION.</tspan><tspan
+         sodipodi:role="line"
+         x="42.004101"
+         y="251.91318"
+         id="tspan3038">aMUSEZ-VOUS BIEN !</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:25px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#d35f5f;fill-opacity:1;stroke:none;font-family:Andrea Karime;-inkscape-font-specification:Andrea Karime"
+       x="282.01935"
+       y="310"
+       id="text3778"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3780"
+         x="282.01935"
+         y="310">cliquez pour continuer</tspan></text>
+  </g>
+</svg>

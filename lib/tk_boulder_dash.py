@@ -158,9 +158,18 @@ class TkBoulderDash (TK.Frame):
 
     def game_rules_screen (self, *args):
         """
-            second écran de jeu (règles du jeu)
+            écran règles du jeu
         """
         self.show_splash("rules")
+        self.canvas.bind("<Button-1>", self.main_menu_screen)
+    # end def
+
+
+    def keymap_screen (self, *args):
+        """
+            écran mappage touches clavier
+        """
+        self.show_splash("keymap")
         self.canvas.bind("<Button-1>", self.main_menu_screen)
     # end def
 
@@ -170,6 +179,7 @@ class TkBoulderDash (TK.Frame):
             menu principal
         """
         # events shut down
+        self.unbind_events()
         self.canvas.unbind("<Button-1>")
         # show main menu splash screen
         self.show_splash("main_menu")
@@ -183,8 +193,13 @@ class TkBoulderDash (TK.Frame):
         # do *NOT* use it
         self.menu_id = dict()
         # menu item inits
-        _id = self.canvas.create_text(x, y-60, text="Jouer", **_opts)
+        _id = self.canvas.create_text(x, y - 90, text="Jouer", **_opts)
         self.menu_id[_id] = self.run_game
+        # menu item inits
+        _id = self.canvas.create_text(
+            x, y - 20, text="Touches du clavier", **_opts
+        )
+        self.menu_id[_id] = self.keymap_screen
         # menu item inits
         _id = self.canvas.create_text(
             x, y + 40, text="Règles du jeu", **_opts
@@ -196,6 +211,7 @@ class TkBoulderDash (TK.Frame):
         )
         self.menu_id[_id] = self.quit_game
         # rebind events
+        self.bind_events()
         self.canvas.bind("<Button-1>", self.menu_clicked)
     # end def
 

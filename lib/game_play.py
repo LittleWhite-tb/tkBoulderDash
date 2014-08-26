@@ -55,6 +55,7 @@ class GamePlay:
             canvas=self.canvas, images_dir="images/sprites",
         )
         self.mouse_down = False
+        self.game_paused = False
         self.score = 0
     # end def
 
@@ -99,7 +100,7 @@ class GamePlay:
             bg="sienna",
             scrollregion=self.objects.matrix.bbox(),
         )
-        self.scroll_to_player()
+        self.scroll_to_player(25.0)
         self.bind_events()
     # end def
 
@@ -173,7 +174,7 @@ class GamePlay:
     # end def
 
 
-    def scroll_to_player (self):
+    def scroll_to_player (self, ticks=3.0):
         """
             ajuste la zone d'affichage du canvas de sorte que le
             joueur soit toujours visible;
@@ -190,7 +191,7 @@ class GamePlay:
         self.animations.run_after(
             50,
             self.scroll_animation_loop,
-            oldx, oldy, x, y, (x - oldx)/3.0, (y - oldy)/3.0,
+            oldx, oldy, x, y, (x - oldx)/ticks, (y - oldy)/ticks,
             cx, cy, cw, mw, mh
         )
     # end def
@@ -258,6 +259,7 @@ class GamePlay:
                 "Main:Player:Dead": self.player_dead,
             }
         )
+        self.canvas.bind_all("<Escape>", self.owner.main_menu_screen)
         self.canvas.bind_all("<Key>", self.on_key_pressed)
         self.canvas.bind("<Button-1>", self.on_mouse_down)
         self.canvas.bind("<Motion>", self.on_mouse_move)
@@ -270,7 +272,12 @@ class GamePlay:
             désactivation de tous les événements
         """
         # unbind events
-        self.events.disconnect_all()
+        self.events.disconnect_all(
+            "Main:Earth:Digged",
+            "Main:Diamond:Collected",
+            "Main:Player:Splashed",
+            "Main:Player:Dead",
+        )
         self.unbind_canvas_events()
     # end def
 
@@ -280,6 +287,7 @@ class GamePlay:
             désactivation des événements propres au canevas
         """
         # canvas events unbind
+        self.canvas.unbind_all("<Escape>")
         self.canvas.unbind_all("<Key>")
         self.canvas.unbind("<Button-1>")
         self.canvas.unbind("<Motion>")
@@ -297,6 +305,7 @@ class GamePlay:
             "Down": self.objects.player_sprite.move_down,
             "Left": self.objects.player_sprite.move_left,
             "Right": self.objects.player_sprite.move_right,
+            "space": self.pause_game,
         }.get(event.keysym)
         # supported keystroke?
         if callable(_method):
@@ -322,6 +331,45 @@ class GamePlay:
 
     def on_mouse_up (self, event=None):
         self.mouse_down = False
+    # end def
+
+
+    def pause_game (self, *args, **kw):
+        """
+             le joueur suspend la partie
+        """
+        # got to resume?
+        if self.game_paused:
+            self.game_paused = False
+            self.canvas.unbind_all("<space>")
+            self.canvas.delete("pause_group")
+            self.events.raise_event("Main:Game:Resumed")
+            self.bind_events()
+        # pause game
+        else:
+            self.game_paused = True
+            self.unbind_events()
+            self.events.raise_event("Main:Game:Paused")
+            x, y = self.center_xy(self.canvas)
+            x = self.canvas.canvasx(x)
+            y = self.canvas.canvasy(y)
+            _opts = dict(
+                anchor=TK.CENTER,
+                text="PAUSE",
+                font="sans 96 bold",
+                tags="pause_group",
+            )
+            self.canvas.create_text(x+4, y+4, fill="#400", **_opts)
+            self.canvas.create_text(x, y, fill="gold", **_opts)
+            self.canvas.create_text(
+                x, y + 70,
+                text="Press spacebar to continue",
+                font="sans 20 bold",
+                fill="pale goldenrod",
+                tags="pause_group",
+            )
+            self.canvas.bind_all("<space>", self.pause_game)
+        # end if
     # end def
 
 
