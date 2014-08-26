@@ -260,6 +260,7 @@ class GamePlay:
             }
         )
         self.canvas.bind_all("<Escape>", self.owner.main_menu_screen)
+        self.canvas.bind_all("<space>", self.pause_game)
         self.canvas.bind_all("<Key>", self.on_key_pressed)
         self.canvas.bind("<Button-1>", self.on_mouse_down)
         self.canvas.bind("<Motion>", self.on_mouse_move)
@@ -288,6 +289,7 @@ class GamePlay:
         """
         # canvas events unbind
         self.canvas.unbind_all("<Escape>")
+        self.canvas.unbind_all("<space>")
         self.canvas.unbind_all("<Key>")
         self.canvas.unbind("<Button-1>")
         self.canvas.unbind("<Motion>")
@@ -305,14 +307,13 @@ class GamePlay:
             "Down": self.objects.player_sprite.move_down,
             "Left": self.objects.player_sprite.move_left,
             "Right": self.objects.player_sprite.move_right,
-            "space": self.pause_game,
         }.get(event.keysym)
         # supported keystroke?
         if callable(_method):
             # go!
             _method()
+            self.scroll_to_player()
         # end if
-        self.scroll_to_player()
     # end def
 
 
@@ -345,11 +346,13 @@ class GamePlay:
             self.canvas.delete("pause_group")
             self.events.raise_event("Main:Game:Resumed")
             self.bind_events()
+            self.scroll_to_player()
         # pause game
         else:
             self.game_paused = True
             self.unbind_events()
             self.events.raise_event("Main:Game:Paused")
+            self.animations.stop_all()
             x, y = self.center_xy(self.canvas)
             x = self.canvas.canvasx(x)
             y = self.canvas.canvasy(y)
