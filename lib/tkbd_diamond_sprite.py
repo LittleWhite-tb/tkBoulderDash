@@ -26,10 +26,10 @@
 """
 
 # lib imports
-from . import tkgame_sprite as S
+from . import tkbd_falling_sprite as S
 
 
-class TkBDDiamondSprite (S.TkGameSprite):
+class TkBDDiamondSprite (S.TkBDFallingSprite):
     """
         sprite représentant un diamant dans la mine
     """
@@ -42,8 +42,6 @@ class TkBDDiamondSprite (S.TkGameSprite):
         super().__init__(owner, canvas, **kw)
         # member inits
         self.is_overable = True
-        self.is_falling = False
-        self.need_looping = False
     # end def
 
 
@@ -56,59 +54,6 @@ class TkBDDiamondSprite (S.TkGameSprite):
             "Main:Diamond:Collected",
             sprite=self,
         )
-    # end def
-
-
-    def fall_down (self):
-        """
-            le diamant chute tant qu'il y a du vide sous lui ou
-            écrase le joueur s'il le croise durant sa chute;
-        """
-        self.animations.run_after(100, self.falling_loop)
-    # end def
-
-
-    def falling_loop (self):
-        """
-            boucle de gestion de la chute du diamant
-        """
-        self.move_sprite(0, +1, callback=self.filter_collisions)
-        if self.need_looping:
-            self.animations.run_after(200, self.falling_loop)
-        else:
-            self.animations.stop(self.falling_loop)
-            self.is_falling = False
-        # end if
-    # end def
-
-
-    def filter_collisions (self, c_dict):
-        """
-            traite les collisions pour accorder ou refuser un
-            déplacement du sprite;
-        """
-        # init veille chute
-        self.need_looping = True
-        # param inits
-        sprite = c_dict["sprite"]
-        if sprite:
-            if sprite is self.owner.player_sprite:
-                if self.is_falling:
-                    # on écrase le joueur
-                    sprite.splashed()
-                    self.is_falling = False
-                # end if
-            else:
-                # la chute s'arrête ici
-                self.need_looping = False
-            # end if
-            # mouvement refusé
-            return False
-        # end if
-        # cette fois-ci on tombe
-        self.is_falling = True
-        # mouvement accordé
-        return True
     # end def
 
 # end class TkBDDiamondSprite

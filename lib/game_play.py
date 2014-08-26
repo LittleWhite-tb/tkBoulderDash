@@ -178,15 +178,70 @@ class GamePlay:
             ajuste la zone d'affichage du canvas de sorte que le
             joueur soit toujours visible;
         """
+        # animation inits
         x, y = self.objects.player_sprite.xy
+        oldx, oldy = self.objects.player_sprite.old_xy
         cx, cy = self.center_xy(self.canvas)
+        cw = self.canvas.winfo_reqwidth()
         mw, mh = self.objects.matrix.width_height()
-        self.canvas.xview_moveto((x-cx)/mw)
-        self.canvas.yview_moveto((y-cy)/mh)
-        x = self.canvas.canvasx(self.canvas.winfo_reqwidth() - 10)
+        # update old coordinates
+        self.objects.player_sprite.old_xy = self.objects.player_sprite.xy
+        # run animation loop
+        self.animations.run_after(
+            50,
+            self.scroll_animation_loop,
+            oldx, oldy, x, y, (x - oldx)/3.0, (y - oldy)/3.0,
+            cx, cy, cw, mw, mh
+        )
+    # end def
+
+
+    def scroll_animation_loop (self, *args):
+        """
+            boucle d'animation du défilement écran
+        """
+        # inits
+        startx, starty, stopx, stopy, stepx, stepy, \
+        cx, cy, cw, mw, mh = args
+        self.canvas.xview_moveto((startx - cx)/mw)
+        self.canvas.yview_moveto((starty - cy)/mh)
         y = self.canvas.canvasy(10)
-        self.canvas.coords(self.remaining_id, x, y)
+        self.canvas.coords(
+            self.remaining_id, self.canvas.canvasx(cw - 10), y
+        )
         self.canvas.coords(self.score_id, self.canvas.canvasx(cx), y)
+        # no more movement to handle?
+        if not (stepx or stepy):
+            # trap out!
+            return
+        # end if
+        # update coords
+        startx += stepx
+        starty += stepy
+        loopx = bool(
+            (stepx > 0 and startx < stopx) or
+            (stepx < 0 and startx > stopx)
+        )
+        loopy = bool(
+            (stepy > 0 and starty < stopy) or
+            (stepy < 0 and starty > stopy)
+        )
+        # should keep on looping?
+        if loopx or loopy:
+            self.animations.run_after(
+                40,
+                self.scroll_animation_loop,
+                startx, starty, stopx, stopy, stepx, stepy, cx, cy,
+                cw, mw, mh
+            )
+        # last loop
+        else:
+            self.animations.run_after(
+                40,
+                self.scroll_animation_loop,
+                stopx, stopy, 0, 0, 0, 0, cx, cy, cw, mw, mh
+            )
+        # end if
     # end def
 
 

@@ -55,6 +55,8 @@ class TkBDPlayerSprite (S.TkGameSprite):
         """
         # super class inits
         super().__init__(owner, canvas, **kw)
+        # member inits
+        self.old_xy = (self.x, self.y)
     # end def
 
 
@@ -109,6 +111,8 @@ class TkBDPlayerSprite (S.TkGameSprite):
                 return False
             # end if
         # end if
+        # backup pour scrolling
+        self.old_xy = (self.x, self.y)
         # mouvement accordé
         return True
     # end def
