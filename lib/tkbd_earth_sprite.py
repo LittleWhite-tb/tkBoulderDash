@@ -34,12 +34,11 @@ class TkBDEarthSprite (S.TkGameSprite):
         sprite représentant la terre dans la mine
     """
 
-    def __init__ (self, owner, canvas, **kw):
+    def init_sprite (self, **kw):
         """
-            class constructor
+            hook method to be reimplemented in subclass;
+            this avoids re-declaring __init__ signatures all the time;
         """
-        # super class inits
-        super().__init__(owner, canvas, **kw)
         # member inits
         self.is_overable = True
         self.is_movable = False
@@ -52,6 +51,8 @@ class TkBDEarthSprite (S.TkGameSprite):
         """
         # on retire le sprite du canevas
         self.canvas.delete(self.canvas_id)
+        # et de la matrice
+        self.matrix.drop_xy(self.xy)
         # on notifie que le joueur a creusé la terre
         self.events.raise_event("Main:Earth:Digged")
     # end def

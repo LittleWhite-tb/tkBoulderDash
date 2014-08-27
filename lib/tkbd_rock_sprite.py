@@ -34,13 +34,15 @@ class TkBDRockSprite (S.TkBDFallingSprite):
         sprite représentant un rocher dans la mine
     """
 
-    def __init__ (self, matrix, canvas, **kw):
+    def init_sprite (self, **kw):
         """
-            class constructor
+            hook method to be reimplemented in subclass;
+            this avoids re-declaring __init__ signatures all the time;
         """
         # super class inits
-        super().__init__(matrix, canvas, **kw)
+        super().init_sprite(**kw)
         # member inits
+        pass
     # end def
 
 # end class TkBDRockSprite

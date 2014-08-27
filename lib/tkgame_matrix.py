@@ -472,7 +472,7 @@ class TkGameMatrix:
         """
         # inits
         x, y = xy
-        return (x//self.cellsize, y//self.cellsize)
+        return (y//self.cellsize, x//self.cellsize)
     # end def
 
 

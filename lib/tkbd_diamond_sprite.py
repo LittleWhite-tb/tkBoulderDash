@@ -34,12 +34,14 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
         sprite représentant un diamant dans la mine
     """
 
-    def __init__ (self, owner, canvas, **kw):
+
+    def init_sprite (self, **kw):
         """
-            class constructor
+            hook method to be reimplemented in subclass;
+            this avoids re-declaring __init__ signatures all the time;
         """
         # super class inits
-        super().__init__(owner, canvas, **kw)
+        super().init_sprite(**kw)
         # member inits
         self.is_overable = True
     # end def
@@ -50,6 +52,7 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
             un sprite prioritaire détruit ce sprite
         """
         self.canvas.delete(self.canvas_id)
+        #~ self.matrix.drop_xy(self.xy)
         self.events.raise_event(
             "Main:Diamond:Collected",
             sprite=self,

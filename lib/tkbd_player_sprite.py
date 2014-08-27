@@ -49,12 +49,11 @@ class TkBDPlayerSprite (S.TkGameSprite):
         },
     }
 
-    def __init__ (self, owner, canvas, **kw):
+    def init_sprite (self, **kw):
         """
-            class constructor
+            hook method to be reimplemented in subclass;
+            this avoids re-declaring __init__ signatures all the time;
         """
-        # super class inits
-        super().__init__(owner, canvas, **kw)
         # member inits
         self.old_xy = (self.x, self.y)
     # end def
@@ -149,6 +148,7 @@ class TkBDPlayerSprite (S.TkGameSprite):
             méthode virtuelle à réimplémenter dans les classes dérivées
         """
         self.canvas.delete(self.canvas_id)
+        self.matrix.drop_xy(self.xy)
         self.canvas.create_text(
             self.x, self.y,
             text="Bobo!",

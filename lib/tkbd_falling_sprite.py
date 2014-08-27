@@ -34,12 +34,11 @@ class TkBDFallingSprite (S.TkGameSprite):
         sprite représentant un objet pouvant tomber dans la mine
     """
 
-    def __init__ (self, owner, canvas, **kw):
+    def init_sprite (self, **kw):
         """
-            class constructor
+            hook method to be reimplemented in subclass;
+            this avoids re-declaring __init__ signatures all the time;
         """
-        # super class inits
-        super().__init__(owner, canvas, **kw)
         # member inits
         self.is_overable = False
         self.is_movable = False
@@ -87,6 +86,8 @@ class TkBDFallingSprite (S.TkGameSprite):
         self.need_looping = True
         # param inits
         sprite = c_dict["sprite"]
+        print("sprite", id(sprite), "is player:",
+            sprite is self.owner.player_sprite)
         if sprite:
             if sprite is self.owner.player_sprite:
                 if self.is_falling:

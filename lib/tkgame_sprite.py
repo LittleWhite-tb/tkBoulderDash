@@ -64,7 +64,9 @@ class TkGameSprite:
         self.canvas_id = kw.get("cid") or 0
         self.canvas_tags = kw.get("tags") or ""
         self.xy = (kw.get("x"), kw.get("y"))
-        self.row_column = (kw.get("row"), kw.get("column"))
+        self.row_column = (kw.get("row") or 0, kw.get("column") or 0)
+        # for best simplification - hook method
+        self.init_sprite(**kw)
     # end def
 
 
@@ -141,6 +143,16 @@ class TkGameSprite:
     @images_dir.deleter
     def images_dir(self):
         del self.__images_dir
+    # end def
+
+
+    def init_sprite (self, **kw):
+        """
+            hook method to be reimplemented in subclass;
+            this avoids re-declaring __init__ signatures all the time;
+        """
+        # put your own code in subclasses
+        pass
     # end def
 
 

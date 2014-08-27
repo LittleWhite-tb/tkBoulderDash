@@ -75,7 +75,7 @@ class GamePlay:
         self.unbind_events()
         self.clear_canvas()
         self.objects.load_data(self.get_level_fpath(self.level))
-        for _sprite in self.objects.collection:
+        for _sprite in self.objects.matrix.objects():
             _sprite.start()
         # end for
         # init remaining diamonds
@@ -124,7 +124,7 @@ class GamePlay:
             efface le canevas graphique
         """
         self.canvas.delete(TK.ALL)
-        self.canvas.configure(bg="black", scrollregion=(0,0,10,10))
+        self.canvas.configure(bg="black", scrollregion=(0, 0, 0, 0))
     # end def
 
 
@@ -165,12 +165,18 @@ class GamePlay:
         self.canvas.itemconfigure(
             self.score_id, text=self.format_score(start)
         )
-        start = min(stop, start + step)
-        if start <= stop:
-            self.animations.run_after(
-                50, self.score_display_loop, start, stop, step
-            )
+        if not step:
+            return
         # end if
+        # update pos
+        start += step
+        if start >= stop:
+            start = stop
+            step = 0
+        # end if
+        self.animations.run_after(
+            50, self.score_display_loop, start, stop, step
+        )
     # end def
 
 
@@ -227,22 +233,16 @@ class GamePlay:
             (stepy > 0 and starty < stopy) or
             (stepy < 0 and starty > stopy)
         )
-        # should keep on looping?
-        if loopx or loopy:
-            self.animations.run_after(
-                40,
-                self.scroll_animation_loop,
-                startx, starty, stopx, stopy, stepx, stepy, cx, cy,
-                cw, mw, mh
-            )
         # last loop
-        else:
-            self.animations.run_after(
-                40,
-                self.scroll_animation_loop,
-                stopx, stopy, 0, 0, 0, 0, cx, cy, cw, mw, mh
-            )
+        if not (loopx or loopy):
+            startx, starty, stepx, stepy = stopx, stopy, 0, 0
         # end if
+        self.animations.run_after(
+            40,
+            self.scroll_animation_loop,
+            startx, starty, stopx, stopy, stepx, stepy, cx, cy,
+            cw, mw, mh
+        )
     # end def
 
 

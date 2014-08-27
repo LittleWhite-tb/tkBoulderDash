@@ -67,7 +67,6 @@ class ObjectMapper:
         # inits
         _defs = _data["defs"]
         # reset members
-        self.dict_ids = dict()
         self.diamonds_count = 0
         # default values
         _diamond = "D"
@@ -98,7 +97,7 @@ class ObjectMapper:
                 _attrs = _defs[_cdata]
                 # create sprite
                 _sprite = eval(
-                    "{module}.{class}(self.matrix, self.canvas)"
+                    "{module}.{class}(self, self.matrix, self.canvas)"
                     .format(**_attrs)
                 )
                 _sprite.images_dir = _attrs["images_dir"]

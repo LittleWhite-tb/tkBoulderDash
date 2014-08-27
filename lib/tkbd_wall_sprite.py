@@ -34,12 +34,11 @@ class TkBDWallSprite (S.TkGameSprite):
         sprite représentant le mur de la mine
     """
 
-    def __init__ (self, owner, canvas, **kw):
+    def init_sprite (self, **kw):
         """
-            class constructor
+            hook method to be reimplemented in subclass;
+            this avoids re-declaring __init__ signatures all the time;
         """
-        # super class inits
-        super().__init__(owner, canvas, **kw)
         # member inits
         self.is_overable = False
         self.is_movable = False
