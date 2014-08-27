@@ -24,9 +24,12 @@
 
 # lib imports
 import os.path as OP
+
+# mandatory dependencies
 from . import tkgame_events as EM
 from . import tkgame_images as IM
 from . import tkgame_animations as AP
+from . import tkgame_matrix as MX
 
 
 class TkGameSprite:
@@ -44,15 +47,13 @@ class TkGameSprite:
         },
     }
 
-    CELLSIZE = 64
 
-
-    def __init__ (self, owner, canvas, **kw):
+    def __init__ (self, matrix, canvas, **kw):
         """
             class constructor
         """
         # member inits
-        self.owner = owner
+        self.matrix = matrix
         self.canvas = canvas
         self.events = EM.get_event_manager()
         self.animations = AP.get_animation_pool()
@@ -61,8 +62,6 @@ class TkGameSprite:
         self.state = kw.get("state") or "default"
         self.canvas_id = kw.get("cid") or 0
         self.canvas_tags = kw.get("tags") or ""
-        self.cellsize = kw.get("cellsize") or self.CELLSIZE
-        self.dict_ids = kw.get("dict_ids") or dict()
         self.x = kw.get("x") or 0
         self.y = kw.get("y") or 0
     # end def
@@ -109,83 +108,6 @@ class TkGameSprite:
     # end def
 
 
-    def look_ahead (self, sx, sy):
-        """
-            looks around current sprite to see who might collide;
-        """
-        # inits
-        dx = sx * self.cellsize
-        dy = sy * self.cellsize
-        sprite = None
-        # look ahead
-        collisions = self.collisions(xy=(self.x + dx, self.y + dy))
-        if collisions:
-            sprite = self.dict_ids.get(collisions[0])
-        # end if
-        return {"sprite": sprite, "dx": dx, "dy": dy}
-    # end def
-
-
-    def move_sprite (self, sx, sy, callback=None):
-        """
-            moves sprite along callback function's truth return
-            value; if callback is omitted, sprite will move when no
-            other sprite is encountered at destination place;
-            callback function will get in argument
-            self.look_ahead()'s return value;
-        """
-        # param inits
-        if not callable(callback):
-            callback = lambda c: not c["sprite"]
-        # end if
-        # look ahead
-        c_dict = self.look_ahead(sx, sy)
-        # allowed to move?
-        if callback(c_dict):
-            # move sprite
-            self.move_animation(c_dict)
-        # end if
-    # end def
-
-
-    def move_animation (self, c_dict):
-        """
-            here is the animation of a moving sprite
-        """
-        # moving is quite simple here
-        # but you can reimplement this in your own subclasses
-        self.canvas.move(self.canvas_id, c_dict["dx"], c_dict["dy"])
-        # update pos
-        self.x += c_dict["dx"]
-        self.y += c_dict["dy"]
-    # end def
-
-
-    def start (self):
-        """
-            starting sprite's image animation loop; sprite's owner
-            must implement an owner.register_sprite(canvas_id,
-            sprite) method;
-        """
-        # sets up sprite if not already done
-        if not self.canvas_id:
-            self.canvas_id = self.canvas.create_image(
-                self.x, self.y, anchor='center', tags=self.canvas_tags,
-            )
-            # notify sprite creation (e.g. for registering)
-            self.events.raise_event(
-                "Canvas:Sprite:Created",
-                canvas_id=self.canvas_id,
-                sprite=self,
-            )
-            # loading sprite's animation pictures
-            self.load_images()
-        # end if
-        # enter the loop
-        self.animations.run_after(1, self.image_animation_loop)
-    # end def
-
-
     def image_animation_loop (self):
         """
             sprite's image animation loop
@@ -226,23 +148,6 @@ class TkGameSprite:
     # end def
 
 
-    def on_sequence_end (self, *args, **kw):
-        """
-            this is called once a status image sequence ends;
-            please, feel free to override this in your own subclasses;
-        """
-        pass
-    # end def
-
-
-    def load_images (self):
-        """
-            cacheing all sprite states pictures
-        """
-        self.image_manager.load_images(self.images_dir)
-    # end def
-
-
     @property
     def images_dir (self):
         """
@@ -259,6 +164,131 @@ class TkGameSprite:
     @images_dir.deleter
     def images_dir(self):
         del self.__images_dir
+    # end def
+
+
+    def load_images (self):
+        """
+            cacheing all sprite states pictures
+        """
+        self.image_manager.load_images(self.images_dir)
+    # end def
+
+
+    def look_ahead (self, sx, sy):
+        """
+            looks around current sprite to see who might collide;
+        """
+        # inits
+        dx = sx * self.cellsize
+        dy = sy * self.cellsize
+        sprite = None
+        # look ahead
+        collisions = self.collisions(xy=(self.x + dx, self.y + dy))
+        if collisions:
+            sprite = self.dict_ids.get(collisions[0])
+        # end if
+        return {"sprite": sprite, "dx": dx, "dy": dy}
+    # end def
+
+
+    @property
+    def matrix (self):
+        """
+            game matrix attribute;
+            must be of TkGameMatrix type;
+        """
+        return self.__matrix
+    # end def
+
+    @matrix.setter
+    def matrix (self, value):
+        """
+            game matrix attribute;
+            must be of TkGameMatrix type;
+        """
+        if isinstance(value, MX.TkGameMatrix):
+            self.__matrix = value
+        else:
+            raise TypeError(
+                "'matrix' attribute must be of "
+                "'TkGameMatrix' type or at least a subclass of this."
+            )
+        # end if
+    # end def
+
+    @matrix.deleter
+    def matrix (self):
+        del self.__matrix
+    # end def
+
+
+    def move_animation (self, c_dict):
+        """
+            here is the animation of a moving sprite
+        """
+        # moving is quite simple here
+        # but you can reimplement this in your own subclasses
+        self.canvas.move(self.canvas_id, c_dict["dx"], c_dict["dy"])
+        # update pos
+        self.x += c_dict["dx"]
+        self.y += c_dict["dy"]
+    # end def
+
+
+    def move_sprite (self, sx, sy, callback=None):
+        """
+            moves sprite along callback function's truth return
+            value; if callback is omitted, sprite will move when no
+            other sprite is encountered at destination place;
+            callback function will get in argument
+            self.look_ahead()'s return value;
+        """
+        # param inits
+        if not callable(callback):
+            callback = lambda c: not c["sprite"]
+        # end if
+        # look ahead
+        c_dict = self.look_ahead(sx, sy)
+        # allowed to move?
+        if callback(c_dict):
+            # move sprite
+            self.move_animation(c_dict)
+        # end if
+    # end def
+
+
+    def on_sequence_end (self, *args, **kw):
+        """
+            this is called once a status image sequence ends;
+            please, feel free to override this in your own subclasses;
+        """
+        pass
+    # end def
+
+
+    def start (self):
+        """
+            starting sprite's image animation loop; sprite's owner
+            must implement an owner.register_sprite(canvas_id,
+            sprite) method;
+        """
+        # sets up sprite if not already done
+        if not self.canvas_id:
+            self.canvas_id = self.canvas.create_image(
+                self.x, self.y, anchor='center', tags=self.canvas_tags,
+            )
+            # notify sprite creation (e.g. for registering)
+            self.events.raise_event(
+                "Canvas:Sprite:Created",
+                canvas_id=self.canvas_id,
+                sprite=self,
+            )
+            # loading sprite's animation pictures
+            self.load_images()
+        # end if
+        # enter the loop
+        self.animations.run_after(1, self.image_animation_loop)
     # end def
 
 

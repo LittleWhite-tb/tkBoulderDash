@@ -98,7 +98,7 @@ class GamePlay:
         # reconfigure canvas
         self.canvas.configure(
             bg="sienna",
-            scrollregion=self.objects.matrix.bbox(),
+            scrollregion=self.objects.matrix.bbox_xy(),
         )
         self.scroll_to_player(25.0)
         self.bind_events()

@@ -34,19 +34,53 @@ class TkGameMatrix:
     BOTTOM_LEFT = "bottom left"
     BOTTOM_RIGHT = "bottom right"
 
+    CELLSIZE = 64
+
 
     def __init__ (self, **kw):
         """
             class constructor
         """
-        self.__data = dict()
+        self.__internal_data = dict()
         self.rows = kw.get("rows") or 0
         self.columns = kw.get("columns") or 0
-        self.cellsize = kw.get("cellsize") or 0
-        # matrix defs support
-        self.matrix_defs = kw.get("defs")
-        # matrix data support
-        self.resize(kw.get("matrix_data"))
+        self.cellsize = kw.get("cellsize") or self.CELLSIZE
+        # external matrix data support
+        self.resize(kw.get("data"))
+    # end def
+
+
+    def _rebind (self, xy, bbox, circular_xy=None):
+        """
+            protected method - generic rebinding implementation;
+        """
+        # inits
+        x, y = xy
+        xmin, ymin, xmax, ymax = bbox
+        # circular rebindings
+        if circular_xy:
+            circular_x, circular_y = circular_xy
+            if circular_x:
+                if x < xmin:
+                    x = max(xmin, xmax)
+                elif x > xmax:
+                    x = xmin
+                # end if
+            # end if
+            if circular_y:
+                if y < ymin:
+                    y = max(ymin, ymax)
+                elif y > ymax:
+                    y = ymin
+                # end if
+            # end if
+        # classical rebindings
+        else:
+            x = max(xmin, min(xmax, x))
+            y = max(ymin, min(ymax, y))
+        # end if
+        # return results
+        return (x, y)
     # end def
 
 
@@ -54,7 +88,7 @@ class TkGameMatrix:
         """
             retrieves object at row_column = (row, column), if exists;
         """
-        return self.data.get(row_column)
+        return self.internal_data.get(row_column)
     # end def
 
 
@@ -69,9 +103,21 @@ class TkGameMatrix:
 
     def bbox (self):
         """
-            returns estimated graphical bounding box of the matrix
+            returns matrix bounding box;
         """
-        return (0, 0, self.columns * self.cellsize, self.rows * self.cellsize)
+        return (0, 0, max(0, self.rows - 1), max(0, self.columns - 1))
+    # end def
+
+
+    def bbox_xy (self):
+        """
+            returns estimated graphical bounding box of the matrix;
+        """
+        return (
+            0, 0,
+            max(0, self.columns * self.cellsize - 1),
+            max(0, self.rows * self.cellsize - 1)
+        )
     # end def
 
 
@@ -85,7 +131,7 @@ class TkGameMatrix:
 
     @cellsize.setter
     def cellsize (self, value):
-        self.__cellsize = abs(int(value))
+        self.__cellsize = max(0, int(value))
     # end def
 
     @cellsize.deleter
@@ -103,6 +149,14 @@ class TkGameMatrix:
         return (
             (column + 0.5) * self.cellsize, (row + 0.5) * self.cellsize
         )
+    # end def
+
+
+    def coords (self):
+        """
+            returns list of available (row, column) coordinate tuples;
+        """
+        return self.internal_data.keys()
     # end def
 
 
@@ -129,24 +183,26 @@ class TkGameMatrix:
 
 
     @property
-    def data (self):
+    def internal_data (self):
         """
             matrix internal data (READ-ONLY property);
         """
-        return self.__data
+        return self.__internal_data
     # end def
 
-    @data.setter
-    def data (self, value):
+    @internal_data.setter
+    def internal_data (self, value):
         """
             forbidden - READ-ONLY internal data
         """
-        raise MatrixError("'data' attribute is READ-ONLY.")
+        raise TkGameMatrixError(
+            "'internal_data' attribute is READ-ONLY."
+        )
     # end def
 
-    @data.deleter
-    def data (self):
-        del self.__data
+    @internal_data.deleter
+    def internal_data (self):
+        del self.__internal_data
     # end def
 
 
@@ -154,18 +210,18 @@ class TkGameMatrix:
         """
             deletes object located at (row, column);
             if @raise_error is True and no object found, raises
-            MatrixCellError;
+            TkGameMatrixCellError;
         """
         # inits
         _object = self.at(row_column)
         # got something to delete?
         if _object:
             # silent drops...
-            self.data.pop(row_column, None)
+            self.internal_data.pop(row_column, None)
         # error handling
         elif raise_error:
             # raise error
-            raise MatrixCellError(
+            raise TkGameMatrixCellError(
                 "while trying to delete: "
                 "no object found in matrix cell."
             )
@@ -178,7 +234,7 @@ class TkGameMatrix:
             deletes object located at (x, y) adjusted to matrix
             (row, column) location;
             if @raise_error is True and no object found, raises
-            MatrixCellError;
+            TkGameMatrixCellError;
         """
         self.drop(self.row_column(xy), raise_error)
     # end def
@@ -189,8 +245,8 @@ class TkGameMatrix:
             duplicates object located at from_rowcol into to_rowcol
             location;
             if @raise_error is True:
-            - raises MatrixCellError if destination is not None,
-            - raises MatrixCellError if source is None;
+            - raises TkGameMatrixCellError if destination is not None,
+            - raises TkGameMatrixCellError if source is None;
         """
         self.move(from_rowcol, to_rowcol, raise_error, duplicate=True)
     # end def
@@ -201,8 +257,8 @@ class TkGameMatrix:
             duplicates object located at from_xy into to_xy all
             adjusted to matrix (row, column) locations;
             if @raise_error is True:
-            - raises MatrixCellError if destination is not None,
-            - raises MatrixCellError if source is None;
+            - raises TkGameMatrixCellError if destination is not None,
+            - raises TkGameMatrixCellError if source is None;
         """
         self.move_xy(from_xy, to_xy, raise_error, duplicate=True)
     # end def
@@ -213,14 +269,14 @@ class TkGameMatrix:
         """
             absolute move from (row0, column0) to (row1, column1);
             if @raise_error is True:
-            - raises MatrixCellError if destination is not None,
-            - raises MatrixCellError if source is None;
+            - raises TkGameMatrixCellError if destination is not None,
+            - raises TkGameMatrixCellError if source is None;
         """
         # look for destination object
         _object = self.at(to_rowcol)
         # error handling
         if _object and raise_error:
-            raise MatrixCellError(
+            raise TkGameMatrixCellError(
                 "while trying to move/duplicate: "
                 "destination cell is busy."
             )
@@ -235,12 +291,12 @@ class TkGameMatrix:
                 # no duplication (simple move)?
                 if not duplicate:
                     # remove from source location
-                    self.data.pop(from_rowcol, None)
+                    self.internal_data.pop(from_rowcol, None)
                 # end if
             # no source object found
             elif raise_error:
                 # error handling
-                raise MatrixCellError(
+                raise TkGameMatrixCellError(
                     "while trying to move/duplicate: "
                     "no object found in source cell."
                 )
@@ -255,8 +311,8 @@ class TkGameMatrix:
             absolute move from (x0, y0) to (x1, y1) all adjusted to
             matrix (row, column) locations;
             if @raise_error is True:
-            - raises MatrixCellError if destination is not None,
-            - raises MatrixCellError if source is None;
+            - raises TkGameMatrixCellError if destination is not None,
+            - raises TkGameMatrixCellError if source is None;
         """
         self.move(
             self.row_column(from_xy),
@@ -267,13 +323,45 @@ class TkGameMatrix:
     # end def
 
 
+    def objects (self):
+        """
+            returns list of matrix' registered objects;
+        """
+        return self.internal_data.values()
+    # end def
+
+
+    def rebind (self, row_column, circular=False):
+        """
+            rebinds (row, column) matrix location to fit into
+            current matrix bounding box (bbox);
+            if @circular is True, any overflow will return to zero;
+            returns new rebound (row, column) coordinates;
+        """
+        # return results
+        return self._rebind(row_column, self.bbox(), circular)
+    # end def
+
+
+    def rebind_xy (self, xy, circular=False):
+        """
+            rebinds (x, y) coordinates to fit into current matrix
+            bounding box (bbox_xy);
+            if @circular is True, any overflow will return to zero;
+            returns new rebound (x, y) coordinates;
+        """
+        # return results
+        return self._rebind(xy, self.bbox_xy(), circular)
+    # end def
+
+
     def rel_duplicate (self, from_rowcol, rel_rowcol, raise_error=False):
         """
             duplicates object located at from_rowcol to relative
             rel_rowcol location;
             if @raise_error is True:
-            - raises MatrixCellError if destination is not None,
-            - raises MatrixCellError if source is None;
+            - raises TkGameMatrixCellError if destination is not None,
+            - raises TkGameMatrixCellError if source is None;
         """
         self.rel_move(
             from_rowcol, rel_rowcol, raise_error, duplicate=True
@@ -287,8 +375,8 @@ class TkGameMatrix:
             location rel_xy all adjusted to matrix (row, column)
             locations;
             if @raise_error is True:
-            - raises MatrixCellError if destination is not None,
-            - raises MatrixCellError if source is None;
+            - raises TkGameMatrixCellError if destination is not None,
+            - raises TkGameMatrixCellError if source is None;
         """
         self.rel_move_xy(from_xy, rel_xy, raise_error, duplicate=True)
     # end def
@@ -300,8 +388,8 @@ class TkGameMatrix:
             relative move from (row, column) to (row + rel_row,
             column + rel_column);
             if @raise_error is True:
-            - raises MatrixCellError if destination is not None,
-            - raises MatrixCellError if source is None;
+            - raises TkGameMatrixCellError if destination is not None,
+            - raises TkGameMatrixCellError if source is None;
         """
         # inits
         row, column = from_rowcol
@@ -322,8 +410,8 @@ class TkGameMatrix:
             using rel_xy all adjusted to matrix (row, column)
             locations;
             if @raise_error is True:
-            - raises MatrixCellError if destination is not None,
-            - raises MatrixCellError if source is None;
+            - raises TkGameMatrixCellError if destination is not None,
+            - raises TkGameMatrixCellError if source is None;
         """
         # inits
         x, y = from_xy
@@ -335,20 +423,22 @@ class TkGameMatrix:
     def resize (self, matrix_data):
         """
             resizes inner matrix (rows, columns) along with
-            @matrix_data; this parameter must be at least a list of
-            iterables;
+            @matrix_data;
+            this parameter must be at least a list of iterables;
         """
         # param controls
         if matrix_data:
             # inits
-            self.matrix_data = list(matrix_data)
-            self.rows = len(self.matrix_data)
-            self.columns = max(0, 0, *map(len, self.matrix_data))
+            self.data = list(matrix_data)
+            self.rows = len(self.data)
+            self.columns = max(0, 0, *map(len, self.data))
+            # reset internal data
+            self.internal_data.clear()
             # return results
             return (self.rows, self.columns)
         # end if
         # no data, no dims
-        return None
+        return (0, 0)
     # end def
 
 
@@ -366,7 +456,7 @@ class TkGameMatrix:
         """
             sets object at row_column = (row, column);
         """
-        self.data[row_column] = object_
+        self.internal_data[row_column] = object_
     # end def
 
 
@@ -375,7 +465,7 @@ class TkGameMatrix:
             sets object at xy = (x, y) converted to a common matrix
             (row, column) location;
         """
-        self.data[self.row_column(xy)] = object_
+        self.internal_data[self.row_column(xy)] = object_
     # end def
 
 
@@ -391,19 +481,19 @@ class TkGameMatrix:
 
 # exception handling
 
-class MatrixError (Exception):
+class TkGameMatrixError (Exception):
     """
         handles matrix specific errors;
     """
     pass
-# end class MatrixError
+# end class TkGameMatrixError
 
 
 # exception handling
 
-class MatrixCellError (Exception):
+class TkGameMatrixCellError (Exception):
     """
         handles matrix' cell specific errors;
     """
     pass
-# end class MatrixCellError
+# end class TkGameMatrixCellError

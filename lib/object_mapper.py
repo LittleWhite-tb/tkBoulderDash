@@ -48,9 +48,7 @@ class ObjectMapper:
         self.canvas = canvas
         self.images_dir = images_dir
         self.events = EM.get_event_manager()
-        self.collection = list()
-        self.dict_ids = dict()
-        self.matrix = None
+        self.matrix = MX.TkGameMatrix(cellsize=self.CELLSIZE)
         self.player_sprite = None
         self.diamonds_count = 0
     # end def
@@ -68,11 +66,10 @@ class ObjectMapper:
         # end with
         # inits
         _defs = _data["defs"]
-        # reset collection
-        self.collection = list()
+        # reset members
         self.dict_ids = dict()
         self.diamonds_count = 0
-        # default value
+        # default values
         _diamond = "D"
         _player = "P"
         # on reconstruit les données
@@ -93,21 +90,22 @@ class ObjectMapper:
             # end if
         # end for
         # init game matrix
-        self.matrix = MX.TkGameMatrix(
-            _data["matrix"], _defs, cellsize=self.CELLSIZE
-        )
-        for _row, _rdata in enumerate(self.matrix.data):
+        self.matrix.resize(_data["matrix"])
+        self.matrix.defs = _defs
+        for _row, _rdata in enumerate(_data["matrix"]):
             for _column, _cdata in enumerate(_rdata):
+                # _cdata *MUST* be defined in defs /!\
                 _attrs = _defs[_cdata]
+                # create sprite
                 _sprite = eval(
-                    "{module}.{class}(self, self.canvas)"
+                    "{module}.{class}(self.matrix, self.canvas)"
                     .format(**_attrs)
                 )
                 _sprite.images_dir = _attrs["images_dir"]
-                _sprite.xy = self.matrix.center_xy(_row, _column)
-                _sprite.dict_ids = self.dict_ids
-                _sprite.cellsize = self.CELLSIZE
-                self.collection.append(_sprite)
+                _sprite.row_column = (_row, _column)
+                # put sprite into game matrix
+                self.matrix.set_at((_row, _column), _sprite)
+                # special cases
                 if _cdata == _diamond:
                     self.diamonds_count += 1
                 elif _cdata == _player:
@@ -115,41 +113,6 @@ class ObjectMapper:
                 # end if
             # end for
         # end for
-        # bind events
-        self.bind_events()
-    # end def
-
-
-    def bind_events (self, *args, **kw):
-        """
-            active les événements
-        """
-        # connecting people...
-        self.events.connect_dict(
-            {
-                "Canvas:Sprite:Created": self.register_sprite,
-            }
-        )
-    # end def
-
-
-    def unbind_events (self, *args, **kw):
-        """
-            désactive les événements
-        """
-        # disconnecting
-        self.events.disconnect_all(
-            "Canvas:Sprite:Created",
-        )
-    # end def
-
-
-    def register_sprite (self, canvas_id, sprite):
-        """
-            enregistre un sprite dans la table d'équivalence
-        """
-        # register sprite
-        self.dict_ids[canvas_id] = sprite
     # end def
 
 
