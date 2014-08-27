@@ -43,11 +43,10 @@ class TkGameMatrix:
         self.rows = kw.get("rows") or 0
         self.columns = kw.get("columns") or 0
         self.cellsize = kw.get("cellsize") or 0
+        # matrix defs support
+        self.matrix_defs = kw.get("defs")
         # matrix data support
-        self.matrix_data = kw.get("matrix_data")
-        if self.matrix_data:
-            self.resize(self.matrix_data)
-        # end if
+        self.resize(kw.get("matrix_data"))
     # end def
 
 
@@ -55,16 +54,16 @@ class TkGameMatrix:
         """
             retrieves object at row_column = (row, column), if exists;
         """
-        return self.data[row_column]
+        return self.data.get(row_column)
     # end def
 
 
     def at_xy (self, xy):
         """
-            retrieves object at (x, y) converted to matrix (row,
-            column) or None if object is not found;
+            retrieves object at (x, y) converted to matrix location
+            (row, column) or None if object is not found;
         """
-        return self.data[self.row_column(xy)]
+        return self.at(self.row_column(xy))
     # end def
 
 
@@ -110,28 +109,29 @@ class TkGameMatrix:
     def corner_xy (self, row_column, corner=None):
         """
             returns top/bottom left/right (x, y) corner coordinates
-            of a matrix cell located at (row, column); parameter
-            @corner should be one of self.TOP_LEFT, self.TOP_RIGHT,
-            self.BOTTOM_LEFT or self.BOTTOM_RIGHT; will default to
-            self.TOP_LEFT if omitted or incorrect param value;
+            of a matrix cell located at (row, column);
+            parameter @corner should be one of self.TOP_LEFT,
+            self.TOP_RIGHT, self.BOTTOM_LEFT or self.BOTTOM_RIGHT;
+            will default to self.TOP_LEFT if omitted or incorrect
+            param value;
         """
+        # inits
         row, column = row_column
-        dx, dy = {
+        # relative_row, relative_column
+        rr, rc = {
             self.TOP_LEFT: (0, 0),
-            self.TOP_RIGHT: (1, 0),
-            self.BOTTOM_LEFT: (0, 1),
+            self.TOP_RIGHT: (0, 1),
+            self.BOTTOM_LEFT: (1, 0),
             self.BOTTOM_RIGHT: (1, 1),
         }.get(corner) or (0, 0)
-        return (
-            (column + dx) * self.cellsize, (row + dy) * self.cellsize
-        )
+        return ((column + rc) * self.cellsize, (row + rr) * self.cellsize)
     # end def
 
 
     @property
     def data (self):
         """
-            matrix internal data (read-only property);
+            matrix internal data (READ-ONLY property);
         """
         return self.__data
     # end def
@@ -139,9 +139,9 @@ class TkGameMatrix:
     @data.setter
     def data (self, value):
         """
-            forbidden - read-only internal data
+            forbidden - READ-ONLY internal data
         """
-        raise MatrixError("data attribute is READ-ONLY.")
+        raise MatrixError("'data' attribute is READ-ONLY.")
     # end def
 
     @data.deleter
@@ -150,15 +150,61 @@ class TkGameMatrix:
     # end def
 
 
+    def drop (self, row_column, raise_error=False):
+        """
+            deletes object located at (row, column);
+            if @raise_error is True and no object found, raises
+            MatrixCellError;
+        """
+        # inits
+        _object = self.at(row_column)
+        # got something to delete?
+        if _object:
+            # silent drops...
+            self.data.pop(row_column, None)
+        # error handling
+        elif raise_error:
+            # raise error
+            raise MatrixCellError(
+                "while trying to delete: "
+                "no object found in matrix cell."
+            )
+        # end if
+    # end def
+
+
+    def drop_xy (self, xy, raise_error=False):
+        """
+            deletes object located at (x, y) adjusted to matrix
+            (row, column) location;
+            if @raise_error is True and no object found, raises
+            MatrixCellError;
+        """
+        self.drop(self.row_column(xy), raise_error)
+    # end def
+
+
     def duplicate (self, from_rowcol, to_rowcol, raise_error=False):
         """
-            duplicates object located at from_rowcol in to_rowcol
+            duplicates object located at from_rowcol into to_rowcol
             location;
             if @raise_error is True:
             - raises MatrixCellError if destination is not None,
             - raises MatrixCellError if source is None;
         """
         self.move(from_rowcol, to_rowcol, raise_error, duplicate=True)
+    # end def
+
+
+    def duplicate_xy (self, from_xy, to_xy, raise_error=False):
+        """
+            duplicates object located at from_xy into to_xy all
+            adjusted to matrix (row, column) locations;
+            if @raise_error is True:
+            - raises MatrixCellError if destination is not None,
+            - raises MatrixCellError if source is None;
+        """
+        self.move_xy(from_xy, to_xy, raise_error, duplicate=True)
     # end def
 
 
@@ -170,7 +216,7 @@ class TkGameMatrix:
             - raises MatrixCellError if destination is not None,
             - raises MatrixCellError if source is None;
         """
-        # inits
+        # look for destination object
         _object = self.at(to_rowcol)
         # error handling
         if _object and raise_error:
@@ -178,21 +224,22 @@ class TkGameMatrix:
                 "while trying to move/duplicate: "
                 "destination cell is busy."
             )
-        # it's OK, let's try to move
+        # it's OK, let's try to move/duplicate
         else:
             # look for source object
             _object = self.at(from_rowcol)
-            # got something to move?
+            # got something?
             if _object:
                 # move it!
                 self.set_at(to_rowcol, _object)
-                # no duplicata (simple move)?
+                # no duplication (simple move)?
                 if not duplicate:
                     # remove from source location
                     self.data.pop(from_rowcol, None)
                 # end if
-            # error handling
+            # no source object found
             elif raise_error:
+                # error handling
                 raise MatrixCellError(
                     "while trying to move/duplicate: "
                     "no object found in source cell."
@@ -205,11 +252,19 @@ class TkGameMatrix:
     def move_xy (self, from_xy, to_xy,
                                     raise_error=False, duplicate=False):
         """
-            absolute move from (row0, column0) to (row1, column1);
+            absolute move from (x0, y0) to (x1, y1) all adjusted to
+            matrix (row, column) locations;
             if @raise_error is True:
             - raises MatrixCellError if destination is not None,
             - raises MatrixCellError if source is None;
         """
+        self.move(
+            self.row_column(from_xy),
+            self.row_column(to_xy),
+            raise_error,
+            duplicate
+        )
+    # end def
 
 
     def rel_duplicate (self, from_rowcol, rel_rowcol, raise_error=False):
@@ -226,6 +281,19 @@ class TkGameMatrix:
     # end def
 
 
+    def rel_duplicate_xy (self, from_xy, rel_xy, raise_error=False):
+        """
+            duplicates object located at from_xy into relative
+            location rel_xy all adjusted to matrix (row, column)
+            locations;
+            if @raise_error is True:
+            - raises MatrixCellError if destination is not None,
+            - raises MatrixCellError if source is None;
+        """
+        self.rel_move_xy(from_xy, rel_xy, raise_error, duplicate=True)
+    # end def
+
+
     def rel_move (self, from_rowcol, rel_rowcol,
                                     raise_error=False, duplicate=False):
         """
@@ -235,6 +303,7 @@ class TkGameMatrix:
             - raises MatrixCellError if destination is not None,
             - raises MatrixCellError if source is None;
         """
+        # inits
         row, column = from_rowcol
         rr, rc = rel_rowcol
         self.move(
@@ -246,18 +315,40 @@ class TkGameMatrix:
     # end def
 
 
+    def rel_move_xy (self, from_xy, rel_xy,
+                                    raise_error=False, duplicate=False):
+        """
+            relative move from (x, y) to (x + rel_x, y + rel_y)
+            using rel_xy all adjusted to matrix (row, column)
+            locations;
+            if @raise_error is True:
+            - raises MatrixCellError if destination is not None,
+            - raises MatrixCellError if source is None;
+        """
+        # inits
+        x, y = from_xy
+        rx, ry = rel_xy
+        self.move_xy(from_xy, (x + rx, y + ry), raise_error, duplicate)
+    # end def
+
+
     def resize (self, matrix_data):
         """
             resizes inner matrix (rows, columns) along with
             @matrix_data; this parameter must be at least a list of
             iterables;
         """
-        # inits
-        _data = list(matrix_data)
-        self.rows = len(_data)
-        self.columns = max(0, 0, *map(len, _data))
-        # return results
-        return (self.rows, self.columns)
+        # param controls
+        if matrix_data:
+            # inits
+            self.matrix_data = list(matrix_data)
+            self.rows = len(self.matrix_data)
+            self.columns = max(0, 0, *map(len, self.matrix_data))
+            # return results
+            return (self.rows, self.columns)
+        # end if
+        # no data, no dims
+        return None
     # end def
 
 
@@ -265,6 +356,7 @@ class TkGameMatrix:
         """
             converts an xy = (x, y) position to (row, column) position
         """
+        # inits
         x, y = xy
         return (x//self.cellsize, y//self.cellsize)
     # end def
@@ -280,8 +372,8 @@ class TkGameMatrix:
 
     def set_at_xy (self, xy, object_):
         """
-            sets object at xy = (x, y) converted to matrix (row,
-            column);
+            sets object at xy = (x, y) converted to a common matrix
+            (row, column) location;
         """
         self.data[self.row_column(xy)] = object_
     # end def
