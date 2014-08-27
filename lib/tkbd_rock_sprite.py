@@ -34,12 +34,12 @@ class TkBDRockSprite (S.TkBDFallingSprite):
         sprite représentant un rocher dans la mine
     """
 
-    def __init__ (self, owner, canvas, **kw):
+    def __init__ (self, matrix, canvas, **kw):
         """
             class constructor
         """
         # super class inits
-        super().__init__(owner, canvas, **kw)
+        super().__init__(matrix, canvas, **kw)
         # member inits
     # end def
 

@@ -355,6 +355,30 @@ class TkGameMatrix:
     # end def
 
 
+    def rel_at (self, from_rowcol, rel_rowcol):
+        """
+            retrieves object at relative location, if exists;
+        """
+        # inits
+        row, column = from_rowcol
+        # relative_row, relative_column
+        rr, rc = rel_rowcol
+        # get object
+        return self.at((row + rr, column + rc))
+    # end def
+
+
+    def rel_at_xy (self, from_xy, rel_xy):
+        """
+            retrieves object at a relative (x, y) location, if any;
+        """
+        # inits
+        x, y = from_xy
+        rel_x, rel_y = rel_xy
+        return self.at(self.row_column((x + rel_x, y + rel_y)))
+    # end def
+
+
     def rel_duplicate (self, from_rowcol, rel_rowcol, raise_error=False):
         """
             duplicates object located at from_rowcol to relative
