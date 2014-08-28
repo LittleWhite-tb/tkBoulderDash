@@ -351,8 +351,8 @@ class GamePlay:
         else:
             self.game_paused = True
             self.unbind_events()
+            self.animations.stop(self.scroll_animation_loop)
             self.events.raise_event("Main:Game:Paused")
-            self.animations.stop_all()
             x, y = self.center_xy(self.canvas)
             x = self.canvas.canvasx(x)
             y = self.canvas.canvasy(y)
