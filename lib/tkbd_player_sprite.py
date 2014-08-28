@@ -45,7 +45,7 @@ class TkBDPlayerSprite (S.TkGameSprite):
         "splashed": {
             "loop": False,
             "sequence": True,
-            "delay": 50,
+            "delay": 40,
         },
     }
 
@@ -147,8 +147,15 @@ class TkBDPlayerSprite (S.TkGameSprite):
         """
             méthode virtuelle à réimplémenter dans les classes dérivées
         """
+        # player is dead
         self.canvas.delete(self.canvas_id)
         self.matrix.drop_xy(self.xy)
+        self.canvas.create_text(
+            self.x+3, self.y+3,
+            text="Bobo!",
+            font="sans 32 bold",
+            fill="black",
+        )
         self.canvas.create_text(
             self.x, self.y,
             text="Bobo!",

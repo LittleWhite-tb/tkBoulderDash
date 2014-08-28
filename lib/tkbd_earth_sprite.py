@@ -51,8 +51,6 @@ class TkBDEarthSprite (S.TkGameSprite):
         """
         # on retire le sprite du canevas
         self.canvas.delete(self.canvas_id)
-        # et de la matrice
-        self.matrix.drop_xy(self.xy)
         # on notifie que le joueur a creusé la terre
         self.events.raise_event("Main:Earth:Digged")
     # end def

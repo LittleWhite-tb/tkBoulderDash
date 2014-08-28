@@ -51,8 +51,10 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
         """
             un sprite prioritaire détruit ce sprite
         """
+        # on stoppe les animations en cours
+        self.animations.stop(self.falling_loop)
+        # on enlève le sprite du canevas
         self.canvas.delete(self.canvas_id)
-        #~ self.matrix.drop_xy(self.xy)
         self.events.raise_event(
             "Main:Diamond:Collected",
             sprite=self,

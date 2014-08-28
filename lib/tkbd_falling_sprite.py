@@ -86,8 +86,6 @@ class TkBDFallingSprite (S.TkGameSprite):
         self.need_looping = True
         # param inits
         sprite = c_dict["sprite"]
-        print("sprite", id(sprite), "is player:",
-            sprite is self.owner.player_sprite)
         if sprite:
             if sprite is self.owner.player_sprite:
                 if self.is_falling:
