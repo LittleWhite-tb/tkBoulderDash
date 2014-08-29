@@ -37,9 +37,21 @@ class TkBDPlayerSprite (S.TkGameSprite):
     # class constants
     STATUS = {
         "default": {
-            "loop": False,
-            "sequence": False,
-            "delay": 0,
+            "loop": True,
+            "sequence": True,
+            "delay": 200,
+        },
+
+        "walk_left": {
+            "loop": True,
+            "sequence": True,
+            "delay": 100,
+        },
+
+        "walk_right": {
+            "loop": True,
+            "sequence": True,
+            "delay": 100,
         },
 
         "splashed": {
@@ -79,7 +91,9 @@ class TkBDPlayerSprite (S.TkGameSprite):
         """
             déplace le joueur vers la gauche
         """
+        self.state = "walk_left"
         self.move_sprite(-1, 0, callback=self.filter_collisions)
+        self.animations.run_after(500, self.player_idle)
     # end def
 
 
@@ -87,7 +101,9 @@ class TkBDPlayerSprite (S.TkGameSprite):
         """
             déplace le joueur vers la droite
         """
+        self.state = "walk_right"
         self.move_sprite(+1, 0, callback=self.filter_collisions)
+        self.animations.run_after(500, self.player_idle)
     # end def
 
 
@@ -133,13 +149,21 @@ class TkBDPlayerSprite (S.TkGameSprite):
     # end def
 
 
+    def player_idle (self, *args, **kw):
+        """
+            le joueur revient en position d'attente
+        """
+        # player is idle
+        self.state = "default"
+    # end def
+
+
     def splashed (self, *args, **kw):
         """
             un rocher vient de nous écraser...
         """
         self.events.raise_event("Main:Player:Splashed")
         self.state = "splashed"
-        self.start()
     # end def
 
 
