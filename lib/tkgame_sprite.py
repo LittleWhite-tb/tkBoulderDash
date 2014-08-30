@@ -60,6 +60,7 @@ class TkGameSprite:
         self.animations = AP.get_animation_pool()
         self.image_manager = IM.get_image_manager()
         self.images_dir = kw.get("images_dir") or ""
+        self.__state = None
         self.state = kw.get("state") or "default"
         self.canvas_id = kw.get("cid") or 0
         self.canvas_tags = kw.get("tags") or ""
@@ -306,8 +307,10 @@ class TkGameSprite:
     @state.setter
     def state (self, value):
         if value in self.STATUS:
-            self.__state = str(value)
-            self.state_counter = 0
+            if self.__state != value:
+                self.state_counter = 0
+            # end if
+            self.__state = value
         else:
             raise TkGameSpriteError(
                 "unsupported value '{v}' for 'state' attribute."
