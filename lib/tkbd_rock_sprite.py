@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
 """
     tkBoulderDash - Python3-Tkinter port of 'Boulder Dash' game
 

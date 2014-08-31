@@ -26,10 +26,10 @@
 """
 
 # lib imports
-from . import tkgame_sprite as S
+from . import tkgame_matrix_sprite as S
 
 
-class TkBDEarthSprite (S.TkGameSprite):
+class TkBDEarthSprite (S.TkGameMatrixSprite):
     """
         sprite représentant la terre dans la mine
     """

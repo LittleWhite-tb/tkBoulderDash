@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
 """
     tkBoulderDash - Python3-Tkinter port of 'Boulder Dash' game
 
@@ -26,10 +25,10 @@
 """
 
 # lib imports
-from . import tkgame_sprite as S
+from . import tkgame_matrix_sprite as S
 
 
-class TkBDFallingSprite (S.TkGameSprite):
+class TkBDFallingSprite (S.TkGameMatrixSprite):
     """
         sprite représentant un objet pouvant tomber dans la mine
     """

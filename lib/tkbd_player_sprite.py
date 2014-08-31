@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
 """
     tkBoulderDash - Python3-Tkinter port of 'Boulder Dash' game
 
@@ -26,10 +25,10 @@
 """
 
 # lib imports
-from . import tkgame_sprite as S
+from . import tkgame_matrix_sprite as S
 
 
-class TkBDPlayerSprite (S.TkGameSprite):
+class TkBDPlayerSprite (S.TkGameMatrixSprite):
     """
         sprite représentant le joueur
     """
@@ -92,7 +91,6 @@ class TkBDPlayerSprite (S.TkGameSprite):
             déplace le joueur vers la gauche
         """
         self.state = "walk_left"
-        self.start() # resync frame timer
         self.move_sprite(-1, 0, callback=self.filter_collisions)
         self.animations.run_after(500, self.player_idle)
     # end def
@@ -103,7 +101,6 @@ class TkBDPlayerSprite (S.TkGameSprite):
             déplace le joueur vers la droite
         """
         self.state = "walk_right"
-        self.start() # resync frame timer
         self.move_sprite(+1, 0, callback=self.filter_collisions)
         self.animations.run_after(500, self.player_idle)
     # end def
