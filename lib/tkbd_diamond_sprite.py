@@ -34,6 +34,15 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
         sprite représentant un diamant dans la mine
     """
 
+    # class constants
+    STATUS = {
+        "default": {
+            "loop": True,
+            "sequence": True,
+            "delay": 100,
+        },
+    }
+
 
     def init_sprite (self, **kw):
         """
