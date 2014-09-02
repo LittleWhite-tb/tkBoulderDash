@@ -60,8 +60,7 @@ Software has been:
 
 Any feedback is the welcome:
 
-https://github.com/tarball69/tkBoulderDash/issues (Ctrl+click: open
-in new tab)
+https://github.com/tarball69/tkBoulderDash/issues
 
 
 ## Freefullware
