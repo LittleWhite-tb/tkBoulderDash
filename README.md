@@ -49,6 +49,7 @@ Software has been:
 * Linux:
 
     * TESTED OK under Ubuntu 14.04;
+    * should work fine on any Linux distro;
 
 * MacOS:
 
