@@ -92,70 +92,6 @@ class TkBoulderDash (TK.Frame):
     # end def
 
 
-    def unbind_events (self):
-        """
-            désactiver les événements
-        """
-        self.unbind_all("<Escape>")
-    # end def
-
-
-    def run (self, **kw):
-        """
-            lancement du jeu
-        """
-        # premier écran de jeu
-        self.splash_screen()
-    # end def
-
-
-    def quit_game (self, event=None):
-        """
-            dialogue demande quitter le jeu ?
-        """
-        self.unbind_events()
-        if MB.askyesno(
-                "Question",
-                "Voulez-vous vraiment quitter le jeu ?",
-                parent=self):
-            # on quitte le jeu
-            self.root.destroy()
-        else:
-            self.bind_events()
-        # end if
-    # end def
-
-
-    def clear_all (self, *args, **kw):
-        """
-            tout effacer
-        """
-        self.canvas.delete(TK.ALL)
-        self.canvas.configure(bg="black", scrollregion=(0, 0, 10, 10))
-    # end def
-
-
-    def show_splash (self, fname):
-        """
-            affiche un écran de bienvenue (splash screen)
-        """
-        self.animations.stop_all()
-        self.clear_all()
-        self.photo = TK.PhotoImage(file="images/{}.gif".format(fname))
-        self.canvas.create_image(0, 0, anchor=TK.NW, image=self.photo)
-    # end def
-
-
-    def splash_screen (self, *args):
-        """
-            premier écran de jeu (splash screen)
-        """
-        self.show_splash("splash")
-        self.canvas.bind("<Button-1>", self.game_rules_screen)
-        self.animations.run_after(5000, self.game_rules_screen)
-    # end def
-
-
     def game_rules_screen (self, *args):
         """
             écran règles du jeu
@@ -184,7 +120,7 @@ class TkBoulderDash (TK.Frame):
         # show main menu splash screen
         self.show_splash("main_menu")
         # inits
-        x, y = self.center_xy(self.canvas)
+        x, y = self.game_play.viewport_center_xy()
         _opts = dict(
             anchor=TK.CENTER, font="serif 24 bold", fill="bisque2"
         )
@@ -228,10 +164,35 @@ class TkBoulderDash (TK.Frame):
         if _id:
             _callback = self.menu_id.get(_id.pop())
             if callable(_callback):
-                #~ del self.menu_id
                 _callback()
             # end if
         # end if
+    # end def
+
+
+    def quit_game (self, event=None):
+        """
+            dialogue demande quitter le jeu ?
+        """
+        self.unbind_events()
+        if MB.askyesno(
+                "Question",
+                "Voulez-vous vraiment quitter le jeu ?",
+                parent=self):
+            # on quitte le jeu
+            self.root.destroy()
+        else:
+            self.bind_events()
+        # end if
+    # end def
+
+
+    def run (self, **kw):
+        """
+            lancement du jeu
+        """
+        # premier écran de jeu
+        self.splash_screen()
     # end def
 
 
@@ -243,12 +204,31 @@ class TkBoulderDash (TK.Frame):
     # end def
 
 
-    def center_xy (self, widget):
+    def show_splash (self, fname):
         """
-            retourne le tuple (x, y) du point central d'un widget
-            tkinter donné;
+            affiche un écran de bienvenue (splash screen)
         """
-        return (widget.winfo_reqwidth()/2, widget.winfo_reqheight()/2)
+        self.game_play.clear_canvas()
+        self.photo = TK.PhotoImage(file="images/{}.gif".format(fname))
+        self.canvas.create_image(0, 0, anchor=TK.NW, image=self.photo)
+    # end def
+
+
+    def splash_screen (self, *args):
+        """
+            premier écran de jeu (splash screen)
+        """
+        self.show_splash("splash")
+        self.canvas.bind("<Button-1>", self.game_rules_screen)
+        self.animations.run_after(5000, self.game_rules_screen)
+    # end def
+
+
+    def unbind_events (self):
+        """
+            désactiver les événements
+        """
+        self.unbind_all("<Escape>")
     # end def
 
 # end class TkBoulderDash

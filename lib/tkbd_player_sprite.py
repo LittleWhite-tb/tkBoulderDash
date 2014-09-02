@@ -66,7 +66,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
             this avoids re-declaring __init__ signatures all the time;
         """
         # member inits
-        self.old_xy = (self.x, self.y)
+        pass
     # end def
 
 
@@ -125,8 +125,6 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
                 return False
             # end if
         # end if
-        # backup pour scrolling
-        self.old_xy = (self.x, self.y)
         # mouvement accordé
         return True
     # end def

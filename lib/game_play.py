@@ -60,11 +60,78 @@ class GamePlay:
     # end def
 
 
-    def run (self):
+    def bind_canvas_events (self, *args, **kw):
         """
-            game play inits
+            activation des événements canvas
         """
-        self.draw_level()
+        self.canvas.bind_all("<Escape>", self.on_key_escape)
+        self.canvas.bind_all("<space>", self.pause_game)
+        self.canvas.bind_all("<Key>", self.on_key_pressed)
+        self.canvas.bind("<Button-1>", self.on_mouse_down)
+        self.canvas.bind("<Motion>", self.on_mouse_move)
+        self.canvas.bind("<ButtonRelease-1>", self.on_mouse_up)
+    # end def
+
+
+    def bind_events (self, *args, **kw):
+        """
+            gestionnaire d'événements appli
+        """
+        # connecting people...
+        self.events.connect_dict(
+            {
+                "Main:Earth:Digged": self.earth_digged,
+                "Main:Diamond:Collected": self.diamond_collected,
+                "Main:Player:Splashed": self.player_splashed,
+                "Main:Player:Dead": self.player_dead,
+            }
+        )
+        self.bind_canvas_events()
+    # end def
+
+
+    def center_xy (self, widget):
+        """
+            retourne le tuple (x, y) du point central d'un widget
+            tkinter donné;
+        """
+        return (widget.winfo_reqwidth()/2, widget.winfo_reqheight()/2)
+    # end def
+
+
+    def clear_canvas (self, *args, **kw):
+        """
+            efface le canevas graphique
+        """
+        # stop any scheduled thread
+        self.animations.stop_all()
+        # unbind all events
+        self.unbind_events()
+        # clear canvas
+        self.canvas.delete(TK.ALL)
+        # reset canvas
+        self.canvas.configure(bg="black", scrollregion=(0, 0, 0, 0))
+
+    # end def
+
+
+    def diamond_collected (self, *args, **kw):
+        """
+            gère le cas d'un diamant absorbé par le joueur
+        """
+        # update score
+        self.score_add(200)
+        # update remaining diamonds
+        self.objects.diamonds_count -= 1
+        # update display
+        self.canvas.itemconfigure(
+            self.remaining_id, text=str(self.objects.diamonds_count)
+        )
+        # no more diamonds?
+        if self.objects.diamonds_count < 1:
+            # yeah! winner!
+            self.won_level()
+        # end if
     # end def
 
 
@@ -72,7 +139,6 @@ class GamePlay:
         """
             drawing game play level
         """
-        self.unbind_events()
         self.clear_canvas()
         self.objects.load_data(self.get_level_fpath(self.level))
         for _sprite in self.objects.matrix.objects():
@@ -100,9 +166,29 @@ class GamePlay:
             bg="sienna",
             scrollregion=self.objects.matrix.bbox_xy(),
         )
-        self.scroll_to_player(25.0, autoloop=False)
-        self.bind_events()
-        self.animations.run_after(3000, self.scroll_to_player)
+        self.scroll_to_player(ticks=25.0, autoloop=False)
+        self.animations.run_after(1000, self.bind_events)
+        self.animations.run_after(1000, self.scroll_to_player)
+    # end def
+
+
+    def earth_digged (self, *args, **kw):
+        """
+            gère le cas du joueur qui creuse la terre
+        """
+        # ça vaut 50 points
+        self.score_add(50)
+    # end if
+
+
+    def format_score (self, value=None):
+        """
+            formate l'affichage du score
+        """
+        if value is None:
+            value = self.score
+        # end if
+        return "{:04d}".format(value)
     # end def
 
 
@@ -120,187 +206,31 @@ class GamePlay:
     # end def
 
 
-    def clear_canvas (self, *args, **kw):
+    def next_level (self, *args, **kw):
         """
-            efface le canevas graphique
+            passage au niveau suivant ou retour au menu principal si
+            pas de niveau suivant (après bouquet final quand même);
         """
-        self.canvas.delete(TK.ALL)
-        self.canvas.configure(bg="black", scrollregion=(0, 0, 0, 0))
-    # end def
-
-
-    def format_score (self, value=None):
-        """
-            formate l'affichage du score
-        """
-        if value is None:
-            value = self.score
-        # end if
-        return "{:04d}".format(value)
-    # end def
-
-
-    def score_add (self, value):
-        """
-            ajoute une valeur au score
-        """
-        # param inits
-        value = abs(int(value))
-        # score display animation
-        self.animations.run_after(
-            100,
-            self.score_display_loop,
-            self.score,
-            self.score + value,
-            value//15 or 1,
-        )
-        # update score
-        self.score += value
-    # end def
-
-
-    def score_display_loop (self, start, stop, step):
-        """
-            boucle animation incrémentation du score
-        """
-        self.canvas.itemconfigure(
-            self.score_id, text=self.format_score(start)
-        )
-        if not step:
-            return
-        # end if
-        # update pos
-        start += step
-        if start >= stop:
-            start = stop
-            step = 0
-        # end if
-        self.animations.run_after(
-            50, self.score_display_loop, start, stop, step
-        )
-    # end def
-
-
-    def scroll_to_player (self, ticks=3.0, autoloop=True):
-        """
-            ajuste la zone d'affichage du canvas de sorte que le
-            joueur soit toujours visible;
-        """
-        # animation inits
-        x, y = self.objects.player_sprite.xy
-        oldx, oldy = self.objects.player_sprite.old_xy
-        cx, cy = self.center_xy(self.canvas)
-        cw = self.canvas.winfo_reqwidth()
-        mw, mh = self.objects.matrix.width_height()
-        # update old coordinates
-        self.objects.player_sprite.old_xy = self.objects.player_sprite.xy
-        # run animation loop
-        self.animations.run_after(
-            50,
-            self.scroll_animation_loop,
-            oldx, oldy, x, y, (x - oldx)/ticks, (y - oldy)/ticks,
-            cx, cy, cw, mw, mh
-        )
-        # need to loop again?
-        if autoloop:
-            self.animations.run_after(
-                40 * ticks, self.scroll_to_player, ticks, True
-            )
+        # file does exist?
+        if OP.isfile(self.get_level_fpath(self.level + 1)):
+            # next level
+            self.level += 1
+            # draw new level
+            self.draw_level()
+        # no more levels
+        else:
+            # player won everything!
+            self.won_all()
         # end if
     # end def
 
 
-    def scroll_animation_loop (self, *args):
+    def on_key_escape (self, event=None):
         """
-            boucle d'animation du défilement écran
+            le joueur demande à sortir du jeu
         """
-        # inits
-        startx, starty, stopx, stopy, stepx, stepy, \
-        cx, cy, cw, mw, mh = args
-        self.canvas.xview_moveto((startx - cx)/mw)
-        self.canvas.yview_moveto((starty - cy)/mh)
-        y = self.canvas.canvasy(10)
-        self.canvas.coords(
-            self.remaining_id, self.canvas.canvasx(cw - 10), y
-        )
-        self.canvas.coords(self.score_id, self.canvas.canvasx(cx), y)
-        # no more movement to handle?
-        if not (stepx or stepy):
-            # trap out!
-            return
-        # end if
-        # update coords
-        startx += stepx
-        starty += stepy
-        loopx = bool(
-            (stepx > 0 and startx < stopx) or
-            (stepx < 0 and startx > stopx)
-        )
-        loopy = bool(
-            (stepy > 0 and starty < stopy) or
-            (stepy < 0 and starty > stopy)
-        )
-        # last loop
-        if not (loopx or loopy):
-            startx, starty, stepx, stepy = stopx, stopy, 0, 0
-        # end if
-        self.animations.run_after(
-            40,
-            self.scroll_animation_loop,
-            startx, starty, stopx, stopy, stepx, stepy, cx, cy,
-            cw, mw, mh
-        )
-    # end def
-
-
-    def bind_events (self, *args, **kw):
-        """
-            gestionnaire d'événements appli
-        """
-        # connecting people...
-        self.events.connect_dict(
-            {
-                "Main:Earth:Digged": self.earth_digged,
-                "Main:Diamond:Collected": self.diamond_collected,
-                "Main:Player:Splashed": self.player_splashed,
-                "Main:Player:Dead": self.player_dead,
-            }
-        )
-        self.canvas.bind_all("<Escape>", self.owner.main_menu_screen)
-        self.canvas.bind_all("<space>", self.pause_game)
-        self.canvas.bind_all("<Key>", self.on_key_pressed)
-        self.canvas.bind("<Button-1>", self.on_mouse_down)
-        self.canvas.bind("<Motion>", self.on_mouse_move)
-        self.canvas.bind("<ButtonRelease-1>", self.on_mouse_up)
-    # end def
-
-
-    def unbind_events (self, *args, **kw):
-        """
-            désactivation de tous les événements
-        """
-        # unbind events
-        self.events.disconnect_all(
-            "Main:Earth:Digged",
-            "Main:Diamond:Collected",
-            "Main:Player:Splashed",
-            "Main:Player:Dead",
-        )
-        self.unbind_canvas_events()
-    # end def
-
-
-    def unbind_canvas_events (self, *args, **kw):
-        """
-            désactivation des événements propres au canevas
-        """
-        # canvas events unbind
-        self.canvas.unbind_all("<Escape>")
-        self.canvas.unbind_all("<space>")
-        self.canvas.unbind_all("<Key>")
-        self.canvas.unbind("<Button-1>")
-        self.canvas.unbind("<Motion>")
-        self.canvas.unbind("<ButtonRelease-1>")
+        # go to main menu screen
+        self.owner.main_menu_screen()
     # end def
 
 
@@ -319,7 +249,6 @@ class GamePlay:
         if callable(_method):
             # go!
             _method()
-            self.scroll_to_player()
         # end if
     # end def
 
@@ -327,6 +256,7 @@ class GamePlay:
     def on_mouse_down (self, event=None):
         self.mouse_down = True
         self.canvas.scan_mark(event.x, event.y)
+        self.animations.stop(self.scroll_to_player)
     # end def
 
 
@@ -339,6 +269,7 @@ class GamePlay:
 
     def on_mouse_up (self, event=None):
         self.mouse_down = False
+        self.animations.run_after(1, self.scroll_to_player)
     # end def
 
 
@@ -352,25 +283,24 @@ class GamePlay:
             self.canvas.unbind_all("<space>")
             self.canvas.delete("pause_group")
             self.events.raise_event("Main:Game:Resumed")
-            self.bind_events()
             self.scroll_to_player()
+            self.bind_canvas_events()
         # pause game
         else:
             self.game_paused = True
-            self.unbind_events()
-            self.animations.stop(self.scroll_to_player)
-            self.animations.stop(self.scroll_animation_loop)
+            self.unbind_canvas_events()
+            self.animations.stop(
+                self.scroll_to_player, self.scroll_animation_loop
+            )
             self.events.raise_event("Main:Game:Paused")
-            x, y = self.center_xy(self.canvas)
-            x = self.canvas.canvasx(x)
-            y = self.canvas.canvasy(y)
+            x, y = self.viewport_center_xy()
             _opts = dict(
                 anchor=TK.CENTER,
                 text="PAUSE",
                 font="sans 96 bold",
                 tags="pause_group",
             )
-            self.canvas.create_text(x+4, y+4, fill="#400", **_opts)
+            self.canvas.create_text(x + 4, y + 4, fill="#400", **_opts)
             self.canvas.create_text(x, y, fill="gold", **_opts)
             self.canvas.create_text(
                 x, y + 70,
@@ -384,32 +314,11 @@ class GamePlay:
     # end def
 
 
-    def earth_digged (self, *args, **kw):
+    def player_dead (self, *args, **kw):
         """
-            gère le cas du joueur qui creuse la terre
+            le joueur vient de mourir
         """
-        # ça vaut 50 points
-        self.score_add(50)
-    # end if
-
-
-    def diamond_collected (self, *args, **kw):
-        """
-            gère le cas d'un diamant absorbé par le joueur
-        """
-        # update score
-        self.score_add(200)
-        # update remaining diamonds
-        self.objects.diamonds_count -= 1
-        # update display
-        self.canvas.itemconfigure(
-            self.remaining_id, text=str(self.objects.diamonds_count)
-        )
-        # no more diamonds?
-        if self.objects.diamonds_count < 1:
-            # yeah! winner!
-            self.bravo()
-        # end if
+        self.animations.run_after(3000, self.owner.main_menu_screen)
     # end def
 
 
@@ -422,65 +331,183 @@ class GamePlay:
     # end def
 
 
-    def player_dead (self, *args, **kw):
+    def run (self):
         """
-            le joueur vient de mourir
+            game play inits
         """
-        self.unbind_events()
-        self.animations.run_after(3000, self.owner.main_menu_screen)
+        self.draw_level()
     # end def
 
 
-    def bravo (self):
+    def score_add (self, value):
         """
-            le joueur a réussi ! congrats !
+            ajoute une valeur au score
         """
-        self.unbind_events()
-        self.clear_canvas()
-        x, y = self.center_xy(self.canvas)
-        self.canvas.create_text(
-            x, y - 60,
-            text="Bravo !",
-            font="sans 32 bold",
-            fill="yellow",
+        # param inits
+        value = abs(int(value))
+        # score display animation
+        self.animations.run_after(
+            50,
+            self.score_display_loop,
+            self.score,
+            self.score + value,
+            value//15 or 1,
         )
-        self.canvas.create_text(
-            x, y - 10,
-            text="Vous avez réussi !",
-            font="sans 16 bold",
-            fill="antique white",
-        )
-        # niveau suivant
-        self.animations.run_after(3000, self.next_level)
+        # update score
+        self.score += value
     # end def
 
 
-    def next_level (self, *args, **kw):
+    def score_display_loop (self, start, stop, step):
         """
-            passage au niveau suivant ou retour au menu principal si
-            pas de niveau suivant (après bouquet final quand même);
+            boucle animation incrémentation du score
         """
-        # file does exist?
-        if OP.isfile(self.get_level_fpath(self.level + 1)):
-            # next level
-            self.level += 1
-            # draw new level
-            self.draw_level()
-        # no more levels
-        else:
-            # player won everything!
-            self.bouquet_final()
+        # update display
+        self.canvas.itemconfigure(
+            self.score_id, text=self.format_score(start)
+        )
+        # not finished?
+        if start < stop:
+            # update pos
+            start = min(stop, start + step)
+            # loop again
+            self.animations.run_after(
+                50, self.score_display_loop, start, stop, step
+            )
         # end if
     # end def
 
 
-    def bouquet_final (self):
+    def scroll_animation_loop (self, *args):
+        """
+            boucle d'animation du défilement écran
+        """
+        # inits
+        startx, starty, stopx, stopy, stepx, stepy, \
+        cx, cy, cw, mw, mh = args
+        self.canvas.xview_moveto((startx - cx)/mw)
+        self.canvas.yview_moveto((starty - cy)/mh)
+        # inits
+        y = self.canvas.canvasy(10)
+        # update pos
+        self.canvas.coords(
+            self.remaining_id, self.canvas.canvasx(cw - 10), y
+        )
+        # update pos
+        self.canvas.coords(self.score_id, self.canvas.canvasx(cx), y)
+        # no more moves?
+        if startx == stopx and starty == stopy:
+            # trap out!
+            return
+        # end if
+        # update coords
+        if stepx > 0:
+            startx = min(stopx, startx + stepx)
+        else:
+            startx = max(stopx, startx + stepx)
+        # end if
+        # update coords
+        if stepy > 0:
+            starty = min(stopy, starty + stepy)
+        else:
+            starty = max(stopy, starty + stepy)
+        # end if
+        # loop again
+        self.animations.run_after(
+            25,
+            self.scroll_animation_loop,
+            startx, starty, stopx, stopy, stepx, stepy, cx, cy,
+            cw, mw, mh
+        )
+    # end def
+
+
+    def scroll_to_player (self, ticks=3.0, autoloop=True):
+        """
+            ajuste la zone d'affichage du canvas de sorte que le
+            joueur soit toujours visible;
+        """
+        # animation inits
+        x, y = self.objects.player_sprite.xy
+        x0, y0 = self.viewport_center_xy()
+        cx, cy = self.center_xy(self.canvas)
+        cw = self.canvas.winfo_reqwidth()
+        mw, mh = self.objects.matrix.width_height()
+        # ceci corrige des imprécisions de canevas
+        if abs(x - x0) < 2 or x > mw - cx:
+            x0 = x
+        # end if
+        if abs(y - y0) < 2 or y > mh - cy:
+            y0 = y
+        # end if
+        # run animation loop
+        self.animations.run_after(
+            1,
+            self.scroll_animation_loop,
+            x0, y0, x, y,
+            (x - x0)/ticks, (y - y0)/ticks,
+            cx, cy, cw, mw, mh
+        )
+        # need to loop again?
+        if autoloop:
+            self.animations.run_after(
+                25 * (ticks + 2), self.scroll_to_player, ticks, True
+            )
+        # end if
+    # end def
+
+
+    def unbind_canvas_events (self, *args, **kw):
+        """
+            désactivation des événements propres au canevas
+        """
+        # canvas events unbind
+        self.canvas.unbind_all("<Escape>")
+        self.canvas.unbind_all("<space>")
+        self.canvas.unbind_all("<Key>")
+        self.canvas.unbind("<Button-1>")
+        self.canvas.unbind("<Motion>")
+        self.canvas.unbind("<ButtonRelease-1>")
+    # end def
+
+
+    def unbind_events (self, *args, **kw):
+        """
+            désactivation de tous les événements
+        """
+        # unbind app events
+        self.events.disconnect_all()
+        # unbind canvas events
+        self.unbind_canvas_events()
+    # end def
+
+
+    def viewport_center_xy (self):
+        """
+            retourne le tuple (x, y) du point central du canevas
+            converti en position réelle dans la scrollregion;
+        """
+        return self.viewport_xy(self.center_xy(self.canvas))
+    # end def
+
+
+    def viewport_xy (self, xy):
+        """
+            retourne le tuple (x, y) d'un point de position relative
+            (screenx, screeny) dans le viewport du canevas en
+            position absolue dans la scrollregion du canevas;
+        """
+        # conversion viewport --> scrollregion
+        return (self.canvas.canvasx(xy[0]), self.canvas.canvasy(xy[1]))
+    # end def
+
+
+    def won_all (self):
         """
             le joueur a tout gagné ! super congrats !
         """
-        self.unbind_events()
         self.clear_canvas()
-        x, y = self.center_xy(self.canvas)
+        x, y = self.viewport_center_xy()
         self.canvas.create_text(
             x, y - 60,
             text="Champion !",
@@ -498,12 +525,26 @@ class GamePlay:
     # end def
 
 
-    def center_xy (self, widget):
+    def won_level (self):
         """
-            retourne le tuple (x, y) du point central d'un widget
-            tkinter donné;
+            le joueur a réussi le niveau ! congrats !
         """
-        return (widget.winfo_reqwidth()/2, widget.winfo_reqheight()/2)
+        self.clear_canvas()
+        x, y = self.viewport_center_xy()
+        self.canvas.create_text(
+            x, y - 60,
+            text="Bravo !",
+            font="sans 32 bold",
+            fill="yellow",
+        )
+        self.canvas.create_text(
+            x, y - 10,
+            text="Vous avez réussi !",
+            font="sans 16 bold",
+            fill="antique white",
+        )
+        # niveau suivant
+        self.animations.run_after(3000, self.next_level)
     # end def
 
 # end class GamePlay
