@@ -100,8 +100,9 @@ class GamePlay:
             bg="sienna",
             scrollregion=self.objects.matrix.bbox_xy(),
         )
-        self.scroll_to_player(25.0)
+        self.scroll_to_player(25.0, autoloop=False)
         self.bind_events()
+        self.animations.run_after(3000, self.scroll_to_player)
     # end def
 
 
@@ -180,7 +181,7 @@ class GamePlay:
     # end def
 
 
-    def scroll_to_player (self, ticks=3.0):
+    def scroll_to_player (self, ticks=3.0, autoloop=True):
         """
             ajuste la zone d'affichage du canvas de sorte que le
             joueur soit toujours visible;
@@ -200,6 +201,12 @@ class GamePlay:
             oldx, oldy, x, y, (x - oldx)/ticks, (y - oldy)/ticks,
             cx, cy, cw, mw, mh
         )
+        # need to loop again?
+        if autoloop:
+            self.animations.run_after(
+                40 * ticks, self.scroll_to_player, ticks, True
+            )
+        # end if
     # end def
 
 
@@ -351,6 +358,7 @@ class GamePlay:
         else:
             self.game_paused = True
             self.unbind_events()
+            self.animations.stop(self.scroll_to_player)
             self.animations.stop(self.scroll_animation_loop)
             self.events.raise_event("Main:Game:Paused")
             x, y = self.center_xy(self.canvas)
