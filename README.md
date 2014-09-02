@@ -58,9 +58,10 @@ Software has been:
 
     * NOT YET TESTED;
 
-Any feedback is the welcome.
+Any feedback is the welcome:
 
-https://github.com/tarball69/tkBoulderDash/issues
+https://github.com/tarball69/tkBoulderDash/issues (Ctrl-click: open
+in new tab)
 
 
 ## Freefullware
@@ -95,6 +96,8 @@ That's all, folks!
 This software runs only with **Python3** and **Tkinter** installed
 on your machine.
 
+**No dependencies**, no third-part lib to install on more.
+
 If you have Python3 correctly installed, Tkinter library should also
 be installed **by default** as a Python standard lib.
 
@@ -107,7 +110,7 @@ already installed Python2 version in any way.
 
 You may consider installing Python3 from:
 
-https://www.python.org/downloads/
+https://www.python.org/downloads/ (Ctrl-click: open in new tab)
 
 ### MS-Windows users
 
