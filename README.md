@@ -60,7 +60,7 @@ Software has been:
 
 Any feedback is the welcome:
 
-https://github.com/tarball69/tkBoulderDash/issues (Ctrl-click: open
+https://github.com/tarball69/tkBoulderDash/issues (Ctrl+click: open
 in new tab)
 
 
@@ -110,7 +110,7 @@ already installed Python2 version in any way.
 
 You may consider installing Python3 from:
 
-https://www.python.org/downloads/ (Ctrl-click: open in new tab)
+https://www.python.org/downloads/ (Ctrl+click: open in new tab)
 
 ### MS-Windows users
 
