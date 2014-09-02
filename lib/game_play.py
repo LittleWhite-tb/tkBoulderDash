@@ -30,6 +30,7 @@ import tkinter.constants as TK
 from . import object_mapper as OM
 from . import tkgame_events as EM
 from . import tkgame_animations as AP
+from . import tkgame_fx_rotating_sun as FXRS
 
 
 class GamePlay:
@@ -506,22 +507,32 @@ class GamePlay:
         """
             le joueur a tout gagné ! super congrats !
         """
+        # clean-ups
         self.clear_canvas()
+        # new graphical special effects
+        _fx = FXRS.TkGameFXRotatingSun(self.canvas)
+        _fx.start()
+        # inits
         x, y = self.viewport_center_xy()
+        # texts
         self.canvas.create_text(
-            x, y - 60,
+            x, y - 50,
             text="Champion !",
-            font="sans 32 bold",
-            fill="sky blue",
+            font="bdcartoonshout 48 bold",
+            fill="lemon chiffon",
         )
         self.canvas.create_text(
-            x, y - 10,
+            x, y + 20,
             text="Vous avez tout gagné !",
-            font="sans 16 bold",
-            fill="bisque3",
+            font="sans 24 bold",
+            fill="powder blue",
         )
-        # niveau suivant
-        self.animations.run_after(3000, self.owner.main_menu_screen)
+        # reset level
+        self.level = 1
+        # events binding
+        self.canvas.bind_all("<Escape>", self.on_key_escape)
+        # main menu screen
+        self.animations.run_after(5000, self.owner.main_menu_screen)
     # end def
 
 
@@ -529,18 +540,26 @@ class GamePlay:
         """
             le joueur a réussi le niveau ! congrats !
         """
+        # clean-ups
         self.clear_canvas()
+        # new graphical special effects
+        _fx = FXRS.TkGameFXRotatingSun(
+            self.canvas, bgcolor="saddle brown", fgcolor="sienna"
+        )
+        _fx.start()
+        # inits
         x, y = self.viewport_center_xy()
+        # texts
         self.canvas.create_text(
-            x, y - 60,
+            x, y - 50,
             text="Bravo !",
-            font="sans 32 bold",
+            font="bdcartoonshout 48 bold",
             fill="yellow",
         )
         self.canvas.create_text(
-            x, y - 10,
+            x, y + 20,
             text="Vous avez réussi !",
-            font="sans 16 bold",
+            font="sans 24 bold",
             fill="antique white",
         )
         # niveau suivant
