@@ -46,9 +46,13 @@ class TkBoulderDash (TK.Frame):
     # class constants
     HEAD_FONT = "{} 36".format(FONT1)
     HEAD_COLOR = "indian red"
-    HEAD_SHADOW = "grey20"
-    TEXT_FONT = "{} 24".format(FONT2)
-    TEXT_COLOR = "bisque2"
+    HEAD_SHADOW_COLOR = "grey20"
+    BODY_FONT = "{} 24".format(FONT2)
+    BODY_COLOR = "bisque2"
+    MENU_ITEM_FONT = "{} 32".format(FONT2)
+    MENU_ITEM_COLOR = "bisque2"
+    FOOTER_FONT ="{} 20".format(FONT2)
+    FOOTER_COLOR = "indian red"
 
 
     def __init__ (self, **kw):
@@ -117,6 +121,10 @@ class TkBoulderDash (TK.Frame):
         self.set_heading("Game Rules")
         # body
         self.set_body("""\
+Go and catch all diamonds in the mine to get to the next level.
+Take care of countdown, enemies and other surprises...
+But never forget: it's only a game.
+Have fun!\
         """)
         # footer
         self.set_footer()
@@ -159,8 +167,8 @@ class TkBoulderDash (TK.Frame):
         x, y = self.game_play.viewport_center_xy()
         _opts = dict(
             anchor=TK.CENTER,
-            font=self.TEXT_FONT,
-            fill=self.TEXT_COLOR,
+            font=self.MENU_ITEM_FONT,
+            fill=self.MENU_ITEM_COLOR,
         )
         # CAUTION:
         # canvas.tag_bind() is buggy /!\
@@ -213,11 +221,15 @@ class TkBoulderDash (TK.Frame):
         """
             quit game dialog confirmation;
         """
+        # event unbindings
         self.unbind_events()
+        # dialog confirmation
         if MB.askyesno("Question", "Really quit game?"):
-            # on quitte le jeu
+            # quit game app
             self.root.destroy()
+        # cancelled
         else:
+            # rebind events
             self.bind_events()
         # end if
     # end def
@@ -227,7 +239,7 @@ class TkBoulderDash (TK.Frame):
         """
             running game frame;
         """
-        # premier écran de jeu
+        # first menu screen
         self.splash_screen()
     # end def
 
@@ -248,8 +260,8 @@ class TkBoulderDash (TK.Frame):
             self.cw//2, self.ch//2,
             anchor=TK.CENTER,
             text=body,
-            font=self.TEXT_FONT,
-            fill=self.TEXT_COLOR,
+            font=self.BODY_FONT,
+            fill=self.BODY_COLOR,
             width=self.cw * 0.9,
         )
     # end def
@@ -264,8 +276,8 @@ class TkBoulderDash (TK.Frame):
             self.cw//2, self.ch - 20,
             anchor=TK.S,
             text=footer,
-            font=self.TEXT_FONT,
-            fill=self.HEAD_COLOR,
+            font=self.FOOTER_FONT,
+            fill=self.FOOTER_COLOR,
         )
     # end def
 
@@ -281,7 +293,7 @@ class TkBoulderDash (TK.Frame):
         )
         self.canvas.create_text(
             x + 4, 34,
-            fill=self.HEAD_SHADOW,
+            fill=self.HEAD_SHADOW_COLOR,
             **_title
         )
         self.canvas.create_text(
@@ -310,7 +322,7 @@ class TkBoulderDash (TK.Frame):
 
     def splash_screen (self, *args):
         """
-            splash first menu screen;
+            first menu screen;
         """
         self.show_splash("splash")
         self.canvas.bind("<Button-1>", self.game_rules_screen)
