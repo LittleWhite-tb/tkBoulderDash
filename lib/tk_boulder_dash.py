@@ -59,8 +59,6 @@ class TkBoulderDash (TK.Frame):
         self.canvas.pack()
         # gameplay inits
         self.game_play = GP.GamePlay(self, self.canvas, level=1)
-        # bind events
-        self.bind_events()
     # end def
 
 
@@ -114,15 +112,14 @@ class TkBoulderDash (TK.Frame):
         """
             menu principal
         """
-        # events shut down
-        self.unbind_events()
-        self.canvas.unbind("<Button-1>")
         # show main menu splash screen
         self.show_splash("main_menu")
         # inits
         x, y = self.game_play.viewport_center_xy()
         _opts = dict(
-            anchor=TK.CENTER, font="serif 24 bold", fill="bisque2"
+            anchor=TK.CENTER,
+            font="andreakarime 24",
+            fill="bisque2",
         )
         # CAUTION:
         # canvas.tag_bind() is buggy /!\
@@ -147,7 +144,6 @@ class TkBoulderDash (TK.Frame):
         )
         self.menu_id[_id] = self.quit_game
         # rebind events
-        self.bind_events()
         self.canvas.bind("<Button-1>", self.menu_clicked)
     # end def
 
@@ -208,9 +204,15 @@ class TkBoulderDash (TK.Frame):
         """
             affiche un écran de bienvenue (splash screen)
         """
+        # events shut down
+        self.canvas.unbind("<Button-1>")
         self.game_play.clear_canvas()
+        self.unbind_events()
+        # set background image
         self.photo = TK.PhotoImage(file="images/{}.gif".format(fname))
         self.canvas.create_image(0, 0, anchor=TK.NW, image=self.photo)
+        # rebind events
+        self.bind_events()
     # end def
 
 
