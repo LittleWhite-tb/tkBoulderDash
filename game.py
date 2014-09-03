@@ -31,12 +31,12 @@ from lib import tk_boulder_dash as GAME
 
 class Game (TK.Tk):
     """
-        wrapper du jeu
+        Game app wrapper;
     """
 
     def __init__ (self, **kw):
         """
-            class constructor
+            class constructor;
         """
         # super class inits
         super().__init__()
@@ -54,19 +54,19 @@ class Game (TK.Tk):
 
     def run (self, **kw):
         """
-            lancement du jeu à proprement parler
+            running app;
         """
-        # notification au game frame
+        # delegate to game frame
         self.game.run(**kw)
-        # boucle événementielle principale
+        # tkinter events main loop
         self.mainloop()
     # end def
 
 # end class Game
 
 
-# si script autonome
+# self-launch script
 if __name__ == "__main__":
-    # on lance le jeu
+    # go, buddy!
     Game().run()
 # end if

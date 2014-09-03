@@ -204,12 +204,12 @@ class TkBoulderDash (TK.Frame):
 
     def quit_game (self, event=None):
         """
-            dialogue demande quitter le jeu ?
+            Quit game dialog confirmation;
         """
         self.unbind_events()
         if MB.askyesno(
                 "Question",
-                "Voulez-vous vraiment quitter le jeu ?",
+                "Really quit game?",
                 parent=self):
             # on quitte le jeu
             self.root.destroy()
