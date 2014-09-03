@@ -66,6 +66,9 @@ class TkBoulderDash (TK.Frame):
         self.canvas.pack()
         # gameplay inits
         self.game_play = GP.GamePlay(self, self.canvas, level=1)
+        # other inits
+        self.cw = self.canvas.winfo_reqwidth()
+        self.ch = self.canvas.winfo_reqheight()
     # end def
 
 
@@ -101,7 +104,16 @@ class TkBoulderDash (TK.Frame):
         """
             écran règles du jeu
         """
+        # background image
         self.show_splash("rules")
+        # heading
+        self.set_heading("Game Rules")
+        # body
+        self.set_body("""\
+        """)
+        # footer
+        self.set_footer()
+        # events binding
         self.canvas.bind("<Button-1>", self.main_menu_screen)
     # end def
 
@@ -110,7 +122,20 @@ class TkBoulderDash (TK.Frame):
         """
             écran mappage touches clavier
         """
+        # background image
         self.show_splash("keymap")
+        # heading
+        self.set_heading("Keyboard Mappings")
+        # body
+        self.set_body("""\
+* Use arrow keys to move into four directions.
+* Use spacebar key to pause game.
+* Press escape key to trap out from a game level.
+* Press escape key once more to quit game.
+        """)
+        # footer
+        self.set_footer()
+        # events binding
         self.canvas.bind("<Button-1>", self.main_menu_screen)
     # end def
 
@@ -119,36 +144,16 @@ class TkBoulderDash (TK.Frame):
         """
             menu principal
         """
-        # show main menu splash screen
+        # background image
         self.show_splash("main_menu")
+        # heading
+        self.set_heading("Main Menu")
         # inits
         x, y = self.game_play.viewport_center_xy()
         _opts = dict(
             anchor=TK.CENTER,
             font="{} 32".format(FONT2),
             fill="bisque2",
-        )
-        # titles
-        self.canvas.create_text(
-            x + 4, 24,
-            anchor=TK.N,
-            text="Main Menu",
-            font="{} 36".format(FONT1),
-            fill="grey20",
-        )
-        self.canvas.create_text(
-            x, 20,
-            anchor=TK.N,
-            text="Main Menu",
-            font="{} 36".format(FONT1),
-            fill="indian red",
-        )
-        self.canvas.create_text(
-            x, self.canvas.winfo_reqheight() - 5,
-            anchor=TK.S,
-            text="a Python3-Tkinter port of the famous game",
-            font="{} 20".format(FONT2),
-            fill="indian red",
         )
         # CAUTION:
         # canvas.tag_bind() is buggy /!\
@@ -159,7 +164,7 @@ class TkBoulderDash (TK.Frame):
         self.menu_id[_id] = self.run_game
         # menu item inits
         _id = self.canvas.create_text(
-            x, y - 20, text="Keyboard map", **_opts
+            x, y - 20, text="Keyboard mappings", **_opts
         )
         self.menu_id[_id] = self.keymap_screen
         # menu item inits
@@ -172,6 +177,8 @@ class TkBoulderDash (TK.Frame):
             x, y + 100, text="Quit game", **_opts
         )
         self.menu_id[_id] = self.quit_game
+        # footer
+        self.set_footer("a Python3-Tkinter port of the famous game")
         # rebind events
         self.canvas.bind("<Button-1>", self.menu_clicked)
     # end def
@@ -226,6 +233,58 @@ class TkBoulderDash (TK.Frame):
             lancement du jeu en lui-même
         """
         self.game_play.run()
+    # end def
+
+
+    def set_body (self, body):
+        """
+            affiche le corps de texte d'un écran
+        """
+        self.canvas.create_text(
+            self.cw//2, self.ch//2,
+            anchor=TK.CENTER,
+            text=body,
+            font="{} 24".format(FONT2),
+            fill="bisque2",
+            width=self.cw * 0.9,
+        )
+    # end def
+
+
+    def set_footer (self, footer=None):
+        """
+            affiche le pied de page d'un écran
+        """
+        footer = footer or "Click to continue"
+        self.canvas.create_text(
+            self.cw//2, self.ch - 20,
+            anchor=TK.S,
+            text=footer,
+            font="{} 20".format(FONT2),
+            fill="indian red",
+        )
+    # end def
+
+
+    def set_heading (self, heading):
+        """
+            affiche le titre d'un écran
+        """
+        heading = heading or "Heading"
+        x = self.cw//2
+        _title = dict(
+            anchor=TK.N, text=heading, font="{} 36".format(FONT1)
+        )
+        self.canvas.create_text(
+            x + 4, 34,
+            fill="grey20",
+            **_title
+        )
+        self.canvas.create_text(
+            x, 30,
+            fill="indian red",
+            **_title
+        )
     # end def
 
 
