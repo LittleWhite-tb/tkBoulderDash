@@ -173,7 +173,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         self.canvas.delete(self.canvas_id)
         self.matrix.drop_xy(self.xy)
         self.canvas.create_text(
-            self.x+3, self.y+3,
+            self.x + 3, self.y + 3,
             text="Bobo!",
             font="bdcartoonshout 32 bold",
             fill="black",
