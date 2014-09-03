@@ -150,7 +150,7 @@ class GamePlay:
             10, 10,
             anchor=TK.NE,
             text=str(self.objects.diamonds_count),
-            font="sans 26 bold",
+            font="bdcartoonshout 26 bold",
             fill="bisque2",
         )
         # init player score
@@ -159,7 +159,7 @@ class GamePlay:
             10, 10,
             anchor=TK.N,
             text=self.format_score(),
-            font="sans 26 bold",
+            font="bdcartoonshout 26 bold",
             fill="bisque1",
         )
         # reconfigure canvas
@@ -298,7 +298,7 @@ class GamePlay:
             _opts = dict(
                 anchor=TK.CENTER,
                 text="PAUSE",
-                font="sans 96 bold",
+                font="bdcartoonshout 96 bold",
                 tags="pause_group",
             )
             self.canvas.create_text(x + 4, y + 4, fill="#400", **_opts)
@@ -306,7 +306,7 @@ class GamePlay:
             self.canvas.create_text(
                 x, y + 70,
                 text="Press spacebar to continue",
-                font="sans 20 bold",
+                font="andreakarime 20 bold",
                 fill="pale goldenrod",
                 tags="pause_group",
             )
