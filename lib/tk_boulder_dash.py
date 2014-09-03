@@ -173,21 +173,26 @@ Have fun!""")
         # do *NOT* use it
         self.menu_id = dict()
         # menu item inits
-        _id = self.canvas.create_text(x, y - 90, text="Play", **_opts)
+        _id = self.canvas.create_text(x, y - 100, text="Play", **_opts)
         self.menu_id[_id] = self.run_game
         # menu item inits
         _id = self.canvas.create_text(
-            x, y - 20, text="Keyboard mappings", **_opts
+            x, y - 40, text="Keyboard mappings", **_opts
         )
         self.menu_id[_id] = self.keymap_screen
         # menu item inits
         _id = self.canvas.create_text(
-            x, y + 40, text="Game rules", **_opts
+            x, y + 10, text="Game rules", **_opts
         )
         self.menu_id[_id] = self.game_rules_screen
         # menu item inits
         _id = self.canvas.create_text(
-            x, y + 100, text="Quit game", **_opts
+            x, y + 60, text="Splash screen", **_opts
+        )
+        self.menu_id[_id] = self.splash_screen
+        # menu item inits
+        _id = self.canvas.create_text(
+            x, y + 110, text="Quit game", **_opts
         )
         self.menu_id[_id] = self.quit_game
         # footer
@@ -323,8 +328,8 @@ Have fun!""")
             first menu screen;
         """
         self.show_splash("splash")
-        self.canvas.bind_all("<Key>", self.game_rules_screen)
-        self.canvas.bind("<Button-1>", self.game_rules_screen)
+        self.canvas.bind_all("<Key>", self.main_menu_screen)
+        self.canvas.bind("<Button-1>", self.main_menu_screen)
         self.animations.run_after(7000, self.game_rules_screen)
     # end def
 
