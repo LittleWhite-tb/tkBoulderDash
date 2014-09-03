@@ -125,29 +125,51 @@ class TkBoulderDash (TK.Frame):
         x, y = self.game_play.viewport_center_xy()
         _opts = dict(
             anchor=TK.CENTER,
-            font="{} 24".format(FONT2),
+            font="{} 32".format(FONT2),
             fill="bisque2",
+        )
+        # titles
+        self.canvas.create_text(
+            x + 4, 24,
+            anchor=TK.N,
+            text="Main Menu",
+            font="{} 36".format(FONT1),
+            fill="grey20",
+        )
+        self.canvas.create_text(
+            x, 20,
+            anchor=TK.N,
+            text="Main Menu",
+            font="{} 36".format(FONT1),
+            fill="indian red",
+        )
+        self.canvas.create_text(
+            x, self.canvas.winfo_reqheight() - 5,
+            anchor=TK.S,
+            text="a Python3-Tkinter port of the famous game",
+            font="{} 20".format(FONT2),
+            fill="indian red",
         )
         # CAUTION:
         # canvas.tag_bind() is buggy /!\
         # do *NOT* use it
         self.menu_id = dict()
         # menu item inits
-        _id = self.canvas.create_text(x, y - 90, text="Jouer", **_opts)
+        _id = self.canvas.create_text(x, y - 90, text="Play", **_opts)
         self.menu_id[_id] = self.run_game
         # menu item inits
         _id = self.canvas.create_text(
-            x, y - 20, text="Touches du clavier", **_opts
+            x, y - 20, text="Keyboard map", **_opts
         )
         self.menu_id[_id] = self.keymap_screen
         # menu item inits
         _id = self.canvas.create_text(
-            x, y + 40, text="Règles du jeu", **_opts
+            x, y + 40, text="Game rules", **_opts
         )
         self.menu_id[_id] = self.game_rules_screen
         # menu item inits
         _id = self.canvas.create_text(
-            x, y + 100, text="Quitter", **_opts
+            x, y + 100, text="Quit game", **_opts
         )
         self.menu_id[_id] = self.quit_game
         # rebind events
