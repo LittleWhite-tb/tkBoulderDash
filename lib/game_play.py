@@ -516,6 +516,12 @@ class GamePlay:
         x, y = self.viewport_center_xy()
         # texts
         self.canvas.create_text(
+            x + 4, y - 46,
+            text="Champion !",
+            font="bdcartoonshout 48 bold",
+            fill="grey20",
+        )
+        self.canvas.create_text(
             x, y - 50,
             text="Champion !",
             font="bdcartoonshout 48 bold",
@@ -524,7 +530,7 @@ class GamePlay:
         self.canvas.create_text(
             x, y + 20,
             text="Vous avez tout gagné !",
-            font="sans 24 bold",
+            font="andreakarime 24 bold",
             fill="powder blue",
         )
         # reset level
@@ -551,6 +557,12 @@ class GamePlay:
         x, y = self.viewport_center_xy()
         # texts
         self.canvas.create_text(
+            x + 4, y - 46,
+            text="Bravo !",
+            font="bdcartoonshout 48 bold",
+            fill="grey20",
+        )
+        self.canvas.create_text(
             x, y - 50,
             text="Bravo !",
             font="bdcartoonshout 48 bold",
@@ -559,7 +571,7 @@ class GamePlay:
         self.canvas.create_text(
             x, y + 20,
             text="Vous avez réussi !",
-            font="sans 24 bold",
+            font="andreakarime 24 bold",
             fill="antique white",
         )
         # niveau suivant
