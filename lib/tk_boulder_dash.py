@@ -31,6 +31,13 @@ from . import game_play as GP
 from . import tkgame_animations as AP
 
 
+# app-wide typefont families
+# please, see tkBoulderDash/fonts/README.md
+# for more detail.
+__builtins__["FONT1"] = "bdcartoonshout"
+__builtins__["FONT2"] = "andreakarime"
+
+
 class TkBoulderDash (TK.Frame):
     """
         c'est le game frame principal du jeu Boulder Dash(tm)
@@ -118,7 +125,7 @@ class TkBoulderDash (TK.Frame):
         x, y = self.game_play.viewport_center_xy()
         _opts = dict(
             anchor=TK.CENTER,
-            font="andreakarime 24",
+            font="{} 24".format(FONT2),
             fill="bisque2",
         )
         # CAUTION:

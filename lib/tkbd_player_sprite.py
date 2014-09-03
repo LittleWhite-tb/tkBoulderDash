@@ -175,13 +175,13 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         self.canvas.create_text(
             self.x + 3, self.y + 3,
             text="Bobo!",
-            font="bdcartoonshout 32",
+            font="{} 32".format(FONT1),
             fill="black",
         )
         self.canvas.create_text(
             self.x, self.y,
             text="Bobo!",
-            font="bdcartoonshout 32",
+            font="{} 32".format(FONT1),
             fill="khaki1",
         )
         self.events.raise_event("Main:Player:Dead")

@@ -150,7 +150,7 @@ class GamePlay:
             10, 10,
             anchor=TK.NE,
             text=str(self.objects.diamonds_count),
-            font="bdcartoonshout 26",
+            font="{} 26".format(FONT1),
             fill="bisque2",
         )
         # init player score
@@ -159,7 +159,7 @@ class GamePlay:
             10, 10,
             anchor=TK.N,
             text=self.format_score(),
-            font="bdcartoonshout 26",
+            font="{} 26".format(FONT1),
             fill="bisque1",
         )
         # reconfigure canvas
@@ -298,7 +298,7 @@ class GamePlay:
             _opts = dict(
                 anchor=TK.CENTER,
                 text="PAUSE",
-                font="bdcartoonshout 96",
+                font="{} 96".format(FONT1),
                 tags="pause_group",
             )
             self.canvas.create_text(x + 4, y + 4, fill="#400", **_opts)
@@ -306,7 +306,7 @@ class GamePlay:
             self.canvas.create_text(
                 x, y + 70,
                 text="Press spacebar to continue",
-                font="andreakarime 20",
+                font="{} 20".format(FONT2),
                 fill="pale goldenrod",
                 tags="pause_group",
             )
@@ -518,19 +518,19 @@ class GamePlay:
         self.canvas.create_text(
             x + 4, y - 46,
             text="Champion !",
-            font="bdcartoonshout 48",
+            font="{} 48".format(FONT1),
             fill="grey20",
         )
         self.canvas.create_text(
             x, y - 50,
             text="Champion !",
-            font="bdcartoonshout 48",
+            font="{} 48".format(FONT1),
             fill="lemon chiffon",
         )
         self.canvas.create_text(
             x, y + 20,
             text="Vous avez tout gagné !",
-            font="andreakarime 24",
+            font="{} 24".format(FONT2),
             fill="powder blue",
         )
         # reset level
@@ -559,19 +559,19 @@ class GamePlay:
         self.canvas.create_text(
             x + 4, y - 46,
             text="Bravo !",
-            font="bdcartoonshout 48",
+            font="{} 48".format(FONT1),
             fill="grey20",
         )
         self.canvas.create_text(
             x, y - 50,
             text="Bravo !",
-            font="bdcartoonshout 48",
+            font="{} 48".format(FONT1),
             fill="yellow",
         )
         self.canvas.create_text(
             x, y + 20,
             text="Vous avez réussi !",
-            font="andreakarime 24",
+            font="{} 24".format(FONT2),
             fill="antique white",
         )
         # niveau suivant
