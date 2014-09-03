@@ -31,7 +31,7 @@ from lib import tk_boulder_dash as GAME
 
 class Game (TK.Tk):
     """
-        Game app wrapper;
+        game app wrapper;
     """
 
     def __init__ (self, **kw):

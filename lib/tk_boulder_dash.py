@@ -40,12 +40,20 @@ __builtins__["FONT2"] = "andreakarime"
 
 class TkBoulderDash (TK.Frame):
     """
-        c'est le game frame principal du jeu Boulder Dash(tm)
+        game mainframe class;
     """
+
+    # class constants
+    HEAD_FONT = "{} 36".format(FONT1)
+    HEAD_COLOR = "indian red"
+    HEAD_SHADOW = "grey20"
+    TEXT_FONT = "{} 24".format(FONT2)
+    TEXT_COLOR = "bisque2"
+
 
     def __init__ (self, **kw):
         """
-            class constructor
+            class constructor;
         """
         # super class inits
         super().__init__()
@@ -57,18 +65,17 @@ class TkBoulderDash (TK.Frame):
         # init widgets
         self.canvas = TK.Canvas(
             self,
-            bg="black",
             highlightthickness=0,
             # aspect ratio 16:9 (800x450)
             width=800,
             height=450,
         )
         self.canvas.pack()
-        # gameplay inits
-        self.game_play = GP.GamePlay(self, self.canvas, level=1)
         # other inits
         self.cw = self.canvas.winfo_reqwidth()
         self.ch = self.canvas.winfo_reqheight()
+        # gameplay inits
+        self.game_play = GP.GamePlay(self, self.canvas, level=1)
     # end def
 
 
@@ -94,7 +101,7 @@ class TkBoulderDash (TK.Frame):
 
     def bind_events (self):
         """
-            activer les événements
+            event bindings;
         """
         self.bind_all("<Escape>", self.quit_game)
     # end def
@@ -102,7 +109,7 @@ class TkBoulderDash (TK.Frame):
 
     def game_rules_screen (self, *args):
         """
-            écran règles du jeu
+            game rules menu screen;
         """
         # background image
         self.show_splash("rules")
@@ -120,7 +127,7 @@ class TkBoulderDash (TK.Frame):
 
     def keymap_screen (self, *args):
         """
-            écran mappage touches clavier
+            keyboard mappings menu screen;
         """
         # background image
         self.show_splash("keymap")
@@ -131,7 +138,7 @@ class TkBoulderDash (TK.Frame):
 * Use arrow keys to move into four directions.
 * Use spacebar key to pause game.
 * Press escape key to trap out from a game level.
-* Press escape key once more to quit game.
+* Press escape key once more to quit game.\
         """)
         # footer
         self.set_footer()
@@ -142,7 +149,7 @@ class TkBoulderDash (TK.Frame):
 
     def main_menu_screen (self, *args):
         """
-            menu principal
+            main menu menu screen;
         """
         # background image
         self.show_splash("main_menu")
@@ -152,8 +159,8 @@ class TkBoulderDash (TK.Frame):
         x, y = self.game_play.viewport_center_xy()
         _opts = dict(
             anchor=TK.CENTER,
-            font="{} 32".format(FONT2),
-            fill="bisque2",
+            font=self.TEXT_FONT,
+            fill=self.TEXT_COLOR,
         )
         # CAUTION:
         # canvas.tag_bind() is buggy /!\
@@ -186,8 +193,8 @@ class TkBoulderDash (TK.Frame):
 
     def menu_clicked (self, event):
         """
-            canvas.tag_bind() étant bogué, il nous faut gérer le
-            menu par nous-même;
+            as canvas.tag_bind() has been found buggy, we must
+            manage events by ourselves;
         """
         _collisions = self.canvas.find_overlapping(
             event.x, event.y, event.x, event.y
@@ -204,13 +211,10 @@ class TkBoulderDash (TK.Frame):
 
     def quit_game (self, event=None):
         """
-            Quit game dialog confirmation;
+            quit game dialog confirmation;
         """
         self.unbind_events()
-        if MB.askyesno(
-                "Question",
-                "Really quit game?",
-                parent=self):
+        if MB.askyesno("Question", "Really quit game?"):
             # on quitte le jeu
             self.root.destroy()
         else:
@@ -221,7 +225,7 @@ class TkBoulderDash (TK.Frame):
 
     def run (self, **kw):
         """
-            lancement du jeu
+            running game frame;
         """
         # premier écran de jeu
         self.splash_screen()
@@ -230,7 +234,7 @@ class TkBoulderDash (TK.Frame):
 
     def run_game (self, *args):
         """
-            lancement du jeu en lui-même
+            running current game level;
         """
         self.game_play.run()
     # end def
@@ -238,14 +242,14 @@ class TkBoulderDash (TK.Frame):
 
     def set_body (self, body):
         """
-            affiche le corps de texte d'un écran
+            shows a menu screen body text;
         """
         self.canvas.create_text(
             self.cw//2, self.ch//2,
             anchor=TK.CENTER,
             text=body,
-            font="{} 24".format(FONT2),
-            fill="bisque2",
+            font=self.TEXT_FONT,
+            fill=self.TEXT_COLOR,
             width=self.cw * 0.9,
         )
     # end def
@@ -253,36 +257,36 @@ class TkBoulderDash (TK.Frame):
 
     def set_footer (self, footer=None):
         """
-            affiche le pied de page d'un écran
+            shows a menu screen footer text;
         """
         footer = footer or "Click to continue"
         self.canvas.create_text(
             self.cw//2, self.ch - 20,
             anchor=TK.S,
             text=footer,
-            font="{} 20".format(FONT2),
-            fill="indian red",
+            font=self.TEXT_FONT,
+            fill=self.HEAD_COLOR,
         )
     # end def
 
 
-    def set_heading (self, heading):
+    def set_heading (self, heading=None):
         """
-            affiche le titre d'un écran
+            shows a menu screen heading text;
         """
-        heading = heading or "Heading"
+        heading = heading or "Menu Screen"
         x = self.cw//2
         _title = dict(
-            anchor=TK.N, text=heading, font="{} 36".format(FONT1)
+            anchor=TK.N, text=heading, font=self.HEAD_FONT,
         )
         self.canvas.create_text(
             x + 4, 34,
-            fill="grey20",
+            fill=self.HEAD_SHADOW,
             **_title
         )
         self.canvas.create_text(
             x, 30,
-            fill="indian red",
+            fill=self.HEAD_COLOR,
             **_title
         )
     # end def
@@ -290,7 +294,7 @@ class TkBoulderDash (TK.Frame):
 
     def show_splash (self, fname):
         """
-            affiche un écran de bienvenue (splash screen)
+            shows a menu screen background image (splash picture);
         """
         # events shut down
         self.canvas.unbind("<Button-1>")
@@ -306,7 +310,7 @@ class TkBoulderDash (TK.Frame):
 
     def splash_screen (self, *args):
         """
-            premier écran de jeu (splash screen)
+            splash first menu screen;
         """
         self.show_splash("splash")
         self.canvas.bind("<Button-1>", self.game_rules_screen)
@@ -316,7 +320,7 @@ class TkBoulderDash (TK.Frame):
 
     def unbind_events (self):
         """
-            désactiver les événements
+            event unbindings;
         """
         self.unbind_all("<Escape>")
     # end def
