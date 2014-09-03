@@ -323,8 +323,9 @@ Have fun!""")
             first menu screen;
         """
         self.show_splash("splash")
+        self.canvas.bind_all("<Key>", self.game_rules_screen)
         self.canvas.bind("<Button-1>", self.game_rules_screen)
-        self.animations.run_after(5000, self.game_rules_screen)
+        self.animations.run_after(7000, self.game_rules_screen)
     # end def
 
 
