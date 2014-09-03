@@ -13,7 +13,7 @@ This game is a **freefullware** (see below).
 
 ## Screenshots
 
-![screenshot 1] (images/screenshots/tkBoulderDash-screenshot-001.png)
+![screenshot 1] (images/screenshots/tkboulderdash-screenshot-001.png)
 
 
 ## Copyright
