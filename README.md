@@ -117,6 +117,17 @@ You may consider installing Python3 from:
 
 https://www.python.org/downloads/ (Ctrl+click: open in new tab)
 
+### Additional resources
+
+To get a better look'n'feel, one may install typefont family files
+located in
+[fonts/] (https://github.com/tarball69/tkBoulderDash/tree/master/fonts)
+directory.
+
+Please, refer to
+[fonts/README.md] (https://github.com/tarball69/tkBoulderDash/blob/master/fonts/README.md)
+file for more detail.
+
 ### MS-Windows users
 
 Simply double-click on `game.py` file and play.
