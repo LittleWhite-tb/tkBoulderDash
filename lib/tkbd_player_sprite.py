@@ -160,6 +160,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
             un rocher vient de nous écraser...
         """
         self.events.raise_event("Main:Player:Splashed")
+        self.animations.stop(self.player_idle)
         self.state = "splashed"
     # end def
 
@@ -174,13 +175,13 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         self.canvas.create_text(
             self.x+3, self.y+3,
             text="Bobo!",
-            font="sans 32 bold",
+            font="bdcartoonshout 32 bold",
             fill="black",
         )
         self.canvas.create_text(
             self.x, self.y,
             text="Bobo!",
-            font="sans 32 bold",
+            font="bdcartoonshout 32 bold",
             fill="khaki1",
         )
         self.events.raise_event("Main:Player:Dead")
