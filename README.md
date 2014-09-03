@@ -11,6 +11,11 @@ Software** famous **Boulder Dash(tm)** 1980s retro game.
 This game is a **freefullware** (see below).
 
 
+## Screenshots
+
+![screenshot 1] (images/screenshots/tkBoulderDash-screenshot-001.png)
+
+
 ## Copyright
 
 tkBoulderDash - a Python3/Tkinter port of the famous game.
