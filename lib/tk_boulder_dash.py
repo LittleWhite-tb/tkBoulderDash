@@ -124,8 +124,7 @@ class TkBoulderDash (TK.Frame):
 Go and catch all diamonds in the mine to get to the next level.
 Take care of countdown, enemies and other surprises...
 But never forget: it's only a game.
-Have fun!\
-        """)
+Have fun!""")
         # footer
         self.set_footer()
         # events binding
@@ -146,8 +145,7 @@ Have fun!\
 * Use arrow keys to move into four directions.
 * Use spacebar key to pause game.
 * Press escape key to trap out from a game level.
-* Press escape key once more to quit game.\
-        """)
+* Press escape key once more to quit game.""")
         # footer
         self.set_footer()
         # events binding
@@ -257,7 +255,7 @@ Have fun!\
             shows a menu screen body text;
         """
         self.canvas.create_text(
-            self.cw//2, self.ch//2,
+            self.cw//2, self.ch//2 + 10,
             anchor=TK.CENTER,
             text=body,
             font=self.BODY_FONT,
