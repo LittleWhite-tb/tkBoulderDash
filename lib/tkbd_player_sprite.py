@@ -174,13 +174,13 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         self.matrix.drop_xy(self.xy)
         self.canvas.create_text(
             self.x + 3, self.y + 3,
-            text="Bobo!",
+            text=_("Bobo!"),
             font="{} 32".format(FONT1),
             fill="black",
         )
         self.canvas.create_text(
             self.x, self.y,
-            text="Bobo!",
+            text=_("Bobo!"),
             font="{} 32".format(FONT1),
             fill="khaki1",
         )

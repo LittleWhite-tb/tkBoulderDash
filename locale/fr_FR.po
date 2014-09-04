@@ -1,0 +1,183 @@
+########################################################################
+#
+# File:             fr_FR.po
+#
+# Language:         French (France)
+#
+# Created (by):     2014/09/04 18:13:25 (tarball69)
+#
+# Modified (by):    2014/09/04 18:14:19 (tarball69)
+#
+# Encoding:         UTF-8
+#
+########################################################################
+
+
+msgid ""
+"TkBoulderDash: a Python3-Tkinter port of the "
+"famous Boulder Dash\u2122 game"
+msgstr ""
+"TkBoulderDash: une adaptation Python3-Tkinter "
+"du célèbre jeu Boulder Dash\u2122"
+
+
+msgid ""
+"GAME RULES"
+msgstr ""
+"REGLES DU JEU"
+
+
+msgid ""
+"Go and catch all diamonds in the mine to get to the next level.\n"
+"Take care of countdown, enemies and other surprises...\n"
+"But never forget: it's only a game.\n"
+"Have fun!"
+msgstr ""
+"Emparez-vous de tous les diamants de la mine pour passer au niveau suivant.\n"
+"Prenez garde au compte à rebours, aux ennemis et aux autres surprises...\n"
+"Mais n'oubliez jamais : ce n'est qu'un jeu.\n"
+"Amusez-vous bien !"
+
+
+msgid ""
+"KEYBOARD MAPPINGS"
+msgstr ""
+"TOUCHES DU CLAVIER"
+
+
+msgid ""
+"* Use arrow keys to move into four directions.\n"
+"* Use spacebar key to pause game.\n"
+"* Press escape key to trap out from a game level.\n"
+"* Press escape key once more to quit game."
+msgstr ""
+"* Utilisez les touches fléchées pour vous déplacer dans toutes les directions.\n"
+"* Pressez la barre d'espacement pour mettre le jeu en pause.\n"
+"* Pressez la touche d'échappement pour sortir en cours de partie.\n"
+"* Pressez une seconde fois cette touche pour quitter le jeu."
+
+
+msgid ""
+"MAIN MENU"
+msgstr ""
+"MENU PRINCIPAL"
+
+
+msgid ""
+"Play"
+msgstr ""
+"Jouer"
+
+
+msgid ""
+"Keyboard mappings"
+msgstr ""
+"Touches du clavier"
+
+
+msgid ""
+"Game rules"
+msgstr ""
+"Règles du jeu"
+
+
+msgid ""
+"Splash screen"
+msgstr ""
+"Écran de bienvenue"
+
+
+msgid ""
+"Quit game"
+msgstr ""
+"Quitter"
+
+
+msgid ""
+"a Python3-Tkinter port of the famous Boulder Dash\u2122 game"
+msgstr ""
+"une adaptation Python3-Tkinter du célèbre jeu Boulder Dash\u2122"
+
+
+msgid ""
+"Question"
+msgstr ""
+"Question"
+
+
+msgid ""
+"Really quit game?"
+msgstr ""
+"Quitter le jeu ?"
+
+
+msgid ""
+"Click to continue"
+msgstr ""
+"Cliquez pour continuer"
+
+
+msgid ""
+"MENU SCREEN"
+msgstr ""
+"MENU"
+
+
+msgid ""
+"PAUSE"
+msgstr ""
+"PAUSE"
+
+
+msgid ""
+"Press spacebar to continue"
+msgstr ""
+"Pressez la barre d'espacement pour reprendre"
+
+
+msgid ""
+"Champion!"
+msgstr ""
+"Champion !"
+
+
+msgid ""
+"You won all!"
+msgstr ""
+"Vous avez tout gagné !"
+
+
+msgid ""
+"Great!"
+msgstr ""
+"Bravo !"
+
+
+msgid ""
+"You got it!"
+msgstr ""
+"Vous avez réussi !"
+
+
+msgid ""
+"Bobo!"
+msgstr ""
+"Bobo !"
+
+
+msgid ""
+""
+msgstr ""
+""
+
+
+msgid ""
+""
+msgstr ""
+""
+
+
+msgid ""
+""
+msgstr ""
+""

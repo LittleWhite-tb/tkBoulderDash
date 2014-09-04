@@ -29,7 +29,11 @@ import tkinter as TK
 import tkinter.messagebox as MB
 from . import game_play as GP
 from . import tkgame_animations as AP
+from . import tkgame_i18n as i18n
 
+
+# internationalization support (i18n)
+i18n.install()
 
 # app-wide typefont families
 # please, see tkBoulderDash/fonts/README.md
@@ -64,6 +68,12 @@ class TkBoulderDash (TK.Frame):
         self.configure(**self._only_tk(kw))
         self.root = TK._default_root
         self.root.protocol("WM_DELETE_WINDOW", self.quit_game)
+        self.root.title(
+            _(
+                "TkBoulderDash: a Python3-Tkinter port of the "
+                "famous Boulder Dash\u2122 game"
+            )
+        )
         # member inits
         self.animations = AP.get_animation_pool()
         # init widgets
@@ -118,7 +128,7 @@ class TkBoulderDash (TK.Frame):
         # background image
         self.show_splash("rules")
         # heading
-        self.set_heading("Game Rules")
+        self.set_heading("GAME RULES")
         # body
         self.set_body("""\
 Go and catch all diamonds in the mine to get to the next level.
@@ -139,7 +149,7 @@ Have fun!""")
         # background image
         self.show_splash("keymap")
         # heading
-        self.set_heading("Keyboard Mappings")
+        self.set_heading("KEYBOARD MAPPINGS")
         # body
         self.set_body("""\
 * Use arrow keys to move into four directions.
@@ -160,7 +170,7 @@ Have fun!""")
         # background image
         self.show_splash("main_menu")
         # heading
-        self.set_heading("Main Menu")
+        self.set_heading("MAIN MENU")
         # inits
         x, y = self.game_play.viewport_center_xy()
         _opts = dict(
@@ -173,30 +183,35 @@ Have fun!""")
         # do *NOT* use it
         self.menu_id = dict()
         # menu item inits
-        _id = self.canvas.create_text(x, y - 100, text="Play", **_opts)
+        _id = self.canvas.create_text(
+            x, y - 100, text=_("Play"), **_opts
+        )
         self.menu_id[_id] = self.run_game
         # menu item inits
         _id = self.canvas.create_text(
-            x, y - 40, text="Keyboard mappings", **_opts
+            x, y - 40, text=_("Keyboard mappings"), **_opts
         )
         self.menu_id[_id] = self.keymap_screen
         # menu item inits
         _id = self.canvas.create_text(
-            x, y + 10, text="Game rules", **_opts
+            x, y + 10, text=_("Game rules"), **_opts
         )
         self.menu_id[_id] = self.game_rules_screen
         # menu item inits
         _id = self.canvas.create_text(
-            x, y + 60, text="Splash screen", **_opts
+            x, y + 60, text=_("Splash screen"), **_opts
         )
         self.menu_id[_id] = self.splash_screen
         # menu item inits
         _id = self.canvas.create_text(
-            x, y + 110, text="Quit game", **_opts
+            x, y + 110, text=_("Quit game"), **_opts
         )
         self.menu_id[_id] = self.quit_game
         # footer
-        self.set_footer("a Python3-Tkinter port of the famous game")
+        self.set_footer(
+            "a Python3-Tkinter port of the "
+            "famous Boulder Dash\u2122 game"
+        )
         # rebind events
         self.canvas.bind("<Button-1>", self.menu_clicked)
     # end def
@@ -227,7 +242,7 @@ Have fun!""")
         # event unbindings
         self.unbind_events()
         # dialog confirmation
-        if MB.askyesno("Question", "Really quit game?"):
+        if MB.askyesno(_("Question"), _("Really quit game?")):
             # quit game app
             self.root.destroy()
         # cancelled
@@ -262,7 +277,7 @@ Have fun!""")
         self.canvas.create_text(
             self.cw//2, self.ch//2 + 10,
             anchor=TK.CENTER,
-            text=body,
+            text=_(body),
             font=self.BODY_FONT,
             fill=self.BODY_COLOR,
             width=self.cw * 0.9,
@@ -278,7 +293,7 @@ Have fun!""")
         self.canvas.create_text(
             self.cw//2, self.ch - 20,
             anchor=TK.S,
-            text=footer,
+            text=_(footer),
             font=self.FOOTER_FONT,
             fill=self.FOOTER_COLOR,
         )
@@ -289,10 +304,10 @@ Have fun!""")
         """
             shows a menu screen heading text;
         """
-        heading = heading or "Menu Screen"
+        heading = heading or "MENU SCREEN"
         x = self.cw//2
         _title = dict(
-            anchor=TK.N, text=heading, font=self.HEAD_FONT,
+            anchor=TK.N, text=_(heading), font=self.HEAD_FONT,
         )
         self.canvas.create_text(
             x + 4, 34,

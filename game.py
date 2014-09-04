@@ -40,13 +40,9 @@ class Game (TK.Tk):
         """
         # super class inits
         super().__init__()
-        # inits fenêtre principale
-        self.title(
-            "TkBoulderDash: a Python3-Tkinter port of the "
-            "famous Boulder Dash\u2122 game"
-        )
+        # member inits
+        self.title("Tkinter Game")
         self.resizable(width=False, height=False)
-        # inits game frame
         self.game = GAME.TkBoulderDash(**kw)
         self.game.pack(padx=5, pady=5)
     # end def

@@ -297,7 +297,7 @@ class GamePlay:
             x, y = self.viewport_center_xy()
             _opts = dict(
                 anchor=TK.CENTER,
-                text="PAUSE",
+                text=_("PAUSE"),
                 font="{} 96".format(FONT1),
                 tags="pause_group",
             )
@@ -305,7 +305,7 @@ class GamePlay:
             self.canvas.create_text(x, y, fill="gold", **_opts)
             self.canvas.create_text(
                 x, y + 70,
-                text="Press spacebar to continue",
+                text=_("Press spacebar to continue"),
                 font="{} 20".format(FONT2),
                 fill="pale goldenrod",
                 tags="pause_group",
@@ -517,19 +517,19 @@ class GamePlay:
         # texts
         self.canvas.create_text(
             x + 4, y - 46,
-            text="Champion !",
+            text=_("Champion!"),
             font="{} 48".format(FONT1),
             fill="grey20",
         )
         self.canvas.create_text(
             x, y - 50,
-            text="Champion !",
+            text=_("Champion!"),
             font="{} 48".format(FONT1),
             fill="lemon chiffon",
         )
         self.canvas.create_text(
             x, y + 20,
-            text="Vous avez tout gagné !",
+            text=_("You won all!"),
             font="{} 24".format(FONT2),
             fill="powder blue",
         )
@@ -558,19 +558,19 @@ class GamePlay:
         # texts
         self.canvas.create_text(
             x + 4, y - 46,
-            text="Bravo !",
+            text=_("Great!"),
             font="{} 48".format(FONT1),
             fill="grey20",
         )
         self.canvas.create_text(
             x, y - 50,
-            text="Bravo !",
+            text=_("Great!"),
             font="{} 48".format(FONT1),
             fill="yellow",
         )
         self.canvas.create_text(
             x, y + 20,
-            text="Vous avez réussi !",
+            text=_("You got it!"),
             font="{} 24".format(FONT2),
             fill="antique white",
         )
