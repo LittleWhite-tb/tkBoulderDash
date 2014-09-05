@@ -35,7 +35,7 @@ from . import tkgame_fx_rotating_sun as FXRS
 
 class GamePlay:
     """
-        gestionnaire de partie
+        Here is the gameplay structure;
     """
 
     # class constants
@@ -44,7 +44,7 @@ class GamePlay:
 
     def __init__ (self, owner, canvas, level=1):
         """
-            class constructor
+            class constructor;
         """
         # member inits
         self.owner = owner
@@ -63,7 +63,7 @@ class GamePlay:
 
     def bind_canvas_events (self, *args, **kw):
         """
-            activation des événements canvas
+            canvas event bindings;
         """
         self.canvas.bind_all("<Escape>", self.on_key_escape)
         self.canvas.bind_all("<space>", self.pause_game)
@@ -76,7 +76,7 @@ class GamePlay:
 
     def bind_events (self, *args, **kw):
         """
-            gestionnaire d'événements appli
+            app-wide event bindings;
         """
         # connecting people...
         self.events.connect_dict(
@@ -93,8 +93,7 @@ class GamePlay:
 
     def center_xy (self, widget):
         """
-            retourne le tuple (x, y) du point central d'un widget
-            tkinter donné;
+            returns (x, y) tuple of a tkinter widget central point;
         """
         return (widget.winfo_reqwidth()/2, widget.winfo_reqheight()/2)
     # end def
@@ -102,7 +101,7 @@ class GamePlay:
 
     def clear_canvas (self, *args, **kw):
         """
-            efface le canevas graphique
+            clears canvas and stops unexpected events;
         """
         # stop any scheduled thread
         self.animations.stop_all()
@@ -118,7 +117,7 @@ class GamePlay:
 
     def diamond_collected (self, *args, **kw):
         """
-            gère le cas d'un diamant absorbé par le joueur
+            event handler for diamond catch;
         """
         # update score
         self.score_add(200)
@@ -138,8 +137,9 @@ class GamePlay:
 
     def draw_level (self):
         """
-            drawing game play level
+            drawing game play level;
         """
+        # inits
         self.clear_canvas()
         self.objects.load_data(self.get_level_fpath(self.level))
         for _sprite in self.objects.matrix.objects():
@@ -175,17 +175,18 @@ class GamePlay:
 
     def earth_digged (self, *args, **kw):
         """
-            gère le cas du joueur qui creuse la terre
+            event handler for player digging earth;
         """
-        # ça vaut 50 points
+        # update score with +50 pts
         self.score_add(50)
     # end if
 
 
     def format_score (self, value=None):
         """
-            formate l'affichage du score
+            score display formatting;
         """
+        # param controls
         if value is None:
             value = self.score
         # end if
@@ -195,9 +196,8 @@ class GamePlay:
 
     def get_level_fpath (self, level):
         """
-            retourne le chemin absolu du fichier JSON de données
-            d'un niveau jouable;
-            le paramètre @level est un entier non nul;
+            returns absolute path for a JSON level data file;
+            param @level must be non-null integer;
         """
         return OP.abspath(
             OP.expanduser(
@@ -209,8 +209,8 @@ class GamePlay:
 
     def next_level (self, *args, **kw):
         """
-            passage au niveau suivant ou retour au menu principal si
-            pas de niveau suivant (après bouquet final quand même);
+            looks for a next level JSON data file, if any;
+            shows won_all() splash screen otherwise;
         """
         # file does exist?
         if OP.isfile(self.get_level_fpath(self.level + 1)):
@@ -228,7 +228,7 @@ class GamePlay:
 
     def on_key_escape (self, event=None):
         """
-            le joueur demande à sortir du jeu
+            player asked for exiting;
         """
         # go to main menu screen
         self.owner.main_menu_screen()
@@ -237,7 +237,7 @@ class GamePlay:
 
     def on_key_pressed (self, event=None):
         """
-            gestionnaire appuis touches du clavier
+            generic keypress events demultiplexer;
         """
         # inits
         _method = {
@@ -255,6 +255,9 @@ class GamePlay:
 
 
     def on_mouse_down (self, event=None):
+        """
+            mouse click button down event handler;
+        """
         self.mouse_down = True
         self.canvas.scan_mark(event.x, event.y)
         self.animations.stop(self.scroll_to_player)
@@ -262,6 +265,9 @@ class GamePlay:
 
 
     def on_mouse_move (self, event=None):
+        """
+            mouse move event handler;
+        """
         if self.mouse_down:
             self.canvas.scan_dragto(event.x, event.y)
         # end if
@@ -269,6 +275,9 @@ class GamePlay:
 
 
     def on_mouse_up (self, event=None):
+        """
+            mouse click button release event handler;
+        """
         self.mouse_down = False
         self.animations.run_after(1, self.scroll_to_player)
     # end def
@@ -276,7 +285,7 @@ class GamePlay:
 
     def pause_game (self, *args, **kw):
         """
-             le joueur suspend la partie
+            user asked for a game pause/resume;
         """
         # got to resume?
         if self.game_paused:
@@ -317,7 +326,7 @@ class GamePlay:
 
     def player_dead (self, *args, **kw):
         """
-            le joueur vient de mourir
+            player is now really dead;
         """
         self.animations.run_after(3000, self.owner.main_menu_screen)
     # end def
@@ -325,9 +334,9 @@ class GamePlay:
 
     def player_splashed (self, *args, **kw):
         """
-            le joueur vient de se faire écraser
+            player has been splashed;
         """
-        # on désactive les événements canevas
+        # canvas event unbindings
         self.unbind_canvas_events()
     # end def
 
@@ -342,7 +351,7 @@ class GamePlay:
 
     def score_add (self, value):
         """
-            ajoute une valeur au score
+            adds a new value to score and sets up animation for this;
         """
         # param inits
         value = abs(int(value))
@@ -361,7 +370,7 @@ class GamePlay:
 
     def score_display_loop (self, start, stop, step):
         """
-            boucle animation incrémentation du score
+            animation loop for score updates;
         """
         # update display
         self.canvas.itemconfigure(
@@ -381,7 +390,7 @@ class GamePlay:
 
     def scroll_animation_loop (self, *args):
         """
-            boucle d'animation du défilement écran
+            camera tracking animation loop;
         """
         # inits
         startx, starty, stopx, stopy, stepx, stepy, \
@@ -425,8 +434,7 @@ class GamePlay:
 
     def scroll_to_player (self, ticks=3.0, autoloop=True):
         """
-            ajuste la zone d'affichage du canvas de sorte que le
-            joueur soit toujours visible;
+            asks camera to track to player;
         """
         # animation inits
         x, y = self.objects.player_sprite.xy
@@ -434,7 +442,7 @@ class GamePlay:
         cx, cy = self.center_xy(self.canvas)
         cw = self.canvas.winfo_reqwidth()
         mw, mh = self.objects.matrix.width_height()
-        # ceci corrige des imprécisions de canevas
+        # fixing canvas fuzzy values
         if abs(x - x0) < 2 or x > mw - cx:
             x0 = x
         # end if
@@ -460,7 +468,7 @@ class GamePlay:
 
     def unbind_canvas_events (self, *args, **kw):
         """
-            désactivation des événements propres au canevas
+            canvas event unbindings;
         """
         # canvas events unbind
         self.canvas.unbind_all("<Escape>")
@@ -474,7 +482,7 @@ class GamePlay:
 
     def unbind_events (self, *args, **kw):
         """
-            désactivation de tous les événements
+            app-wide event unbindings;
         """
         # unbind app events
         self.events.disconnect_all()
@@ -485,8 +493,7 @@ class GamePlay:
 
     def viewport_center_xy (self):
         """
-            retourne le tuple (x, y) du point central du canevas
-            converti en position réelle dans la scrollregion;
+            returns (x, y) tuple for canvas' viewport central point;
         """
         return self.viewport_xy(self.center_xy(self.canvas))
     # end def
@@ -494,44 +501,27 @@ class GamePlay:
 
     def viewport_xy (self, xy):
         """
-            retourne le tuple (x, y) d'un point de position relative
-            (screenx, screeny) dans le viewport du canevas en
-            position absolue dans la scrollregion du canevas;
+            returns (x, y) tuple for a canvas viewport point location;
         """
-        # conversion viewport --> scrollregion
+        # viewport --> scrollregion conversion
         return (self.canvas.canvasx(xy[0]), self.canvas.canvasy(xy[1]))
     # end def
 
 
     def won_all (self):
         """
-            le joueur a tout gagné ! super congrats !
+            player won everything! congrats!
         """
         # clean-ups
         self.clear_canvas()
         # new graphical special effects
-        _fx = FXRS.TkGameFXRotatingSun(self.canvas)
-        _fx.start()
-        # inits
-        x, y = self.viewport_center_xy()
+        FXRS.TkGameFXRotatingSun(self.canvas).start()
         # texts
-        self.canvas.create_text(
-            x + 4, y - 46,
-            text=_("Champion!"),
-            font="{} 48".format(FONT1),
-            fill="grey20",
-        )
-        self.canvas.create_text(
-            x, y - 50,
-            text=_("Champion!"),
-            font="{} 48".format(FONT1),
-            fill="lemon chiffon",
-        )
-        self.canvas.create_text(
-            x, y + 20,
-            text=_("You won all!"),
-            font="{} 24".format(FONT2),
-            fill="powder blue",
+        self.won_text(
+            "Champion!",
+            "You won all!",
+            title_color="lemon chiffon",
+            subtitle_color="powder blue"
         )
         # reset level
         self.level = 1
@@ -544,38 +534,50 @@ class GamePlay:
 
     def won_level (self):
         """
-            le joueur a réussi le niveau ! congrats !
+            player won the current level;
         """
         # clean-ups
         self.clear_canvas()
         # new graphical special effects
-        _fx = FXRS.TkGameFXRotatingSun(
+        FXRS.TkGameFXRotatingSun(
             self.canvas, bgcolor="saddle brown", fgcolor="sienna"
+        ).start()
+        # texts
+        self.won_text(
+            "Great!",
+            "You got it!",
+            title_color="yellow",
+            subtitle_color="antique white"
         )
-        _fx.start()
+        # go to next level
+        self.animations.run_after(3000, self.next_level)
+    # end def
+
+
+    def won_text (self, title, subtitle, **kw):
+        """
+            texts for winning screens;
+        """
         # inits
         x, y = self.viewport_center_xy()
+        _opts = dict(text=_(title), font="{} 48".format(FONT1))
         # texts
         self.canvas.create_text(
             x + 4, y - 46,
-            text=_("Great!"),
-            font="{} 48".format(FONT1),
-            fill="grey20",
+            fill=kw.get("title_shadow_color") or "grey20",
+            **_opts
         )
         self.canvas.create_text(
             x, y - 50,
-            text=_("Great!"),
-            font="{} 48".format(FONT1),
-            fill="yellow",
+            fill=kw.get("title_color") or "white",
+            **_opts
         )
         self.canvas.create_text(
             x, y + 20,
-            text=_("You got it!"),
+            text=_(subtitle),
             font="{} 24".format(FONT2),
-            fill="antique white",
+            fill=kw.get("subtitle_color") or "white",
         )
-        # niveau suivant
-        self.animations.run_after(3000, self.next_level)
     # end def
 
 # end class GamePlay

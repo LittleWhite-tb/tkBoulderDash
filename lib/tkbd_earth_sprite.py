@@ -31,7 +31,7 @@ from . import tkgame_matrix_sprite as S
 
 class TkBDEarthSprite (S.TkGameMatrixSprite):
     """
-        sprite représentant la terre dans la mine
+        Earth-block sprite in the mine;
     """
 
     def init_sprite (self, **kw):
@@ -47,11 +47,11 @@ class TkBDEarthSprite (S.TkGameMatrixSprite):
 
     def destroy (self, *args, **kw):
         """
-            un sprite prioritaire détruit ce sprite
+            player has digged earth block;
         """
-        # on retire le sprite du canevas
+        # delete from canvas
         self.canvas.delete(self.canvas_id)
-        # on notifie que le joueur a creusé la terre
+        # events handling
         self.events.raise_event("Main:Earth:Digged")
     # end def
 

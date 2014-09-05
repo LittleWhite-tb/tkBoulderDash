@@ -31,7 +31,7 @@ from . import tkbd_falling_sprite as S
 
 class TkBDDiamondSprite (S.TkBDFallingSprite):
     """
-        sprite représentant un diamant dans la mine
+        Diamond sprite in the mine;
     """
 
     # class constants
@@ -58,12 +58,13 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
 
     def destroy (self, *args, **kw):
         """
-            un sprite prioritaire détruit ce sprite
+            player caught the diamond;
         """
-        # on stoppe les animations en cours
+        # stoppe unwanted loops
         self.animations.stop(self.falling_loop)
-        # on enlève le sprite du canevas
+        # delete from canvas
         self.canvas.delete(self.canvas_id)
+        # events handling
         self.events.raise_event(
             "Main:Diamond:Collected",
             sprite=self,

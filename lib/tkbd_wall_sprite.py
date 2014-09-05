@@ -31,7 +31,7 @@ from . import tkgame_matrix_sprite as S
 
 class TkBDWallSprite (S.TkGameMatrixSprite):
     """
-        sprite représentant le mur de la mine
+        Wall sprite in the mine;
     """
 
     def init_sprite (self, **kw):

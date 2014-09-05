@@ -30,7 +30,7 @@ from . import tkgame_matrix_sprite as S
 
 class TkBDFallingSprite (S.TkGameMatrixSprite):
     """
-        sprite représentant un objet pouvant tomber dans la mine
+        Generic falling sprite in the mine;
     """
 
     def init_sprite (self, **kw):
@@ -48,8 +48,7 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
 
     def fall_down (self):
         """
-            le sprite chute tant qu'il y a du vide sous lui ou
-            écrase le joueur s'il le croise durant sa chute;
+            sprite has been asked to fall down;
         """
         self.animations.run_after(150, self.falling_loop)
     # end def
@@ -57,13 +56,13 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
 
     def falling_loop (self):
         """
-            boucle de gestion de la chute du sprite
+            sprite falling down animation loop;
         """
-        # y a-t-il un sprite tombant au-dessus ?
+        # got something above?
         c_dict = self.look_ahead(0, -1)
         sprite = c_dict["sprite"]
         if sprite and hasattr(sprite, "fall_down"):
-            # fait tomber ce qui le peut
+            # make it fall
             sprite.fall_down()
         # end if
         self.move_sprite(0, +1, callback=self.filter_collisions)
@@ -78,30 +77,29 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
 
     def filter_collisions (self, c_dict):
         """
-            traite les collisions pour accorder ou refuser un
-            déplacement du sprite;
+            allows or denies movement along with collision tests;
         """
-        # init veille chute
+        # inits
         self.need_looping = True
         # param inits
         sprite = c_dict["sprite"]
         if sprite:
             if sprite is self.owner.player_sprite:
                 if self.is_falling:
-                    # on écrase le joueur
+                    # splash the player!
                     sprite.splashed()
                     self.is_falling = False
                 # end if
             else:
-                # la chute s'arrête ici
+                # no more falling down
                 self.need_looping = False
             # end if
-            # mouvement refusé
+            # denied movement
             return False
         # end if
-        # cette fois-ci on tombe
+        # now falling down
         self.is_falling = True
-        # mouvement accordé
+        # allowed movement
         return True
     # end def
 

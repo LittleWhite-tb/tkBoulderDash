@@ -30,7 +30,7 @@ from . import tkbd_falling_sprite as S
 
 class TkBDRockSprite (S.TkBDFallingSprite):
     """
-        sprite représentant un rocher dans la mine
+        Rock sprite in the mine;
     """
 
     def init_sprite (self, **kw):

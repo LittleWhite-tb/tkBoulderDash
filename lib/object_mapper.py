@@ -34,7 +34,7 @@ from . import tkgame_matrix as MX
 
 class ObjectMapper:
     """
-        collectionneur d'objets appartenant à un même niveau de jeu
+        Game level objects mapper;
     """
 
     # class constants
@@ -56,11 +56,11 @@ class ObjectMapper:
 
     def load_data (self, file_path):
         """
-            charge les données du niveau de jeu et crée la collection
+            loads data from game level JSON file;
         """
         # inits
         _fpath = OP.abspath(OP.expanduser(file_path))
-        # présence du fichier data obligatoire /!\
+        # data file *MUST* exist /!\
         with open(_fpath) as file_in:
             _data = json.load(file_in)
         # end with
@@ -71,11 +71,11 @@ class ObjectMapper:
         # default values
         _diamond = "D"
         _player = "P"
-        # on reconstruit les données
+        # rebuild data
         for key, defs in _defs.items():
             # lib imports
             exec("from . import {module}".format(**defs))
-            # update images folder
+            # update images dir
             defs["images_dir"] = OP.abspath(
                 OP.join(self.images_dir, defs["images_dir"])
             )
@@ -118,7 +118,7 @@ class ObjectMapper:
     @property
     def images_dir (self):
         """
-            répertoire d'images des objets gérés
+            root images directory for objects in collection;
         """
         return self.__images_dir
     # end def
