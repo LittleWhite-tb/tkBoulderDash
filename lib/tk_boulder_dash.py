@@ -28,6 +28,7 @@
 import tkinter as TK
 import tkinter.messagebox as MB
 from . import game_play as GP
+from . import tkgame_audio as AU
 from . import tkgame_animations as AP
 from . import tkgame_i18n as i18n
 
@@ -58,6 +59,9 @@ class TkBoulderDash (TK.Frame):
     FOOTER_FONT ="{} 20".format(FONT2)
     FOOTER_COLOR = "indian red"
 
+    GAME_MUSIC = "david-filskov-boulder-dash-trash-mix.mp3"
+    GAME_MUSIC_VOLUME = 0.5
+
 
     def __init__ (self, **kw):
         """
@@ -75,6 +79,7 @@ class TkBoulderDash (TK.Frame):
             )
         )
         # member inits
+        self.music = AU.new_audio_player()
         self.animations = AP.get_animation_pool()
         # init widgets
         self.canvas = TK.Canvas(
@@ -266,6 +271,7 @@ Have fun!""")
         """
             running current game level;
         """
+        self.music.set_volume(self.GAME_MUSIC_VOLUME/2.0)
         self.game_play.run()
     # end def
 
@@ -333,6 +339,8 @@ Have fun!""")
         # set background image
         self.photo = TK.PhotoImage(file="images/{}.gif".format(fname))
         self.canvas.create_image(0, 0, anchor=TK.NW, image=self.photo)
+        # set music volume level
+        self.music.set_volume(self.GAME_MUSIC_VOLUME)
         # rebind events
         self.bind_events()
     # end def
@@ -343,6 +351,7 @@ Have fun!""")
             first menu screen;
         """
         self.show_splash("splash")
+        self.music.play("audio/{}".format(self.GAME_MUSIC))
         self.canvas.bind_all("<Key>", self.main_menu_screen)
         self.canvas.bind("<Button-1>", self.main_menu_screen)
         self.animations.run_after(7000, self.game_rules_screen)
