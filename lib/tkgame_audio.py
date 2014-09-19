@@ -261,4 +261,3 @@ class GstAudioPlayer (BaseAudioPlayer):
     # end def
 
 # end class GstAudioPlayer
-
