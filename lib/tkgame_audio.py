@@ -183,10 +183,39 @@ class WindowsAudioPlayer (BaseAudioPlayer):
 
     def __init__ (self, volume=None):
         """ Class initialiser """
+        global WS
         # super class inits
         super().__init__(volume)
-        # not implemented yet ----------------------------------------------- FIXME
-        raise NotImplementedError
+        # winsound support
+        import winsound as WS
+        self.flags = WS.SND_FILENAME | WS.SND_ASYNC | WS.SND_NODEFAULT
+    # end def
+
+
+    def play (self, uri, volume=None):
+        """
+            plays audio data retrieved from @uri;
+            parameter @volume is *NOT* supported by winsound;
+        """
+        # param inits
+        uri = os.path.abspath(uri)
+        # reset player
+        self.stop()
+        # debugging session
+        tron("playing audio data from URI:", uri)
+        # sound playback
+        WS.PlaySound(uri, self.flags)
+    # end def
+
+
+    def stop (self):
+        """
+            stops playback for eventual pending audio data;
+        """
+        # stop playing audio data
+        WS.PlaySound(None, 0)
+        # debugging session
+        tron("stopped audio playback.")
     # end def
 
 # end class WindowsAudioPlayer

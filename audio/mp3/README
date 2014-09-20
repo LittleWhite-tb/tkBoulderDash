@@ -1,0 +1,4 @@
+converting MP3 --> WAV with GStreamer:
+
+gst-launch filesrc location=file.mp3 ! mad ! audioconvert ! wavenc ! filesink location=file.wav
+
