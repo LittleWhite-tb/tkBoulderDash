@@ -27,7 +27,7 @@ import os
 
 
 # debugging mode
-DEBUG = True
+DEBUG = False
 
 
 # module private member
@@ -246,7 +246,6 @@ class GstAudioPlayer (BaseAudioPlayer):
             plays audio data retrieved from @uri with @volume;
             resets player to avoid strange loops;
         """
-        super().play(uri, volume)
         # param controls
         if ":" not in uri:
             uri = "file://" + os.path.abspath(uri)

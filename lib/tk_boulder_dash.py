@@ -59,7 +59,7 @@ class TkBoulderDash (TK.Frame):
     FOOTER_FONT ="{} 20".format(FONT2)
     FOOTER_COLOR = "indian red"
 
-    GAME_MUSIC = "david-filskov-boulder-dash-trash-mix.mp3"
+    GAME_MUSIC = "david-filskov-boulder-dash-trash-mix.wav"
     GAME_MUSIC_VOLUME = 0.5
 
 
