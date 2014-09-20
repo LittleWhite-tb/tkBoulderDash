@@ -39,8 +39,8 @@ i18n.install()
 # app-wide typefont families
 # please, see tkBoulderDash/fonts/README.md
 # for more detail.
-__builtins__["FONT1"] = "bdcartoonshout"
-__builtins__["FONT2"] = "andreakarime"
+__builtins__["FONT1"] = "{bd cartoon shout}"
+__builtins__["FONT2"] = "{andrea karime}"
 
 
 class TkBoulderDash (TK.Frame):
