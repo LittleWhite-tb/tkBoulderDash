@@ -71,6 +71,7 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         else:
             self.animations.stop(self.falling_loop)
             self.is_falling = False
+            self.touched_down()
         # end if
     # end def
 
@@ -101,6 +102,14 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         self.is_falling = True
         # allowed movement
         return True
+    # end def
+
+
+    def touched_down (self):
+        """
+            hook method to be implemented by subclasses;
+        """
+        pass
     # end def
 
 # end class TkBDFallingSprite

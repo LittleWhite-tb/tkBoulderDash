@@ -44,4 +44,12 @@ class TkBDRockSprite (S.TkBDFallingSprite):
         pass
     # end def
 
+
+    def touched_down (self):
+        """
+            hook method to be implemented by subclasses;
+        """
+        self.events.raise_event("Main:Rock:TouchedDown", sprite=self)
+    # end def
+
 # end class TkBDRockSprite

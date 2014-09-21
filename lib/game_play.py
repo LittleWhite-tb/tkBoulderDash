@@ -29,6 +29,7 @@ import os.path as OP
 import tkinter.constants as TK
 from . import object_mapper as OM
 from . import tkgame_events as EM
+from . import tkgame_audio as AU
 from . import tkgame_animations as AP
 from . import tkgame_fx_rotating_sun as FXRS
 
@@ -51,6 +52,7 @@ class GamePlay:
         self.canvas = canvas
         self.level = level
         self.events = EM.get_event_manager()
+        self.sounds = AU.new_audio_player()
         self.animations = AP.get_animation_pool()
         self.objects = OM.ObjectMapper(
             canvas=self.canvas, images_dir="images/sprites",
@@ -85,6 +87,7 @@ class GamePlay:
                 "Main:Diamond:Collected": self.diamond_collected,
                 "Main:Player:Splashed": self.player_splashed,
                 "Main:Player:Dead": self.player_dead,
+                "Main:Rock:TouchedDown": self.rock_touched_down,
             }
         )
         self.bind_canvas_events()
@@ -119,6 +122,8 @@ class GamePlay:
         """
             event handler for diamond catch;
         """
+        # play sound
+        self.play_sound("player caught diamond")
         # update score
         self.score_add(200)
         # update remaining diamonds
@@ -177,6 +182,8 @@ class GamePlay:
         """
             event handler for player digging earth;
         """
+        # play sound
+        #~ self.play_sound("player digged earth")
         # update score with +50 pts
         self.score_add(50)
     # end if
@@ -324,6 +331,15 @@ class GamePlay:
     # end def
 
 
+    def play_sound (self, sound_name):
+        """
+            plays asynchronous sound;
+        """
+        sound_name = str(sound_name).replace(" ", "-")
+        self.sounds.play("audio/{}.wav".format(sound_name), volume=0.5)
+    # end def
+
+
     def player_dead (self, *args, **kw):
         """
             player is now really dead;
@@ -338,12 +354,23 @@ class GamePlay:
         """
         # canvas event unbindings
         self.unbind_canvas_events()
+        # play sound
+        self.play_sound("player dead")
+    # end def
+
+
+    def rock_touched_down (self, *args, **kw):
+        """
+            event handler for rock touchdown;
+        """
+        # play sound
+        self.play_sound("rock touched down")
     # end def
 
 
     def run (self):
         """
-            game play inits
+            game play inits;
         """
         self.draw_level()
     # end def
@@ -523,12 +550,14 @@ class GamePlay:
             title_color="lemon chiffon",
             subtitle_color="powder blue"
         )
+        # play sound
+        self.play_sound("player won all")
         # reset level
         self.level = 1
         # events binding
         self.canvas.bind_all("<Escape>", self.on_key_escape)
         # main menu screen
-        self.animations.run_after(5000, self.owner.main_menu_screen)
+        self.animations.run_after(3300, self.owner.main_menu_screen)
     # end def
 
 
@@ -549,8 +578,11 @@ class GamePlay:
             title_color="yellow",
             subtitle_color="antique white"
         )
+        # play sound
+        self.owner.music.stop()
+        self.play_sound("player won level")
         # go to next level
-        self.animations.run_after(3000, self.next_level)
+        self.animations.run_after(4000, self.next_level)
     # end def
 
 
