@@ -58,15 +58,17 @@ Software has been:
 * Linux:
 
     * TESTED OK under Ubuntu 14.04;
-    * should work fine on any Linux distro;
+    * should work fine on any recent Linux distro;
+    * best sound with GNOME/GStreamer v1.0;
 
-* MacOS:
-
-    * NOT YET TESTED;
-
-* MS-Windows:
+* MacOS(tm):
 
     * NOT YET TESTED;
+
+* MS-Windows(tm):
+
+    * TESTED OK under MS-Windows(tm) 8;
+    * should work fine on any recent MS-Windows(tm) platform;
 
 Any feedback is the welcome:
 
