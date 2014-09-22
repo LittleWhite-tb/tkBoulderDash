@@ -678,6 +678,12 @@ class GamePlay:
             font="{} 24".format(FONT2),
             fill=kw.get("subtitle_color") or "white",
         )
+        self.canvas.create_text(
+            x, y + 70,
+            text=_("Score: {}").format(self.score),
+            font="{} 24".format(FONT2),
+            fill=kw.get("title_color") or "white",
+        )
     # end def
 
 # end class GamePlay
