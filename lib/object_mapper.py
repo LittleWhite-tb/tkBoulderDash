@@ -50,6 +50,7 @@ class ObjectMapper:
         self.events = EM.get_event_manager()
         self.matrix = MX.TkGameMatrix(cellsize=self.CELLSIZE)
         self.player_sprite = None
+        self.countdown = 0
         self.diamonds_count = 0
     # end def
 
@@ -64,13 +65,14 @@ class ObjectMapper:
         with open(_fpath) as file_in:
             _data = json.load(file_in)
         # end with
-        # inits
-        _defs = _data["defs"]
         # reset members
+        self.countdown = int(_data.get("countdown") or 600)
         self.diamonds_count = 0
         # default values
         _diamond = "D"
         _player = "P"
+        # def inits
+        _defs = _data["defs"]
         # rebuild data
         for key, defs in _defs.items():
             # lib imports

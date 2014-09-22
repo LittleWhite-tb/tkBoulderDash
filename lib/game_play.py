@@ -94,6 +94,19 @@ class GamePlay:
     # end def
 
 
+    def blink_countdown (self, flag=0):
+        """
+            blinks timer display;
+        """
+        self.canvas.itemconfigure(
+            self.countdown_id,
+            text="" if not flag else self.format_time()
+        )
+        flag = not flag
+        self.animations.run_after(250, self.blink_countdown, flag)
+    # end def
+
+
     def center_xy (self, widget):
         """
             returns (x, y) tuple of a tkinter widget central point;
@@ -150,13 +163,14 @@ class GamePlay:
         for _sprite in self.objects.matrix.objects():
             _sprite.start()
         # end for
+        # init options
+        _opts = dict(font="{} 26".format(FONT1), fill="bisque1")
         # init remaining diamonds
         self.remaining_id = self.canvas.create_text(
             10, 10,
-            anchor=TK.NE,
+            anchor=TK.NW,
             text=str(self.objects.diamonds_count),
-            font="{} 26".format(FONT1),
-            fill="bisque2",
+            **_opts
         )
         # init player score
         self.score = 0
@@ -164,8 +178,14 @@ class GamePlay:
             10, 10,
             anchor=TK.N,
             text=self.format_score(),
-            font="{} 26".format(FONT1),
-            fill="bisque1",
+            **_opts
+        )
+        # init countdown
+        self.countdown_id = self.canvas.create_text(
+            10, 10,
+            anchor=TK.NE,
+            text=self.format_time(),
+            **_opts
         )
         # reconfigure canvas
         self.canvas.configure(
@@ -175,6 +195,7 @@ class GamePlay:
         self.scroll_to_player(ticks=25.0, autoloop=False)
         self.animations.run_after(1000, self.bind_events)
         self.animations.run_after(1000, self.scroll_to_player)
+        self.animations.run_after(1000, self.update_countdown)
     # end def
 
 
@@ -198,6 +219,21 @@ class GamePlay:
             value = self.score
         # end if
         return "{:04d}".format(value)
+    # end def
+
+
+    def format_time (self, value=None):
+        """
+            time display formatting;
+        """
+        # param controls
+        if value is None:
+            value = self.objects.countdown
+        # end if
+        return (
+            "{:02d}:{:02d}:{:02d}"
+            .format(value//3600, (value//60) % 60, value % 60)
+        )
     # end def
 
 
@@ -428,10 +464,12 @@ class GamePlay:
         y = self.canvas.canvasy(10)
         # update pos
         self.canvas.coords(
-            self.remaining_id, self.canvas.canvasx(cw - 10), y
+            self.remaining_id, self.canvas.canvasx(10), y
         )
-        # update pos
         self.canvas.coords(self.score_id, self.canvas.canvasx(cx), y)
+        self.canvas.coords(
+            self.countdown_id, self.canvas.canvasx(cw - 10), y
+        )
         # no more moves?
         if startx == stopx and starty == stopy:
             # trap out!
@@ -515,6 +553,36 @@ class GamePlay:
         self.events.disconnect_all()
         # unbind canvas events
         self.unbind_canvas_events()
+    # end def
+
+
+    def update_countdown (self, *args, **kw):
+        """
+            updates timer countdown display;
+        """
+        self.objects.countdown = max(
+            0, min(600, self.objects.countdown - 1)
+        )
+        self.canvas.itemconfigure(
+            self.countdown_id,
+            text=self.format_time()
+        )
+        # hurry up!
+        if self.objects.countdown <= 10:
+            self.canvas.itemconfigure(
+                self.countdown_id, fill="tomato"
+            )
+            self.play_sound("countdown beep")
+            self.animations.run_after(250, self.blink_countdown)
+        # end if
+        # time is out!
+        if not self.objects.countdown:
+            self.animations.stop(self.blink_countdown)
+            self.objects.player_sprite.splashed()
+        # keep on counting down
+        else:
+            self.animations.run_after(1000, self.update_countdown)
+        # end if
     # end def
 
 

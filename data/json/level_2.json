@@ -1,6 +1,8 @@
 {
     "level_name": "digging hard",
 
+    "countdown": 180,
+
     "defs":
     {
         "R":

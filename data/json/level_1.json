@@ -1,6 +1,8 @@
 {
     "level_name": "discovering...",
 
+    "countdown": 120,
+
     "defs":
     {
         "R":
