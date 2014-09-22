@@ -6,7 +6,7 @@ A Python3/Tkinter port of the famous game.
 ## Introduction
 
 **tkBoulderDash** is a simple Python3/Tkinter port of **First Star
-Software** famous **Boulder Dash(tm)** 1980s retro game.
+Software** famous **Boulder Dash&trade;** 1980s retro game.
 
 This game is a **freefullware** (see below).
 
@@ -61,14 +61,14 @@ Software has been:
     * should work fine on any recent Linux distro;
     * best sound with GNOME/GStreamer v1.0;
 
-* MacOS(tm):
+* MacOS&trade;:
 
     * NOT YET TESTED;
 
-* MS-Windows(tm):
+* MS-Windows&trade;:
 
-    * TESTED OK under MS-Windows(tm) 8;
-    * should work fine on any recent MS-Windows(tm) platform;
+    * TESTED OK under MS-Windows&trade; 8;
+    * should work fine on any recent MS-Windows&trade; platform;
 
 Any feedback is the welcome:
 
@@ -134,7 +134,7 @@ Please, refer to
 [fonts/README.md] (https://github.com/tarball69/tkBoulderDash/blob/master/fonts/README.md)
 file for more detail.
 
-### MS-Windows users
+### MS-Windows&trade; users
 
 Simply double-click on `game.py` file and play.
 
