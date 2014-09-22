@@ -23,30 +23,6 @@
   <defs
      id="defs4">
     <filter
-       inkscape:collect="always"
-       id="filter3980">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.9797959"
-         id="feGaussianBlur3982" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       id="filter3988">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.9797959"
-         id="feGaussianBlur3990" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       id="filter3996">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="1.0928203"
-         id="feGaussianBlur3998" />
-    </filter>
-    <filter
        id="filter3918"
        inkscape:label="Invert hue"
        inkscape:menu="Color"
@@ -112,9 +88,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.97625"
-     inkscape:cx="434.31498"
-     inkscape:cy="225"
+     inkscape:zoom="0.97710843"
+     inkscape:cx="415"
+     inkscape:cy="189.75"
      inkscape:document-units="px"
      inkscape:current-layer="layer4"
      showgrid="true"
@@ -145,7 +121,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -219,6 +195,26 @@
      id="layer4"
      inkscape:label="title"
      sodipodi:insensitive="true">
+    <text
+       transform="matrix(1.3228392,0,0,1.3228392,-317.6011,-373.97015)"
+       sodipodi:linespacing="125%"
+       id="text3793"
+       style="font-size:64px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#d3bc5f;fill-opacity:1;stroke:none;font-family:BD Cartoon Shout;-inkscape-font-specification:BD Cartoon Shout"
+       xml:space="preserve"><textPath
+         id="textPath3795"
+         xlink:href="#path4069"><tspan
+   id="tspan3797"
+   style="fill:#d3bc5f;fill-opacity:1">Dash</tspan></textPath></text>
+    <text
+       transform="matrix(1.5521858,0,0,1.5521858,15.018127,-590.76549)"
+       sodipodi:linespacing="125%"
+       id="text3019"
+       style="font-size:64px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#d3bc5f;fill-opacity:1;stroke:none;font-family:BD Cartoon Shout;-inkscape-font-specification:BD Cartoon Shout"
+       xml:space="preserve"><textPath
+         id="textPath3021"
+         xlink:href="#path4067"><tspan
+   id="tspan3023"
+   style="fill:#d3bc5f;fill-opacity:1">Boulder</tspan></textPath></text>
     <text
        xml:space="preserve"
        style="font-size:64px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#de8787;fill-opacity:1;stroke:none;font-family:BD Cartoon Shout;-inkscape-font-specification:BD Cartoon Shout"
