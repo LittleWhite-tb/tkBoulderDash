@@ -85,6 +85,7 @@ class GamePlay:
             {
                 "Main:Earth:Digged": self.earth_digged,
                 "Main:Diamond:Collected": self.diamond_collected,
+                "Main:Player:Moved": self.player_moved,
                 "Main:Player:Splashed": self.player_splashed,
                 "Main:Player:Dead": self.player_dead,
                 "Main:Rock:TouchedDown": self.rock_touched_down,
@@ -339,12 +340,15 @@ class GamePlay:
             self.events.raise_event("Main:Game:Resumed")
             self.scroll_to_player()
             self.bind_canvas_events()
+            self.update_countdown()
         # pause game
         else:
             self.game_paused = True
             self.unbind_canvas_events()
             self.animations.stop(
-                self.scroll_to_player, self.scroll_animation_loop
+                self.scroll_to_player,
+                self.scroll_animation_loop,
+                self.update_countdown,
             )
             self.events.raise_event("Main:Game:Paused")
             x, y = self.viewport_center_xy()
@@ -382,6 +386,16 @@ class GamePlay:
             player is now really dead;
         """
         self.animations.run_after(3000, self.owner.main_menu_screen)
+    # end def
+
+
+    def player_moved (self, *args, **kw):
+        """
+            player has moved, rocks and diamonds may fall down;
+        """
+        for sprite in self.objects.falling_sprites:
+            sprite.fall_down()
+        # end for
     # end def
 
 

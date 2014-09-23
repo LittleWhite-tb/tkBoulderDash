@@ -1,0 +1,7 @@
+
+TODO
+====
+
+    * revoir entièrement la procédure de fall_down() ;
+
+    * le player_sprite se dédouble dans la matrice --> FIXME!

@@ -56,11 +56,10 @@ class TkBDRockSprite (S.TkBDFallingSprite):
         # end if
         # horizontal moves
         _moved = self.move_sprite(
-            c_dict["sx"], 0, callback=self.filter_collisions
+            c_dict["sx"], 0, lambda c: not c["sprite"]
         )
         if _moved:
             self.events.raise_event("Main:Rock:Pushed", sprite=self)
-            self.fall_down()
         # end if
         return _moved
     # end def

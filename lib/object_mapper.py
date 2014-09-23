@@ -50,6 +50,7 @@ class ObjectMapper:
         self.events = EM.get_event_manager()
         self.matrix = MX.TkGameMatrix(cellsize=self.CELLSIZE)
         self.player_sprite = None
+        self.falling_sprites = None
         self.countdown = 0
         self.diamonds_count = 0
     # end def
@@ -68,6 +69,7 @@ class ObjectMapper:
         # reset members
         self.countdown = int(_data.get("countdown") or 600)
         self.diamonds_count = 0
+        self.falling_sprites = list()
         # default values
         _diamond = "D"
         _player = "P"
@@ -106,6 +108,10 @@ class ObjectMapper:
                 _sprite.row_column = (_row, _column)
                 # put sprite into game matrix
                 self.matrix.set_at((_row, _column), _sprite)
+                # feed falling sprites list
+                if hasattr(_sprite, "fall_down"):
+                    self.falling_sprites.append(_sprite)
+                # end if
                 # special cases
                 if _cdata == _diamond:
                     self.diamonds_count += 1

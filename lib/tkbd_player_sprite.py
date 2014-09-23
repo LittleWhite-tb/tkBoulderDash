@@ -139,13 +139,8 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         """
         # super class move_animation
         super().move_animation(c_dict)
-        # something above?
-        c_dict = self.look_ahead(0, -1)
-        sprite = c_dict["sprite"]
-        if hasattr(sprite, "fall_down"):
-            # make it fall
-            sprite.fall_down()
-        # end if
+        # player sprite moved
+        self.events.raise_event("Main:Player:Moved")
     # end def
 
 

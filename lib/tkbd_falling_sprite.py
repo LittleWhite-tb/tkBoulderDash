@@ -50,7 +50,11 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         """
             sprite has been asked to fall down;
         """
-        self.animations.run_after(150, self.falling_loop)
+        # no pending falldown loop?
+        if not self.need_looping:
+            # ok, let's go!
+            self.animations.run_after(150, self.falling_loop)
+        # end if
     # end def
 
 
@@ -58,16 +62,10 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         """
             sprite falling down animation loop;
         """
-        # got something above?
-        c_dict = self.look_ahead(0, -1)
-        sprite = c_dict["sprite"]
-        if hasattr(sprite, "fall_down"):
-            # make it fall
-            sprite.fall_down()
-        # end if
-        _fall = self.move_sprite(0, +1, callback=self.filter_collisions)
+        # evaluate falldown
+        _fallen = self.move_sprite(0, +1, callback=self.filter_collisions)
         if self.need_looping:
-            self.animations.run_after(100, self.falling_loop, _fall)
+            self.animations.run_after(100, self.falling_loop, _fallen)
         else:
             self.animations.stop(self.falling_loop)
             self.is_falling = False
@@ -93,6 +91,10 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
                     sprite.splashed()
                     self.is_falling = False
                 # end if
+            # need to roll aside?
+            elif isinstance(sprite, __class__):
+                # depends on whatever is around
+                self.need_looping = self.may_roll_over()
             else:
                 # no more falling down
                 self.need_looping = False
@@ -104,6 +106,29 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         self.is_falling = True
         # allowed movement
         return True
+    # end def
+
+
+    def may_roll_over (self):
+        """
+            determines if sprite may roll aside over one another;
+        """
+        # loop on directions (left/right)
+        for sx in (-1, +1):
+            _roll = not(
+                self.look_ahead(sx, 0)["sprite"] or
+                self.look_ahead(sx, +1)["sprite"]
+            )
+            # may roll over?
+            if _roll:
+                # move sprite
+                self.move_sprite(sx, 0, lambda c: not c["sprite"])
+                # keep on falling
+                return True
+            # end if
+        # end for
+        # stop falling
+        return False
     # end def
 
 
