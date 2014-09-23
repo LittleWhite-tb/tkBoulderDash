@@ -54,24 +54,26 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
     # end def
 
 
-    def falling_loop (self):
+    def falling_loop (self, has_fallen=False):
         """
             sprite falling down animation loop;
         """
         # got something above?
         c_dict = self.look_ahead(0, -1)
         sprite = c_dict["sprite"]
-        if sprite and hasattr(sprite, "fall_down"):
+        if hasattr(sprite, "fall_down"):
             # make it fall
             sprite.fall_down()
         # end if
-        self.move_sprite(0, +1, callback=self.filter_collisions)
+        _fall = self.move_sprite(0, +1, callback=self.filter_collisions)
         if self.need_looping:
-            self.animations.run_after(100, self.falling_loop)
+            self.animations.run_after(100, self.falling_loop, _fall)
         else:
             self.animations.stop(self.falling_loop)
             self.is_falling = False
-            self.touched_down()
+            if has_fallen:
+                self.touched_down()
+            # end if
         # end if
     # end def
 

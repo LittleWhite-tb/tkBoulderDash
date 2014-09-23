@@ -41,7 +41,28 @@ class TkBDRockSprite (S.TkBDFallingSprite):
         # super class inits
         super().init_sprite(**kw)
         # member inits
-        pass
+        self.is_movable = True
+    # end def
+
+
+    def has_moved (self, c_dict):
+        """
+            determines if the rock can be pushed in the given
+            direction, provided it is an horizontal one;
+        """
+        # no vertical pushes admitted here
+        if c_dict["sy"]:
+            return False
+        # end if
+        # horizontal moves
+        _moved = self.move_sprite(
+            c_dict["sx"], 0, callback=self.filter_collisions
+        )
+        if _moved:
+            self.events.raise_event("Main:Rock:Pushed", sprite=self)
+            self.fall_down()
+        # end if
+        return _moved
     # end def
 
 

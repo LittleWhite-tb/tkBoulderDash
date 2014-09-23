@@ -88,6 +88,7 @@ class GamePlay:
                 "Main:Player:Splashed": self.player_splashed,
                 "Main:Player:Dead": self.player_dead,
                 "Main:Rock:TouchedDown": self.rock_touched_down,
+                "Main:Rock:Pushed": self.rock_pushed_aside,
             }
         )
         self.bind_canvas_events()
@@ -204,7 +205,7 @@ class GamePlay:
             event handler for player digging earth;
         """
         # play sound
-        #~ self.play_sound("player digged earth")
+        self.play_sound("player digged earth")
         # update score with +50 pts
         self.score_add(50)
     # end if
@@ -367,12 +368,12 @@ class GamePlay:
     # end def
 
 
-    def play_sound (self, sound_name):
+    def play_sound (self, sound_name, volume=0.5):
         """
             plays asynchronous sound;
         """
         sound_name = str(sound_name).replace(" ", "-")
-        self.sounds.play("audio/{}.wav".format(sound_name), volume=0.5)
+        self.sounds.play("audio/{}.wav".format(sound_name), volume)
     # end def
 
 
@@ -401,6 +402,15 @@ class GamePlay:
         """
         # play sound
         self.play_sound("rock touched down")
+    # end def
+
+
+    def rock_pushed_aside (self, *args, **kw):
+        """
+            event handler for rock pushes;
+        """
+        # play sound
+        self.play_sound("rock pushed aside")
     # end def
 
 

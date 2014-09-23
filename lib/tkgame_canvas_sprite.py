@@ -230,7 +230,11 @@ class TkGameCanvasSprite:
         if callback(c_dict):
             # move sprite
             self.move_animation(c_dict)
+            # confirm sprite has moved
+            return True
         # end if
+        # no moves
+        return False
     # end def
 
 

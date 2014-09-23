@@ -119,6 +119,10 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
             if sprite.is_overable:
                 # run over it!
                 sprite.destroy()
+            # is pushable?
+            elif sprite.is_movable:
+                # player may move only if sprite has moved
+                return sprite.has_moved(c_dict)
             else:
                 # denied movement
                 return False
@@ -138,7 +142,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         # something above?
         c_dict = self.look_ahead(0, -1)
         sprite = c_dict["sprite"]
-        if sprite and hasattr(sprite, "fall_down"):
+        if hasattr(sprite, "fall_down"):
             # make it fall
             sprite.fall_down()
         # end if
