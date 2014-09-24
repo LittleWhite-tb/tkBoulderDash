@@ -2,6 +2,11 @@
 TODO
 ====
 
-    * revoir entièrement la procédure de fall_down() ;
+    * ajouter les rochers magiques qui, lorsqu'ils tombent sur d'autres 
+      falling_sprites se transforment en diamants;
 
-    * le player_sprite se dédouble dans la matrice --> FIXME!
+    * ajouter les fantômes de la mine qui courent après le player_sprite;
+
+    * ajouter le mine-worm, le ver géant des mines qui engloutit les diamants;
+      on peut le vaincre et récupérer les diamants en lui faisant tomber un
+      rocher dessus;
