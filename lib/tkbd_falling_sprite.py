@@ -43,6 +43,7 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         self.is_movable = False
         self.is_falling = False
         self.need_looping = False
+        self.locked = False
     # end def
 
 
@@ -50,8 +51,8 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         """
             sprite has been asked to fall down;
         """
-        # no pending falldown loop?
-        if not self.need_looping:
+        # no locked sprite nor pending falldown loop?
+        if not (self.locked or self.need_looping):
             # ok, let's go!
             self.animations.run_after(150, self.falling_loop)
         # end if
@@ -63,8 +64,8 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
             sprite falling down animation loop;
         """
         # evaluate falldown
-        _fallen = self.move_sprite(0, +1, callback=self.filter_collisions)
-        if self.need_looping:
+        _fallen = self.move_sprite(0, +1, callback=self.falling_collisions)
+        if self.need_looping and not self.locked:
             self.animations.run_after(100, self.falling_loop, _fallen)
         else:
             self.animations.stop(self.falling_loop)
@@ -76,7 +77,7 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
     # end def
 
 
-    def filter_collisions (self, c_dict):
+    def falling_collisions (self, c_dict):
         """
             allows or denies movement along with collision tests;
         """
@@ -120,7 +121,7 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
                 self.look_ahead(sx, +1)["sprite"]
             )
             # may roll over?
-            if _roll:
+            if _roll and not self.locked:
                 # move sprite
                 self.move_sprite(sx, 0, lambda c: not c["sprite"])
                 # keep on falling

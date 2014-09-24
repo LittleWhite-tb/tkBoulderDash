@@ -51,6 +51,8 @@ class TkBDEarthSprite (S.TkGameMatrixSprite):
         """
         # delete from canvas
         self.canvas.delete(self.canvas_id)
+        # delete from matrix
+        self.matrix.drop_xy(self.xy)
         # events handling
         self.events.raise_event("Main:Earth:Digged")
     # end def

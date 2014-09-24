@@ -133,12 +133,14 @@ class GamePlay:
     # end def
 
 
-    def diamond_collected (self, *args, **kw):
+    def diamond_collected (self, sprite, *args, **kw):
         """
             event handler for diamond catch;
         """
         # play sound
         self.play_sound("player caught diamond")
+        # drop diamond from managed list
+        self.objects.falling_sprites.remove(sprite)
         # update score
         self.score_add(200)
         # update remaining diamonds
