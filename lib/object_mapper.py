@@ -71,25 +71,34 @@ class ObjectMapper:
         self.diamonds_count = 0
         self.falling_sprites = list()
         # default values
-        _diamond = "D"
+        _empty = " "
         _player = "P"
+        _diamonds = set()
         # def inits
         _defs = _data["defs"]
         # rebuild data
         for key, defs in _defs.items():
-            # lib imports
-            exec("from . import {module}".format(**defs))
-            # update images dir
-            defs["images_dir"] = OP.abspath(
-                OP.join(self.images_dir, defs["images_dir"])
-            )
+            # update role (mandatory)
             defs["role"] = str(defs["role"]).lower()
             if "diamond" in defs["role"]:
-                # here is the diamond char
-                _diamond = key
+                # add diamond char
+                _diamonds.add(key)
             elif "player" in defs["role"]:
-                # here is the player char
+                # player char
                 _player = key
+            elif "empty" in defs["role"]:
+                # empty space in matrix
+                _empty = key
+            # end if
+            # lib imports (optional)
+            if defs.get("module"):
+                exec("from . import {module}".format(**defs))
+            # end if
+            # update images dir (optional)
+            if defs.get("images_dir"):
+                defs["images_dir"] = OP.abspath(
+                    OP.join(self.images_dir, defs["images_dir"])
+                )
             # end if
         # end for
         # init game matrix
@@ -97,6 +106,10 @@ class ObjectMapper:
         self.matrix.defs = _defs
         for _row, _rdata in enumerate(_data["matrix"]):
             for _column, _cdata in enumerate(_rdata):
+                # trap over empty spaces
+                if _cdata == _empty:
+                    continue
+                # end if
                 # _cdata *MUST* be defined in defs /!\
                 _attrs = _defs[_cdata]
                 # create sprite
@@ -113,7 +126,7 @@ class ObjectMapper:
                     self.falling_sprites.append(_sprite)
                 # end if
                 # special cases
-                if _cdata == _diamond:
+                if _cdata in _diamonds:
                     self.diamonds_count += 1
                 elif _cdata == _player:
                     self.player_sprite = _sprite

@@ -123,6 +123,7 @@ class TkBoulderDash (TK.Frame):
             event bindings;
         """
         self.bind_all("<Escape>", self.quit_game)
+        self.bind_all("<Return>", self.run_game)
     # end def
 
 
@@ -272,6 +273,7 @@ Have fun!""")
             running current game level;
         """
         self.music.set_volume(self.GAME_MUSIC_VOLUME/2.0)
+        self.unbind_events()
         self.game_play.run()
     # end def
 
@@ -363,6 +365,7 @@ Have fun!""")
             event unbindings;
         """
         self.unbind_all("<Escape>")
+        self.unbind_all("<Return>")
     # end def
 
 # end class TkBoulderDash

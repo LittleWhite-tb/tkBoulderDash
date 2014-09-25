@@ -60,6 +60,7 @@ class GamePlay:
         self.mouse_down = False
         self.game_paused = False
         self.score = 0
+        #~ self.level = 2 # debugging
     # end def
 
 
@@ -90,6 +91,8 @@ class GamePlay:
                 "Main:Player:Dead": self.player_dead,
                 "Main:Rock:TouchedDown": self.rock_touched_down,
                 "Main:Rock:Pushed": self.rock_pushed_aside,
+                "Main:RockDiamond:Changing": self.rockdiamond_changing,
+                "Main:RockDiamond:Changed": self.rockdiamond_changed,
             }
         )
         self.bind_canvas_events()
@@ -146,9 +149,7 @@ class GamePlay:
         # update remaining diamonds
         self.objects.diamonds_count -= 1
         # update display
-        self.canvas.itemconfigure(
-            self.remaining_id, text=str(self.objects.diamonds_count)
-        )
+        self.update_diamonds_count()
         # no more diamonds?
         if self.objects.diamonds_count < 1:
             # yeah! winner!
@@ -395,9 +396,8 @@ class GamePlay:
         """
             player has moved, rocks and diamonds may fall down;
         """
-        for sprite in self.objects.falling_sprites:
-            sprite.fall_down()
-        # end for
+        # update general falldown procedure
+        self.update_falldown()
     # end def
 
 
@@ -418,6 +418,26 @@ class GamePlay:
         """
         # play sound
         self.play_sound("rock touched down")
+        # update general falldown procedure
+        self.update_falldown()
+    # end def
+
+
+    def rockdiamond_changed (self, sprite, *args, **kw):
+        """
+            event handler for rockdiamond end of transformation;
+        """
+        # add some score
+        self.score_add(100)
+    # end def
+
+
+    def rockdiamond_changing (self, sprite, *args, **kw):
+        """
+            event handler for rockdiamond transformation;
+        """
+        # play sound
+        self.play_sound("rockdiamond changing")
     # end def
 
 
@@ -609,6 +629,27 @@ class GamePlay:
         else:
             self.animations.run_after(1000, self.update_countdown)
         # end if
+    # end def
+
+
+    def update_diamonds_count (self, *args, **kw):
+        """
+            updates diamond count display;
+        """
+        # update display
+        self.canvas.itemconfigure(
+            self.remaining_id, text=str(self.objects.diamonds_count)
+        )
+    # end def
+
+
+    def update_falldown (self, *args, **kw):
+        """
+            updates falling down procedure;
+        """
+        for sprite in self.objects.falling_sprites:
+            sprite.fall_down()
+        # end for
     # end def
 
 
