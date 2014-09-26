@@ -2,11 +2,11 @@
 TODO
 ====
 
-    * ajouter les rochers magiques qui, lorsqu'ils tombent sur d'autres 
-      falling_sprites se transforment en diamants;
+    * chiader beaucoup plus les niveaux 1 et 2 (priorité 1);
 
-    * ajouter les fantômes de la mine qui courent après le player_sprite;
+    * ajouter les fantômes de la mine qui courent après le
+    player_sprite;
 
-    * ajouter le mine-worm, le ver géant des mines qui engloutit les diamants;
-      on peut le vaincre et récupérer les diamants en lui faisant tomber un
-      rocher dessus;
+    * ajouter le mine-worm, le ver géant des mines qui engloutit les
+    diamants; on peut le vaincre et récupérer les diamants en lui
+    faisant tomber un rocher dessus;

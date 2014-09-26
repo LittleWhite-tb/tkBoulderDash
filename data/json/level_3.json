@@ -1,7 +1,7 @@
 {
     "level_name": "the pool",
 
-    "countdown": 300,
+    "countdown": 210,
 
     "defs":
     {
@@ -78,23 +78,23 @@
     "matrix":
     [
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "X...XXXM.MRM.*XX...*........*..XX.......*.X...............*X",
+        "X...XXXM.MRM.*XX...*........*..XX........*XWWWX...........*X",
         "X.X......*RRXXXX.XXXXXXXXXXXXX.XXRXXXXXXXXXXXXXXXX.XXXXXX.XX",
         "X.XXXX.R*MRXX....*.....*....XX.XX.XXX.R...XRM..X*X...*.*X.XX",
         "X....XXXX.XXX.XXXXXXXXXXXXX.XX.X..X....X....*X...XXXXXXXX..X",
         "X.XX........X.*...XWWWWWWX..XX......XXXXXXXXRXXXXX...*.....X",
-        "X.XXXXXXXXX.XXXXX.XWWWWWWX.XXX.XXXXXX...XWWX*..X.X.XXXXXXX.X",
+        "X.XXXXXXXXX.XXXXX.XWWWWWWX.XXX.XXXXXXXXXXWWX*..X.X.XXXXXXX.X",
         "X*........X.*.....XXXXXXXX.XX.........M XXXX.X.X.X.XRR RXX.X",
         "XXXMXX.XX...X.XXXXXRRXXX...*X.XXXXXXX.RXX.X..X.X.X.XRRRRX..X",
         "X...XX.XXXRRX.........*X.XXXX.X*XWWWX...X...XX.X.X.XRRRMX.XX",
-        "X.X.XX..RXXXX.XXXXXXXX.X.XX...X.XWWWXR*.R.XXX..X.X.XRRR*X.XX",
+        "X.X.XX..RXXXX.XXXXXXXX.X.XX...X.XWWWXR*.R.XXXX.X.X.XRRR*X.XX",
         "X.X.XXXXM.P.X...XWWWWX.X.XX.X.X.XXXXXXXXXXX........XRRRXX..X",
-        "X*X...*X..X.XXX.XWWWWX.X.*X.X...............XXXXXXXXX.XXXX.X",
+        "X.X...*X..X.XXX.XWWWWX.X.*X.X...............XXXXXXXXX.XXXX.X",
         "X.X.X.XXRRX...*.XXXXXX.XX.X.XXXXXXXX.MXXXXXXX..............X",
         "X.X.X.XXXXXXXXXXX......XX.X...................XXXXXXXBXXXXXX",
         "X*X.X.............XXXXXXX.X.XXXXXXXXXXXXXXXXXXX..RX        X",
         "X.X.XXXXXXXXXXXX.M..X.....X.X.... R...............BWWWWWXX*X",
-        "X.X.XWWWWWWWWWWX*RX.XXXXXXX.X.....R.....XXXXXXXXXXXWWWWWXXXX",
+        "X*X.XWWWWWWWWWWX*RX.XXXXXXX.X.....R.....XXXXXXXXXXXWWWWWXXXX",
         "X*XRXWWWWWWWWWWX RX....*X*......R.....R        *XXXWWWWWXXXX",
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     ]
