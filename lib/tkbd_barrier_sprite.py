@@ -31,7 +31,7 @@ from . import tkgame_matrix_sprite as S
 
 class TkBDBarrierSprite (S.TkGameMatrixSprite):
     """
-        Gravity sprite in the mine;
+        Barrier sprite in the mine;
     """
 
     def init_sprite (self, **kw):
@@ -40,8 +40,11 @@ class TkBDBarrierSprite (S.TkGameMatrixSprite):
             this avoids re-declaring __init__ signatures all the time;
         """
         # member inits
-        self.is_background = True
         self.is_overable = False
+        self.is_movable = False
+        self.locked = False
+        # bind events
+        self.events.connect("Main:Barrier:Removed", self.destroy)
     # end def
 
 
@@ -49,12 +52,17 @@ class TkBDBarrierSprite (S.TkGameMatrixSprite):
         """
             falling sprites may remove this sprite;
         """
-        # delete from canvas
-        self.canvas.delete(self.canvas_id)
-        # delete from matrix
-        self.matrix.drop_xy(self.xy)
-        # events handling
-        self.events.raise_event("Main:Gravity:Removed")
+        # enabled?
+        if not self.locked:
+            # disable unexpected events
+            self.locked = True
+            # delete from canvas
+            self.canvas.delete(self.canvas_id)
+            # delete from matrix
+            self.matrix.drop_xy(self.xy)
+            # events handling
+            self.events.raise_event("Main:Barrier:Removed")
+        # end if
     # end def
 
 # end class TkBDBarrierSprite
