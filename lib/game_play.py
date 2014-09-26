@@ -42,6 +42,11 @@ class GamePlay:
     # class constants
     TPL_LEVEL_FILE = "data/json/level_{}.json"
 
+    SNDTRACK_PLAYER = 1
+    SNDTRACK_DIAMOND = 2
+    SNDTRACK_ROCK = 3
+    SNDTRACK_BACKGROUND = 4
+
 
     def __init__ (self, owner, canvas, level=1):
         """
@@ -52,7 +57,7 @@ class GamePlay:
         self.canvas = canvas
         self.level = level
         self.events = EM.get_event_manager()
-        self.sounds = AU.new_audio_player()
+        self.soundtracks = tuple(AU.new_audio_player() for i in range(4))
         self.animations = AP.get_animation_pool()
         self.objects = OM.ObjectMapper(
             canvas=self.canvas, images_dir="images/sprites",
@@ -60,7 +65,9 @@ class GamePlay:
         self.mouse_down = False
         self.game_paused = False
         self.score = 0
-        #~ self.level = 2 # debugging
+
+        self.level = 3 # debugging
+
     # end def
 
 
@@ -141,7 +148,7 @@ class GamePlay:
             event handler for diamond catch;
         """
         # play sound
-        self.play_sound("player caught diamond")
+        self.play_sound("player caught diamond", self.SNDTRACK_DIAMOND)
         # drop diamond from managed list
         self.objects.falling_sprites.remove(sprite)
         # update score
@@ -209,7 +216,7 @@ class GamePlay:
             event handler for player digging earth;
         """
         # play sound
-        self.play_sound("player digged earth")
+        self.play_sound("player digged earth", self.SNDTRACK_PLAYER)
         # update score with +50 pts
         self.score_add(50)
     # end if
@@ -375,12 +382,15 @@ class GamePlay:
     # end def
 
 
-    def play_sound (self, sound_name, volume=0.5):
+    def play_sound (self, sound_name, track=1, volume=0.5):
         """
             plays asynchronous sound;
         """
+        track = max(1, min(track, len(self.soundtracks))) - 1
         sound_name = str(sound_name).replace(" ", "-")
-        self.sounds.play("audio/{}.wav".format(sound_name), volume)
+        self.soundtracks[track].play(
+            "audio/{}.wav".format(sound_name), volume
+        )
     # end def
 
 
@@ -408,7 +418,7 @@ class GamePlay:
         # canvas event unbindings
         self.unbind_canvas_events()
         # play sound
-        self.play_sound("player dead")
+        self.play_sound("player dead", self.SNDTRACK_PLAYER)
     # end def
 
 
@@ -417,7 +427,7 @@ class GamePlay:
             event handler for rock touchdown;
         """
         # play sound
-        self.play_sound("rock touched down")
+        self.play_sound("rock touched down", self.SNDTRACK_ROCK)
         # update general falldown procedure
         self.update_falldown()
     # end def
@@ -437,7 +447,7 @@ class GamePlay:
             event handler for rockdiamond transformation;
         """
         # play sound
-        self.play_sound("rockdiamond changing")
+        self.play_sound("rockdiamond changing", self.SNDTRACK_DIAMOND)
     # end def
 
 
@@ -446,7 +456,7 @@ class GamePlay:
             event handler for rock pushes;
         """
         # play sound
-        self.play_sound("rock pushed aside")
+        self.play_sound("rock pushed aside", self.SNDTRACK_PLAYER)
     # end def
 
 
@@ -618,7 +628,7 @@ class GamePlay:
             self.canvas.itemconfigure(
                 self.countdown_id, fill="tomato"
             )
-            self.play_sound("countdown beep")
+            self.play_sound("countdown beep", self.SNDTRACK_BACKGROUND)
             self.animations.run_after(250, self.blink_countdown)
         # end if
         # time is out!
@@ -686,7 +696,7 @@ class GamePlay:
             subtitle_color="powder blue"
         )
         # play sound
-        self.play_sound("player won all")
+        self.play_sound("player won all", self.SNDTRACK_BACKGROUND)
         # reset level
         self.level = 1
         # events binding
@@ -715,7 +725,7 @@ class GamePlay:
         )
         # play sound
         self.owner.music.stop()
-        self.play_sound("player won level")
+        self.play_sound("player won level", self.SNDTRACK_BACKGROUND)
         # go to next level
         self.animations.run_after(4000, self.next_level)
     # end def

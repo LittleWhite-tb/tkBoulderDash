@@ -33,6 +33,14 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         Generic falling sprite in the mine;
     """
 
+    def can_move_over (self, sprite):
+        """
+            determines if current sprite may move over @sprite;
+        """
+        return (not sprite) or ("background" in sprite.role)
+    # end def
+
+
     def init_sprite (self, **kw):
         """
             hook method to be reimplemented in subclass;
@@ -86,12 +94,20 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         # param inits
         sprite = c_dict["sprite"]
         if sprite:
-            if sprite is self.owner.player_sprite:
+            if "player" in sprite.role:
                 if self.is_falling:
                     # splash the player!
                     sprite.splashed()
                     self.is_falling = False
                 # end if
+            # background sprite?
+            elif "background" in sprite.role:
+                # remove background sprite
+                sprite.destroy()
+                # now falling down
+                self.is_falling = True
+                # allowed movement
+                return True
             # need to roll aside?
             elif isinstance(sprite, __class__):
                 # depends on whatever is around
@@ -116,14 +132,18 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         """
         # loop on directions (left/right)
         for sx in (-1, +1):
-            _roll = not(
-                self.look_ahead(sx, 0)["sprite"] or
-                self.look_ahead(sx, +1)["sprite"]
+            _s1 = self.look_ahead(sx, 0)["sprite"]
+            _s2 = self.look_ahead(sx, +1)["sprite"]
+            _roll = bool(
+                self.can_move_over(_s1) and self.can_move_over(_s2)
             )
             # may roll over?
-            if _roll and not self.locked:
+            if not self.locked and _roll:
+                # free some space
+                if _s1: _s1.destroy()
+                if _s2: _s2.destroy()
                 # move sprite
-                self.move_sprite(sx, 0, lambda c: not c["sprite"])
+                self.move_sprite(sx, 0, lambda c: not c["sprite" ])
                 # keep on falling
                 return True
             # end if

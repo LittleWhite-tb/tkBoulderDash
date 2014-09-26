@@ -5,11 +5,6 @@
 
     "defs":
     {
-        " ":
-        {
-            "role": "Empty"
-        },
-
         "R":
         {
             "role": "Rock",

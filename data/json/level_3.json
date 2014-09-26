@@ -1,0 +1,101 @@
+{
+    "level_name": "the pool",
+
+    "countdown": 180,
+
+    "defs":
+    {
+        " ":
+        {
+            "role": "Empty"
+        },
+
+        "R":
+        {
+            "role": "Rock",
+            "class": "TkBDRockSprite",
+            "module": "tkbd_rock_sprite",
+            "images_dir": "rock"
+        },
+
+        "M":
+        {
+            "role": "Rock/Diamond",
+            "class": "TkBDRockDiamondSprite",
+            "module": "tkbd_rockdiamond_sprite",
+            "images_dir": "rockdiamond"
+        },
+
+        ".":
+        {
+            "role": "Earth",
+            "class": "TkBDEarthSprite",
+            "module": "tkbd_earth_sprite",
+            "images_dir": "earth"
+        },
+
+        "*":
+        {
+            "role": "Diamond",
+            "class": "TkBDDiamondSprite",
+            "module": "tkbd_diamond_sprite",
+            "images_dir": "diamond"
+        },
+
+        "X":
+        {
+            "role": "Wall",
+            "class": "TkBDWallSprite",
+            "module": "tkbd_wall_sprite",
+            "images_dir": "wall"
+        },
+
+        "W":
+        {
+            "role": "Background/Water",
+            "class": "TkBDWaterSprite",
+            "module": "tkbd_water_sprite",
+            "images_dir": "water"
+        },
+
+        "G":
+        {
+            "role": "Background/Gravity",
+            "class": "TkBDGravitySprite",
+            "module": "tkbd_gravity_sprite",
+            "images_dir": "gravity"
+        },
+
+        "P":
+        {
+            "role": "Player",
+            "class": "TkBDPlayerSprite",
+            "module": "tkbd_player_sprite",
+            "images_dir": "player"
+        }
+    },
+
+    "matrix":
+    [
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "X...............................X.......*.X................X",
+        "X................XXXXXXXXXXXX..XXR..XXXXXXXXXXXXXX.XXXXXX.*X",
+        "X...........................XX.X..XXX.R...XRM..X*X...*.*X.XX",
+        "X...........................X..X..X....X....*X...XXXXXXXX..X",
+        "X...........................XX......XXXXXXXXRXXXXX...*.....X",
+        "X...........................X..XXXXXX......X*..X.X.XXXXXXX.X",
+        "X...........................X.........M XXXX.X.X.X.XRR RX..X",
+        "X...........................X.XXXXXXX.RXX.X..X.X.X.XRRRRX..X",
+        "X.........................XXX.X.....X...X...XX.X.X.XRRRMX.XX",
+        "X.........................X...X...*.XR*.R.XXX..X.X.XRRR*X..X",
+        "X.........................X.X.X.XXXXXXXXXXX........XRRR.X..X",
+        "X.........................X.X...............XXXXXXXXX.XXXX.X",
+        "X.........................X.XXXXXXXX.MXXXXXXX...P..........X",
+        "X.........................X...................XXXXXXXGXXXXXX",
+        "X.........................X.XXXXXXXXXXXXXXXXXXX..RX        X",
+        "X.........................X.X.... R................G     * X",
+        "X...................XXXXXXX.X.....R.....XXXXXXXXXXXWWWWWXXXX",
+        "X.......................X*......R.....R       * XXXWWWWWXXXX",
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    ]
+}

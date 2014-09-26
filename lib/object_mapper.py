@@ -117,6 +117,7 @@ class ObjectMapper:
                     "{module}.{class}(self, self.matrix, self.canvas)"
                     .format(**_attrs)
                 )
+                _sprite.role = _attrs["role"]
                 _sprite.images_dir = _attrs["images_dir"]
                 _sprite.row_column = (_row, _column)
                 # put sprite into game matrix
