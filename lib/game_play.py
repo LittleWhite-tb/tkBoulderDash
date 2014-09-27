@@ -153,7 +153,7 @@ class GamePlay:
         # play sound
         self.play_sound("player caught diamond", self.SNDTRACK_DIAMOND)
         # drop diamond from managed list
-        self.objects.falling_sprites.remove(sprite)
+        self.remove_falling(sprite)
         # free some memory
         del sprite
         # update score
@@ -443,6 +443,29 @@ class GamePlay:
     # end def
 
 
+    def player_splashed (self, *args, **kw):
+        """
+            player has been splashed;
+        """
+        # canvas event unbindings
+        self.unbind_canvas_events()
+        # play sound
+        self.play_sound("player dead", self.SNDTRACK_PLAYER)
+    # end def
+
+
+    def remove_falling (self, sprite, *args, **kw):
+        """
+            removes sprite from falling_sprites list;
+        """
+        # drop sprite from managed list
+        if sprite in self.objects.falling_sprites:
+            self.objects.falling_sprites.remove(sprite)
+        # end if
+        #~ print("falling sprites:", len(self.objects.falling_sprites))
+    # end def
+
+
     def remove_headings (self, *args, **kw):
         """
             removes level name and number display offs;
@@ -462,14 +485,12 @@ class GamePlay:
     # end def
 
 
-    def player_splashed (self, *args, **kw):
+    def rock_pushed_aside (self, *args, **kw):
         """
-            player has been splashed;
+            event handler for rock pushes;
         """
-        # canvas event unbindings
-        self.unbind_canvas_events()
         # play sound
-        self.play_sound("player dead", self.SNDTRACK_PLAYER)
+        self.play_sound("rock pushed aside", self.SNDTRACK_PLAYER)
     # end def
 
 
@@ -499,15 +520,6 @@ class GamePlay:
         """
         # play sound
         self.play_sound("rockdiamond changing", self.SNDTRACK_DIAMOND)
-    # end def
-
-
-    def rock_pushed_aside (self, *args, **kw):
-        """
-            event handler for rock pushes;
-        """
-        # play sound
-        self.play_sound("rock pushed aside", self.SNDTRACK_PLAYER)
     # end def
 
 
