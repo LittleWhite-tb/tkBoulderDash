@@ -710,13 +710,9 @@ class GamePlay:
         """
             updates falling down procedure;
         """
-        def loop ():
-            for sprite in self.objects.falling_sprites:
-                sprite.fall_down()
-            # end for
-            self.animations.run_after(250, loop)
-        # end def
-        self.animations.run_after(1, loop)
+        for sprite in self.objects.falling_sprites:
+            sprite.fall_down()
+        # end for
     # end def
 
 
