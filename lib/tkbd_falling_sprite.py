@@ -59,15 +59,11 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         """
             sprite has been asked to fall down;
         """
-        print(id(self), "entered fall_down()")
-        print(id(self), self.xy, "(locked, looping):", (self.locked, self.need_looping))
         # no locked sprite nor pending falldown loop?
         if not (self.locked or self.need_looping):
-            print(id(self), "calling falling_loop()")
             # ok, let's go!
-            self.animations.run_after(200, self.falling_loop)
+            self.animations.run_after(150, self.falling_loop)
         # end if
-        print(id(self), "exited fall_down()")
     # end def
 
 
@@ -75,22 +71,16 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         """
             sprite falling down animation loop;
         """
-        print(id(self), "entered falling_loop()")
         # evaluate falldown
         _fallen = self.move_sprite(0, +1, callback=self.falling_collisions)
-        print(id(self), "has moved:", _fallen)
         if self.need_looping and not self.locked:
             self.animations.run_after(100, self.falling_loop, _fallen)
-            #~ self.events.raise_event("Main:Sprite:Falling", sprite=self)
-            print(id(self), "loops again in falling_loop()")
         else:
             self.animations.stop(self.falling_loop)
             self.is_falling = False
             if has_fallen:
-                print(id(self), "has touched down")
                 self.touched_down()
             # end if
-            print(id(self), "exited falling_loop()")
         # end if
     # end def
 
@@ -103,7 +93,6 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         self.need_looping = True
         # param inits
         sprite = c_dict["sprite"]
-        print(id(self), "sprite detected below:", sprite)
         if sprite:
             if "player" in sprite.role:
                 if self.is_falling:

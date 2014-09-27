@@ -68,7 +68,7 @@ class GamePlay:
         self.game_paused = False
         self.score = 0
 
-        self.level = 9 # debugging
+        #~ self.level = 9 # debugging
 
     # end def
 
@@ -102,16 +102,9 @@ class GamePlay:
                 "Main:Rock:Pushed": self.rock_pushed_aside,
                 "Main:RockDiamond:Changing": self.rockdiamond_changing,
                 "Main:RockDiamond:Changed": self.rockdiamond_changed,
-                "Main:Sprite:Falling": self.sprite_falling,
             }
         )
         self.bind_canvas_events()
-    # end def
-
-
-    def sprite_falling (self, sprite, *args, **kw):
-        print(id(sprite), "sprite falling:", sprite.xy)
-        self.update_falldown()
     # end def
 
 
@@ -717,9 +710,13 @@ class GamePlay:
         """
             updates falling down procedure;
         """
-        for sprite in self.objects.falling_sprites:
-            sprite.fall_down()
-        # end for
+        def loop ():
+            for sprite in self.objects.falling_sprites:
+                sprite.fall_down()
+            # end for
+            self.animations.run_after(250, loop)
+        # end def
+        self.animations.run_after(1, loop)
     # end def
 
 
