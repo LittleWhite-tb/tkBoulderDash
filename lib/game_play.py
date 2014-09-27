@@ -512,7 +512,13 @@ class GamePlay:
         """
             game play inits;
         """
-        self.draw_level()
+        try:
+            # try to draw current level
+            self.draw_level()
+        except:
+            # stop all!
+            exit("Fatal error while trying to draw current level!")
+        # end try
     # end def
 
 
