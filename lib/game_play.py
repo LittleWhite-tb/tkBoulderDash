@@ -153,6 +153,8 @@ class GamePlay:
         self.play_sound("player caught diamond", self.SNDTRACK_DIAMOND)
         # drop diamond from managed list
         self.objects.falling_sprites.remove(sprite)
+        # free some memory
+        del sprite
         # update score
         self.score_add(200)
         # update remaining diamonds
