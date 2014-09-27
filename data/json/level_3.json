@@ -60,9 +60,9 @@
 
         "B":
         {
-            "role": "Background/Barrier",
-            "class": "TkBDBarrierSprite",
-            "module": "tkbd_barrier_sprite",
+            "role": "Background/Barrier/Group1",
+            "class": "TkBDSyncBarrierSprite",
+            "module": "tkbd_syncbarrier_sprite",
             "images_dir": "barrier"
         },
 

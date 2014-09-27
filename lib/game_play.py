@@ -68,7 +68,7 @@ class GamePlay:
         self.game_paused = False
         self.score = 0
 
-        #~ self.level = 3 # debugging
+        self.level = 3 # debugging
 
     # end def
 
@@ -515,7 +515,8 @@ class GamePlay:
         try:
             # try to draw current level
             self.draw_level()
-        except:
+        except Exception as e:
+            print("An exception has occurred:", str(e))
             # stop all!
             exit("Fatal error while trying to draw current level!")
         # end try

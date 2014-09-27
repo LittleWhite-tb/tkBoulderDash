@@ -43,8 +43,6 @@ class TkBDBarrierSprite (S.TkGameMatrixSprite):
         self.is_overable = False
         self.is_movable = False
         self.locked = False
-        # bind events
-        self.events.connect("Main:Barrier:Removed", self.destroy)
     # end def
 
 
@@ -61,8 +59,20 @@ class TkBDBarrierSprite (S.TkGameMatrixSprite):
             # delete from matrix
             self.matrix.drop_xy(self.xy)
             # events handling
-            self.events.raise_event("Main:Barrier:Removed")
+            print(self.role)
+            self.events.raise_event(
+                self.get_event_name("removed"), sprite=self
+            )
         # end if
+    # end def
+
+
+    def get_event_name (self, action):
+        """
+            hook method to be reimplemented in subclass;
+            returns formatted event name;
+        """
+        return "Main:Barrier:{}".format(str(action).capitalize())
     # end def
 
 # end class TkBDBarrierSprite
