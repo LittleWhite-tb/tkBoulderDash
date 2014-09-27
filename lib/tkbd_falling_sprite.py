@@ -62,7 +62,7 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         # no locked sprite nor pending falldown loop?
         if not (self.locked or self.need_looping):
             # ok, let's go!
-            self.animations.run_after(150, self.falling_loop)
+            self.animations.run_after(200, self.falling_loop)
         # end if
     # end def
 

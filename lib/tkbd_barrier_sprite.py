@@ -59,7 +59,6 @@ class TkBDBarrierSprite (S.TkGameMatrixSprite):
             # delete from matrix
             self.matrix.drop_xy(self.xy)
             # events handling
-            print(self.role)
             self.events.raise_event(
                 self.get_event_name("removed"), sprite=self
             )
