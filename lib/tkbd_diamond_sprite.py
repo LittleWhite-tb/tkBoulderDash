@@ -60,16 +60,19 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
         """
             player caught the diamond;
         """
-        # lock sprite for unexpected events
-        self.locked = True
-        # stop unwanted loops
-        self.animations.stop(self.falling_loop)
-        # delete from canvas
-        self.canvas.delete(self.canvas_id)
-        # delete from matrix
-        self.matrix.drop_xy(self.xy)
-        # events handling
-        self.events.raise_event("Main:Diamond:Collected", sprite=self)
+        # enabled?
+        if not self.locked:
+            # lock sprite for unexpected events
+            self.locked = True
+            # stop unwanted loops
+            self.animations.stop(self.falling_loop)
+            # delete from canvas
+            self.canvas.delete(self.canvas_id)
+            # delete from matrix
+            self.matrix.drop_xy(self.xy)
+            # events handling
+            self.events.raise_event("Main:Diamond:Collected", sprite=self)
+        # end if
     # end def
 
 # end class TkBDDiamondSprite

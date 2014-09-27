@@ -68,7 +68,7 @@ class GamePlay:
         self.game_paused = False
         self.score = 0
 
-        #~ self.level = 3 # debugging
+        self.level = 9 # debugging
 
     # end def
 
@@ -102,9 +102,16 @@ class GamePlay:
                 "Main:Rock:Pushed": self.rock_pushed_aside,
                 "Main:RockDiamond:Changing": self.rockdiamond_changing,
                 "Main:RockDiamond:Changed": self.rockdiamond_changed,
+                "Main:Sprite:Falling": self.sprite_falling,
             }
         )
         self.bind_canvas_events()
+    # end def
+
+
+    def sprite_falling (self, sprite, *args, **kw):
+        print(id(sprite), "sprite falling:", sprite.xy)
+        self.update_falldown()
     # end def
 
 
@@ -141,7 +148,8 @@ class GamePlay:
         self.canvas.delete(TK.ALL)
         # reset canvas
         self.canvas.configure(bg="black", scrollregion=(0, 0, 0, 0))
-
+        self.canvas.xview_moveto(0)
+        self.canvas.yview_moveto(0)
     # end def
 
 

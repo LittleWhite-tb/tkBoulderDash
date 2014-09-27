@@ -1,0 +1,64 @@
+{
+    "level_name": "debugging",
+
+    "countdown": 600,
+
+    "defs":
+    {
+        " ":
+        {
+            "role": "Empty"
+        },
+
+        "R":
+        {
+            "role": "Rock",
+            "class": "TkBDRockSprite",
+            "module": "tkbd_rock_sprite",
+            "images_dir": "rock"
+        },
+
+        ".":
+        {
+            "role": "Earth",
+            "class": "TkBDEarthSprite",
+            "module": "tkbd_earth_sprite",
+            "images_dir": "earth"
+        },
+
+        "*":
+        {
+            "role": "Diamond",
+            "class": "TkBDDiamondSprite",
+            "module": "tkbd_diamond_sprite",
+            "images_dir": "diamond"
+        },
+
+        "X":
+        {
+            "role": "Wall",
+            "class": "TkBDWallSprite",
+            "module": "tkbd_wall_sprite",
+            "images_dir": "wall"
+        },
+
+        "P":
+        {
+            "role": "Player",
+            "class": "TkBDPlayerSprite",
+            "module": "tkbd_player_sprite",
+            "images_dir": "player"
+        }
+    },
+
+    "matrix":
+    [
+        "XXXXXXXXXXXXXXXXXXXXXX",
+        "X..R.................X",
+        "X..R.................X",
+        "X..P.................X",
+        "X.. .................X",
+        "X.. .................X",
+        "XXXXXXXXXXXXXXXXXXXXXX"
+    ]
+}
