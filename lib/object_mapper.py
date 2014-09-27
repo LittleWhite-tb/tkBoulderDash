@@ -53,6 +53,7 @@ class ObjectMapper:
         self.falling_sprites = None
         self.countdown = 0
         self.diamonds_count = 0
+        self.level_name = ""
     # end def
 
 
@@ -67,6 +68,7 @@ class ObjectMapper:
             _data = json.load(file_in)
         # end with
         # reset members
+        self.level_name = _data.get("level_name") or ""
         self.countdown = int(_data.get("countdown") or 600)
         self.diamonds_count = 0
         self.falling_sprites = list()

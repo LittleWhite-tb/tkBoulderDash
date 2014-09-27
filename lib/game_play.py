@@ -28,9 +28,10 @@
 import os.path as OP
 import tkinter.constants as TK
 from . import object_mapper as OM
-from . import tkgame_events as EM
-from . import tkgame_audio as AU
 from . import tkgame_animations as AP
+from . import tkgame_audio as AU
+from . import tkgame_canvas_fixedlayer as FL
+from . import tkgame_events as EM
 from . import tkgame_fx_rotating_sun as FXRS
 
 
@@ -62,6 +63,7 @@ class GamePlay:
         self.objects = OM.ObjectMapper(
             canvas=self.canvas, images_dir="images/sprites",
         )
+        self.fixed_layer = FL.get_fixed_layer(canvas)
         self.mouse_down = False
         self.game_paused = False
         self.score = 0
@@ -111,7 +113,7 @@ class GamePlay:
             blinks timer display;
         """
         self.canvas.itemconfigure(
-            self.countdown_id,
+            self.cid_countdown,
             text="" if not flag else self.format_time()
         )
         flag = not flag
@@ -175,29 +177,54 @@ class GamePlay:
         for _sprite in self.objects.matrix.objects():
             _sprite.start()
         # end for
+        # reset canvas text items viewport fixed layer
+        self.fixed_layer.clear()
         # init options
         _opts = dict(font="{} 26".format(FONT1), fill="bisque1")
+        _cx, _cy = self.center_xy(self.canvas)
+        _cw = self.canvas.winfo_reqwidth()
         # init remaining diamonds
-        self.remaining_id = self.canvas.create_text(
-            10, 10,
-            anchor=TK.NW,
-            text=str(self.objects.diamonds_count),
-            **_opts
+        self.cid_diamonds_count = self.canvas.create_text(
+            10, 10, anchor=TK.NW, **_opts
         )
         # init player score
-        self.score = 0
-        self.score_id = self.canvas.create_text(
-            10, 10,
-            anchor=TK.N,
-            text=self.format_score(),
-            **_opts
+        #~ self.score = 0       # keep score between each level /!\
+        self.cid_score = self.canvas.create_text(
+            _cx, 10, anchor=TK.N, **_opts
         )
         # init countdown
-        self.countdown_id = self.canvas.create_text(
-            10, 10,
-            anchor=TK.NE,
-            text=self.format_time(),
-            **_opts
+        self.cid_countdown = self.canvas.create_text(
+            _cw - 10, 10, anchor=TK.NE, **_opts
+        )
+        # reset options
+        _opts = dict(
+            anchor=TK.CENTER,
+            text=self.objects.level_name,
+            font="{} 48".format(FONT1),
+            tags="headings",
+        )
+        # show level name and number
+        self.cid_level_name2 = self.canvas.create_text(
+            _cx + 4, _cy + 4, fill="darkred", **_opts
+        )
+        self.cid_level_name1 = self.canvas.create_text(
+            _cx, _cy, fill="yellow", **_opts
+        )
+        self.cid_level_number = self.canvas.create_text(
+            _cx, _cy - 80,
+            text="level {}".format(self.level),
+            font="{} 36".format(FONT2),
+            fill="bisque1",
+            tags="headings",
+        )
+        # add to viewport fixed layer
+        self.fixed_layer.add(
+            self.cid_diamonds_count,
+            self.cid_score,
+            self.cid_countdown,
+            self.cid_level_name1,
+            self.cid_level_name2,
+            self.cid_level_number,
         )
         # reconfigure canvas
         self.canvas.configure(
@@ -205,9 +232,10 @@ class GamePlay:
             scrollregion=self.objects.matrix.bbox_xy(),
         )
         self.scroll_to_player(ticks=25.0, autoloop=False)
+        self.animations.run_after(1800, self.remove_headings)
         self.animations.run_after(1000, self.bind_events)
         self.animations.run_after(1000, self.scroll_to_player)
-        self.animations.run_after(1000, self.update_countdown)
+        self.animations.run_after(800, self.update_game_data)
     # end def
 
 
@@ -350,7 +378,7 @@ class GamePlay:
             self.events.raise_event("Main:Game:Resumed")
             self.scroll_to_player()
             self.bind_canvas_events()
-            self.update_countdown()
+            self.update_game_data()
         # pause game
         else:
             self.game_paused = True
@@ -361,6 +389,7 @@ class GamePlay:
                 self.update_countdown,
             )
             self.events.raise_event("Main:Game:Paused")
+            # show some text
             x, y = self.viewport_center_xy()
             _opts = dict(
                 anchor=TK.CENTER,
@@ -408,6 +437,25 @@ class GamePlay:
         """
         # update general falldown procedure
         self.update_falldown()
+    # end def
+
+
+    def remove_headings (self, *args, **kw):
+        """
+            removes level name and number display offs;
+        """
+        # delete from canvas display off
+        self.canvas.delete("headings")
+        # remove from viewport fixed layer
+        self.fixed_layer.remove(
+            self.cid_level_name1,
+            self.cid_level_name2,
+            self.cid_level_number,
+        )
+        # free some memory
+        del self.cid_level_name1
+        del self.cid_level_name2
+        del self.cid_level_number
     # end def
 
 
@@ -492,9 +540,7 @@ class GamePlay:
             animation loop for score updates;
         """
         # update display
-        self.canvas.itemconfigure(
-            self.score_id, text=self.format_score(start)
-        )
+        self.update_score(start)
         # not finished?
         if start < stop:
             # update pos
@@ -516,16 +562,8 @@ class GamePlay:
         cx, cy, cw, mw, mh = args
         self.canvas.xview_moveto((startx - cx)/mw)
         self.canvas.yview_moveto((starty - cy)/mh)
-        # inits
-        y = self.canvas.canvasy(10)
-        # update pos
-        self.canvas.coords(
-            self.remaining_id, self.canvas.canvasx(10), y
-        )
-        self.canvas.coords(self.score_id, self.canvas.canvasx(cx), y)
-        self.canvas.coords(
-            self.countdown_id, self.canvas.canvasx(cw - 10), y
-        )
+        # update text items viewport fixed positions
+        self.fixed_layer.update_positions()
         # no more moves?
         if startx == stopx and starty == stopy:
             # trap out!
@@ -620,13 +658,13 @@ class GamePlay:
             0, min(600, self.objects.countdown - 1)
         )
         self.canvas.itemconfigure(
-            self.countdown_id,
+            self.cid_countdown,
             text=self.format_time()
         )
         # hurry up!
         if self.objects.countdown <= 10:
             self.canvas.itemconfigure(
-                self.countdown_id, fill="tomato"
+                self.cid_countdown, fill="tomato"
             )
             self.play_sound("countdown beep", self.SNDTRACK_BACKGROUND)
             self.animations.run_after(250, self.blink_countdown)
@@ -648,7 +686,8 @@ class GamePlay:
         """
         # update display
         self.canvas.itemconfigure(
-            self.remaining_id, text=str(self.objects.diamonds_count)
+            self.cid_diamonds_count,
+            text=str(self.objects.diamonds_count)
         )
     # end def
 
@@ -660,6 +699,27 @@ class GamePlay:
         for sprite in self.objects.falling_sprites:
             sprite.fall_down()
         # end for
+    # end def
+
+
+    def update_game_data (self, *args, **kw):
+        """
+            updates all game data display offs;
+        """
+        self.update_diamonds_count()
+        self.update_score()
+        self.update_countdown()
+    # end def
+
+
+    def update_score (self, value=None, *args, **kw):
+        """
+            updates diamond count display;
+        """
+        # update display
+        self.canvas.itemconfigure(
+            self.cid_score, text=self.format_score(value)
+        )
     # end def
 
 
