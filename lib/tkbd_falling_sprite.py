@@ -59,10 +59,12 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         """
             sprite has been asked to fall down;
         """
-        # no locked sprite nor pending falldown loop?
-        if not (self.locked or self.need_looping):
+        # enabled?
+        if not self.locked:
+            # lock sprite for further operations
+            self.locked = True
             # ok, let's go!
-            self.animations.run_after(150, self.falling_loop)
+            self.animations.run_after(100, self.falling_loop)
         # end if
     # end def
 
@@ -73,7 +75,7 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         """
         # evaluate falldown
         _fallen = self.move_sprite(0, +1, callback=self.falling_collisions)
-        if self.need_looping and not self.locked:
+        if self.need_looping:
             self.animations.run_after(100, self.falling_loop, _fallen)
         else:
             self.animations.stop(self.falling_loop)
@@ -81,6 +83,7 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
             if has_fallen:
                 self.touched_down()
             # end if
+            self.locked = False
         # end if
     # end def
 
@@ -138,7 +141,7 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
                 self.can_move_over(_s1) and self.can_move_over(_s2)
             )
             # may roll over?
-            if not self.locked and _roll:
+            if _roll:
                 # free some space
                 if _s1: _s1.destroy()
                 if _s2: _s2.destroy()

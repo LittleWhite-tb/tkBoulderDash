@@ -54,16 +54,16 @@
     "matrix":
     [
         "XXXXXXXXXXXXXXXXXXXXXX",
-        "X..R.................X",
-        "X..R.................X",
-        "X..P.................X",
-        "X.. .................X",
-        "X.. .................X",
-        "X.. .................X",
-        "X.. .................X",
-        "X.. .................X",
-        "X.. .................X",
-        "X.. .................X",
+        "X..R.......RRRRRRRRRRX",
+        "X..R.......RRRRRRRRRRX",
+        "X..P.......RRRRRRRRRRX",
+        "X.. .......RRRRRRRRRRX",
+        "X.. .......RRRRRRRRRRX",
+        "X.. .......RRRRRRRRRRX",
+        "X.. .......RRRRRRRRRRX",
+        "X.. .......RRRRRRRRRRX",
+        "X.. .......RRRRRRRRRRX",
+        "X.. .......RRRRRRRRRRX",
         "XXXXXXXXXXXXXXXXXXXXXX"
     ]
 }
