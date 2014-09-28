@@ -458,7 +458,7 @@ class GamePlay:
         """
             removes sprite from falling_sprites list;
         """
-        print("falling sprites:", len(self.objects.falling_sprites))    # DEBUG
+        #~ print("falling sprites:", len(self.objects.falling_sprites))    # DEBUG
         # drop sprite from managed list
         if sprite in self.objects.falling_sprites:
             self.objects.falling_sprites.remove(sprite)
