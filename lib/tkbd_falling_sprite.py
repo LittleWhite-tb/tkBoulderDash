@@ -35,6 +35,7 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
 
     def can_move_over (self, sprite):
         """
+            hook method to be reimplemented in subclass;
             determines if current sprite may move over @sprite;
         """
         return (not sprite) or ("background" in sprite.role)
@@ -73,6 +74,10 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         """
             sprite falling down animation loop;
         """
+        # security
+        if self.locked:
+            return False
+        # end if
         # evaluate falldown
         _fallen = self.move_sprite(0, +1, callback=self.falling_collisions)
         if self.need_looping:
@@ -91,6 +96,10 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         """
             allows or denies movement along with collision tests;
         """
+        # security
+        if self.locked:
+            return False
+        # end if
         # inits
         self.need_looping = True
         # param inits
@@ -132,6 +141,10 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         """
             determines if sprite may roll aside over one another;
         """
+        # security
+        if self.locked:
+            return False
+        # end if
         # loop on directions (left/right)
         for sx in (-1, +1):
             _s1 = self.look_ahead(sx, 0)["sprite"]
