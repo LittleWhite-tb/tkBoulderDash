@@ -2,7 +2,9 @@
 TODO
 ====
 
-    * chiader beaucoup plus les niveaux 1 et 2 (priorité 1);
+    * chiader beaucoup plus le niveau 2 (priorité 1);
+
+    * niveau 1 chiadé OK;
 
     * ajouter les fantômes de la mine qui courent après le
     player_sprite;
