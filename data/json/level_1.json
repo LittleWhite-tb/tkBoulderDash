@@ -36,7 +36,7 @@
 
         "X":
         {
-            "role": "Stable/Wall",
+            "role": "Wall",
             "class": "TkBDWallSprite",
             "module": "tkbd_wall_sprite",
             "images_dir": "wall"
