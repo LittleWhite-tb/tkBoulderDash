@@ -18,6 +18,7 @@ This game is a **freefullware** (see below).
 ![screenshot 3] (images/screenshots/tkboulderdash-screenshot-003.png)
 ![screenshot 4] (images/screenshots/tkboulderdash-screenshot-004.png)
 ![screenshot 5] (images/screenshots/tkboulderdash-screenshot-005.png)
+![screenshot 6] (images/screenshots/tkboulderdash-screenshot-006.png)
 
 
 ## Copyright
