@@ -75,4 +75,12 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
         # end if
     # end def
 
+
+    def touched_down (self):
+        """
+            hook method to be implemented by subclass;
+        """
+        self.events.raise_event("Main:Diamond:TouchedDown", sprite=self)
+    # end def
+
 # end class TkBDDiamondSprite

@@ -94,12 +94,13 @@ class GamePlay:
         self.events.connect_dict(
             {
                 "Main:Earth:Digged": self.earth_digged,
-                "Main:Diamond:Collected": self.diamond_collected,
                 "Main:Player:Moved": self.player_moved,
                 "Main:Player:Splashed": self.player_splashed,
                 "Main:Player:Dead": self.player_dead,
-                "Main:Rock:TouchedDown": self.rock_touched_down,
+                "Main:Diamond:Collected": self.diamond_collected,
+                "Main:Diamond:TouchedDown": self.diamond_touched_down,
                 "Main:Rock:Pushed": self.rock_pushed_aside,
+                "Main:Rock:TouchedDown": self.rock_touched_down,
                 "Main:RockDiamond:Changing": self.rockdiamond_changing,
                 "Main:RockDiamond:Changed": self.rockdiamond_changed,
             }
@@ -167,6 +168,17 @@ class GamePlay:
             # yeah! winner!
             self.won_level()
         # end if
+    # end def
+
+
+    def diamond_touched_down (self, *args, **kw):
+        """
+            event handler for diamond touchdown;
+        """
+        # play sound
+        self.play_sound("diamond touched down", self.SNDTRACK_DIAMOND)
+        # update general falldown procedure
+        self.update_falldown()
     # end def
 
 

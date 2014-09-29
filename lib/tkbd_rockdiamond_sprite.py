@@ -87,17 +87,25 @@ class TkBDRockDiamondSprite (R.TkBDRockSprite, D.TkBDDiamondSprite):
         """
             hook method to be implemented by subclasses;
         """
+        # current sprite is still a rock?
         if self.state == "default":
+            # who's below?
             sprite = self.look_ahead(0, +1)["sprite"]
-            # may change only when falling down on a rock!
-            if isinstance(sprite, R.TkBDRockSprite):
+            # current sprite may change only when falling down
+            # on a rock-like sprite!
+            if "rock" in sprite.role:
                 self.state = "change"
                 self.events.raise_event(
                     "Main:RockDiamond:Changing", sprite=self
                 )
+            else:
+                # rock part has touched down
+                R.TkBDRockSprite.touched_down(self)
             # end if
+        # became a diamond
         else:
-            super().touched_down()
+            # diamond part has touched down
+            D.TkBDDiamondSprite.touched_down(self)
         # end if
     # end def
 
