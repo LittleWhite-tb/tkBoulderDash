@@ -62,7 +62,7 @@
     "matrix":
     [
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "X..............................X*X.......*..........R...R.*X",
+        "X..............................X*X.......*..*.......R...R.*X",
         "X..........................XXXXX.X.XXXXXXRXXXXX.XXXX*XXXRXXX",
         "X..................................XR.**X..*..............*X",
         "X..........................X.X.XXXXXMXXXX.X.XRXXXX.XXXXXXXXX",
@@ -70,16 +70,16 @@
         "X............................X*X.XXXXXX.X.X.X**RMX.X.X.X.**X",
         "X..........................X.X.X.X*R.*X...X.X***RX.X.X.X.XXX",
         "X..........................X.X.X.XXMXXXXX.X.X......X...X..*X",
-        "X..........................X.XXX. ...*X*X*X.XXXXXXPXXXXXRXXX",
+        "X..........................X.XXX.P...*X*X*X.XXXXXX.XXXXXRXXX",
         "X..........................X...X.XXXXXX*XXX.XR.  M.....XR..X",
         "X........................XXXXX.X....M*X.....XR.*XX.XXX.X*X.X",
-        "X...............................RXXXX.X.X.X.XRM..X...X...X.X",
+        "X...............................RXXXX.X.X.X.XRM..X..MX...X.X",
         "X........................XXXXX.X*.....X.X*X.XX.X...X.XXXXX.X",
         "X..........................*XR.X.XXXXXX.X.X*X....X.X...X..*X",
         "X........................XXXXR.X........R...R*R..X.X.X.X.XXX",
         "X........................X.....X.XXXXXXXXXXXXXR*XX.X.X.X*..X",
         "X........................X.XXXXX.X.RR.X..R*R.....X.X.X.XXX.X",
-        "X........................X*....R.....*X**R.R*XXX...R   R..*X",
+        "X........................X*....R.....*X**R.R*XXX...R*  R..*X",
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     ]
 }
