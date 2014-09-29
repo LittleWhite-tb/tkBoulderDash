@@ -46,7 +46,8 @@ class GamePlay:
     SNDTRACK_PLAYER = 1
     SNDTRACK_DIAMOND = 2
     SNDTRACK_ROCK = 3
-    SNDTRACK_BACKGROUND = 4
+    SNDTRACK_ROCKDIAMOND = 4
+    SNDTRACK_BACKGROUND = 5
 
 
     def __init__ (self, owner, canvas, level=1):
@@ -58,7 +59,7 @@ class GamePlay:
         self.canvas = canvas
         self.level = level
         self.events = EM.get_event_manager()
-        self.soundtracks = tuple(AU.new_audio_player() for i in range(4))
+        self.soundtracks = tuple(AU.new_audio_player() for i in range(5))
         self.animations = AP.get_animation_pool()
         self.objects = OM.ObjectMapper(
             canvas=self.canvas, images_dir="images/sprites",
@@ -531,7 +532,9 @@ class GamePlay:
             event handler for rockdiamond transformation;
         """
         # play sound
-        self.play_sound("rockdiamond changing", self.SNDTRACK_DIAMOND)
+        self.play_sound(
+            "rockdiamond changing", self.SNDTRACK_ROCKDIAMOND
+        )
     # end def
 
 
