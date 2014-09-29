@@ -68,7 +68,7 @@ class GamePlay:
         self.game_paused = False
         self.score = 0
 
-        self.level = 2 # debugging
+        #~ self.level = 2 # debugging
 
     # end def
 
@@ -624,22 +624,23 @@ class GamePlay:
         # animation inits
         x, y = self.objects.player_sprite.xy
         x0, y0 = self.viewport_center_xy()
+        dx, dy = (x - x0), (y - y0)
         cx, cy = self.center_xy(self.canvas)
         cw = self.canvas.winfo_reqwidth()
         mw, mh = self.objects.matrix.width_height()
         # fixing canvas fuzzy values
-        if abs(x - x0) < 2 or x > mw - cx:
+        if abs(dx) < 2 or x > mw - cx:
             x0 = x
         # end if
-        if abs(y - y0) < 2 or y > mh - cy:
+        if abs(dy) < 2 or y > mh - cy:
             y0 = y
         # end if
         # run animation loop
         self.animations.run_after(
-            1,
+            25,
             self.scroll_animation_loop,
             x0, y0, x, y,
-            (x - x0)/ticks, (y - y0)/ticks,
+            dx/ticks, dy/ticks,
             cx, cy, cw, mw, mh
         )
         # need to loop again?
