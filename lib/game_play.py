@@ -179,7 +179,8 @@ class GamePlay:
         # play sound
         self.play_sound("diamond touched down", self.SNDTRACK_DIAMOND)
         # update general falldown procedure
-        self.update_falldown()
+        # CAUTION: falldown procedure is now independent
+        pass
     # end def
 
 
@@ -248,6 +249,7 @@ class GamePlay:
             scrollregion=self.objects.matrix.bbox_xy(),
         )
         self.scroll_to_player(ticks=25.0, autoloop=False)
+        self.animations.run_after(2000, self.update_falldown)
         self.animations.run_after(1800, self.remove_headings)
         self.animations.run_after(1000, self.bind_events)
         self.animations.run_after(1000, self.scroll_to_player)
@@ -451,8 +453,8 @@ class GamePlay:
         """
             player has moved, rocks and diamonds may fall down;
         """
-        # update general falldown procedure
-        self.update_falldown()
+        # CAUTION: falldown procedure is now independent
+        pass
     # end def
 
 
@@ -514,7 +516,8 @@ class GamePlay:
         # play sound
         self.play_sound("rock touched down", self.SNDTRACK_ROCK)
         # update general falldown procedure
-        self.update_falldown()
+        # CAUTION: falldown procedure is now independent
+        pass
     # end def
 
 
@@ -738,13 +741,10 @@ class GamePlay:
         """
             updates falling down procedure;
         """
-        def loop ():
-            for sprite in self.objects.falling_sprites:
-                sprite.fall_down()
-            # end for
-            self.animations.run_after(200, loop)
-        # end def
-        self.animations.run_after(100, loop)
+        for sprite in self.objects.falling_sprites:
+            sprite.fall_down()
+        # end for
+        self.animations.run_after(200, self.update_falldown)
     # end def
 
 

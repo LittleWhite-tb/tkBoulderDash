@@ -42,17 +42,15 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
     # end def
 
 
-    def init_sprite (self, **kw):
+    def destroy (self, *args, **kw):
         """
-            hook method to be reimplemented in subclass;
-            this avoids re-declaring __init__ signatures all the time;
+            event handler for sprite destruction;
+            should be reimplemented in subclass;
         """
-        # member inits
-        self.is_overable = False
-        self.is_movable = False
-        self.is_falling = False
-        self.need_looping = False
-        self.locked = False
+        # ancestor first
+        super().destroy(*args, **kw)
+        # stop animations
+        self.animations.stop(self.falling_loop)
     # end def
 
 
@@ -66,28 +64,6 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
             self.need_looping = True
             # ok, let's go!
             self.animations.run_after(100, self.falling_loop)
-        # end if
-    # end def
-
-
-    def falling_loop (self, has_fallen=False):
-        """
-            sprite falling down animation loop;
-        """
-        # security
-        if self.locked:
-            return False
-        # end if
-        # evaluate falldown
-        _fallen = self.move_sprite(0, +1, callback=self.falling_collisions)
-        if self.need_looping:
-            self.animations.run_after(100, self.falling_loop, _fallen)
-        else:
-            self.animations.stop(self.falling_loop)
-            self.is_falling = False
-            if has_fallen:
-                self.touched_down()
-            # end if
         # end if
     # end def
 
@@ -134,6 +110,42 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         self.is_falling = True
         # allowed movement
         return True
+    # end def
+
+
+    def falling_loop (self, has_fallen=False):
+        """
+            sprite falling down animation loop;
+        """
+        # security
+        if self.locked:
+            return False
+        # end if
+        # evaluate falldown
+        _fallen = self.move_sprite(0, +1, callback=self.falling_collisions)
+        if self.need_looping:
+            self.animations.run_after(100, self.falling_loop, _fallen)
+        else:
+            self.animations.stop(self.falling_loop)
+            self.is_falling = False
+            if has_fallen:
+                self.touched_down()
+            # end if
+        # end if
+    # end def
+
+
+    def init_sprite (self, **kw):
+        """
+            hook method to be reimplemented in subclass;
+            this avoids re-declaring __init__ signatures all the time;
+        """
+        # member inits
+        self.is_overable = False
+        self.is_movable = False
+        self.is_falling = False
+        self.need_looping = False
+        self.locked = False
     # end def
 
 

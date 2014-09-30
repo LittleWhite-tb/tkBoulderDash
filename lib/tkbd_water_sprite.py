@@ -34,6 +34,17 @@ class TkBDWaterSprite (S.TkGameMatrixSprite):
         Water sprite in the mine;
     """
 
+    def destroy (self, *args, **kw):
+        """
+            falling sprites may remove this sprite;
+        """
+        # ancestor first
+        super().destroy(*args, **kw)
+        # events handling
+        self.events.raise_event("Main:Water:Removed")
+    # end def
+
+
     def init_sprite (self, **kw):
         """
             hook method to be reimplemented in subclass;
@@ -41,20 +52,6 @@ class TkBDWaterSprite (S.TkGameMatrixSprite):
         """
         # member inits
         self.is_background = True
-        self.is_fatal = True
-    # end def
-
-
-    def destroy (self, *args, **kw):
-        """
-            falling sprites may remove this sprite;
-        """
-        # delete from canvas
-        self.canvas.delete(self.canvas_id)
-        # delete from matrix
-        self.matrix.drop_xy(self.xy)
-        # events handling
-        self.events.raise_event("Main:Water:Removed")
     # end def
 
 # end class TkBDWaterSprite

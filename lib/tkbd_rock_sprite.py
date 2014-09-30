@@ -33,18 +33,6 @@ class TkBDRockSprite (S.TkBDFallingSprite):
         Rock sprite in the mine;
     """
 
-    def init_sprite (self, **kw):
-        """
-            hook method to be reimplemented in subclass;
-            this avoids re-declaring __init__ signatures all the time;
-        """
-        # super class inits
-        super().init_sprite(**kw)
-        # member inits
-        self.is_movable = True
-    # end def
-
-
     def has_moved (self, c_dict):
         """
             determines if the rock can be pushed in the given
@@ -62,6 +50,18 @@ class TkBDRockSprite (S.TkBDFallingSprite):
             self.events.raise_event("Main:Rock:Pushed", sprite=self)
         # end if
         return _moved
+    # end def
+
+
+    def init_sprite (self, **kw):
+        """
+            hook method to be reimplemented in subclass;
+            this avoids re-declaring __init__ signatures all the time;
+        """
+        # super class inits
+        super().init_sprite(**kw)
+        # member inits
+        self.is_movable = True
     # end def
 
 

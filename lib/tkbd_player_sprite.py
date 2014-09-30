@@ -35,6 +35,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
 
     # class constants
     STATUS = {
+
         "default": {
             "loop": True,
             "sequence": True,
@@ -60,6 +61,34 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         },
     }
 
+
+    def filter_collisions (self, c_dict):
+        """
+            controls whether collisions with other sprites should
+            allow to move or not;
+        """
+        # collided sprite inits
+        sprite = c_dict["sprite"]
+        # got something?
+        if sprite:
+            # is overable?
+            if sprite.is_overable:
+                # run over it!
+                sprite.destroy()
+            # is pushable?
+            elif sprite.is_movable:
+                # player may move only if sprite has moved
+                return sprite.has_moved(c_dict)
+            else:
+                # denied movement
+                return False
+            # end if
+        # end if
+        # allowed movement
+        return True
+    # end def
+
+
     def init_sprite (self, **kw):
         """
             hook method to be reimplemented in subclass;
@@ -70,11 +99,14 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
     # end def
 
 
-    def move_up (self, *args, **kw):
+    def move_animation (self, c_dict):
         """
-            moves up;
+            sprite moving animation;
         """
-        self.move_sprite(0, -1, callback=self.filter_collisions)
+        # super class move_animation
+        super().move_animation(c_dict)
+        # player sprite moved
+        self.events.raise_event("Main:Player:Moved")
     # end def
 
 
@@ -106,41 +138,34 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
     # end def
 
 
-    def filter_collisions (self, c_dict):
+    def move_up (self, *args, **kw):
         """
-            controls whether collisions with other sprites should
-            allow to move or not;
+            moves up;
         """
-        # collided sprite inits
-        sprite = c_dict["sprite"]
-        # got something?
-        if sprite:
-            # is overable?
-            if sprite.is_overable:
-                # run over it!
-                sprite.destroy()
-            # is pushable?
-            elif sprite.is_movable:
-                # player may move only if sprite has moved
-                return sprite.has_moved(c_dict)
-            else:
-                # denied movement
-                return False
-            # end if
-        # end if
-        # allowed movement
-        return True
+        self.move_sprite(0, -1, callback=self.filter_collisions)
     # end def
 
 
-    def move_animation (self, c_dict):
+    def on_sequence_end (self, *args, **kw):
         """
-            sprite moving animation;
+            on image animation sequence end;
         """
-        # super class move_animation
-        super().move_animation(c_dict)
-        # player sprite moved
-        self.events.raise_event("Main:Player:Moved")
+        # player is dead
+        super().destroy(*args, **kw)
+        # text animation
+        _opts = dict(text=_("Bobo!"), font="{} 32".format(FONT1))
+        self.canvas.create_text(
+            self.x + 3, self.y + 3,
+            fill="black",
+            **_opts
+        )
+        self.canvas.create_text(
+            self.x, self.y,
+            fill="khaki1",
+            **_opts
+        )
+        # events handling
+        self.events.raise_event("Main:Player:Dead")
     # end def
 
 
@@ -157,31 +182,9 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         """
             player has been splashed;
         """
-        self.events.raise_event("Main:Player:Splashed")
         self.animations.stop(self.player_idle)
         self.state = "splashed"
-    # end def
-
-
-    def on_sequence_end (self, *args, **kw):
-        """
-            on image animation sequence end;
-        """
-        # player is dead
-        self.canvas.delete(self.canvas_id)
-        self.matrix.drop_xy(self.xy)
-        _opts = dict(text=_("Bobo!"), font="{} 32".format(FONT1))
-        self.canvas.create_text(
-            self.x + 3, self.y + 3,
-            fill="black",
-            **_opts
-        )
-        self.canvas.create_text(
-            self.x, self.y,
-            fill="khaki1",
-            **_opts
-        )
-        self.events.raise_event("Main:Player:Dead")
+        self.events.raise_event("Main:Player:Splashed")
     # end def
 
 # end class TkBDPlayerSprite

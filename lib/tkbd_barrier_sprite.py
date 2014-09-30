@@ -34,18 +34,6 @@ class TkBDBarrierSprite (S.TkGameMatrixSprite):
         Barrier sprite in the mine;
     """
 
-    def init_sprite (self, **kw):
-        """
-            hook method to be reimplemented in subclass;
-            this avoids re-declaring __init__ signatures all the time;
-        """
-        # member inits
-        self.is_overable = False
-        self.is_movable = False
-        self.locked = False
-    # end def
-
-
     def destroy (self, *args, **kw):
         """
             falling sprites may remove this sprite;
@@ -54,10 +42,8 @@ class TkBDBarrierSprite (S.TkGameMatrixSprite):
         if not self.locked:
             # disable unexpected events
             self.locked = True
-            # delete from canvas
-            self.canvas.delete(self.canvas_id)
-            # delete from matrix
-            self.matrix.drop_xy(self.xy)
+            # ancestor first
+            super().destroy(*args, **kw)
             # events handling
             self.events.raise_event(
                 self.get_event_name("removed"), sprite=self
@@ -72,6 +58,18 @@ class TkBDBarrierSprite (S.TkGameMatrixSprite):
             returns formatted event name;
         """
         return "Main:Barrier:{}".format(str(action).capitalize())
+    # end def
+
+
+    def init_sprite (self, **kw):
+        """
+            hook method to be reimplemented in subclass;
+            this avoids re-declaring __init__ signatures all the time;
+        """
+        # member inits
+        self.is_overable = False
+        self.is_movable = False
+        self.locked = False
     # end def
 
 # end class TkBDBarrierSprite

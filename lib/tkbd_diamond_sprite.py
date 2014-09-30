@@ -36,12 +36,29 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
 
     # class constants
     STATUS = {
+
         "default": {
             "loop": True,
             "sequence": True,
             "delay": 100,
         },
     }
+
+
+    def destroy (self, *args, **kw):
+        """
+            player caught the diamond;
+        """
+        # enabled?
+        if not self.locked:
+            # lock sprite for unexpected events
+            self.locked = True
+            # ancestor first
+            super().destroy(*args, **kw)
+            # events handling
+            self.events.raise_event("Main:Diamond:Collected", sprite=self)
+        # end if
+    # end def
 
 
     def init_sprite (self, **kw):
@@ -53,26 +70,6 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
         super().init_sprite(**kw)
         # member inits
         self.is_overable = True
-    # end def
-
-
-    def destroy (self, *args, **kw):
-        """
-            player caught the diamond;
-        """
-        # enabled?
-        if not self.locked:
-            # lock sprite for unexpected events
-            self.locked = True
-            # stop unwanted loops
-            self.animations.stop(self.falling_loop)
-            # delete from canvas
-            self.canvas.delete(self.canvas_id)
-            # delete from matrix
-            self.matrix.drop_xy(self.xy)
-            # events handling
-            self.events.raise_event("Main:Diamond:Collected", sprite=self)
-        # end if
     # end def
 
 

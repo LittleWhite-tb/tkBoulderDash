@@ -34,6 +34,17 @@ class TkBDEarthSprite (S.TkGameMatrixSprite):
         Earth-block sprite in the mine;
     """
 
+    def destroy (self, *args, **kw):
+        """
+            player has digged earth block;
+        """
+        # ancestor first
+        super().destroy(*args, **kw)
+        # events handling
+        self.events.raise_event("Main:Earth:Digged")
+    # end def
+
+
     def init_sprite (self, **kw):
         """
             hook method to be reimplemented in subclass;
@@ -42,19 +53,6 @@ class TkBDEarthSprite (S.TkGameMatrixSprite):
         # member inits
         self.is_overable = True
         self.is_movable = False
-    # end def
-
-
-    def destroy (self, *args, **kw):
-        """
-            player has digged earth block;
-        """
-        # delete from canvas
-        self.canvas.delete(self.canvas_id)
-        # delete from matrix
-        self.matrix.drop_xy(self.xy)
-        # events handling
-        self.events.raise_event("Main:Earth:Digged")
     # end def
 
 # end class TkBDEarthSprite
