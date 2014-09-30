@@ -6,9 +6,22 @@ TODO
 
     * niveau 1 chiadé OK;
 
+    * ajouter la fonctionnalité "message qui s'envole" à partir
+    d'une position (x, y) donnée du canevas graphique (pas de
+    calculs relatifs au viewport, svp);
+
+    * ajouter la possibilité de faire varier la couleur du message
+    qui s'envole e.g. "yellow" --> "sienna";
+
     * ajouter les fantômes de la mine qui courent après le
     player_sprite;
 
-    * ajouter le mine-worm, le ver géant des mines qui engloutit les
-    diamants; on peut le vaincre et récupérer les diamants en lui
-    faisant tomber un rocher dessus;
+    * ajouter le coffre "trésor des Anciens" avec le sprite "clé en
+    or" à collecter pour déclencher l'ouverture de ce coffre au look
+    pirates des caraïbes; le coffre reste inactif tant que la clé
+    n'a pas d'abord été collectée;
+
+    * au dernier niveau, finir en beauté avec la coupe "Holy Grail!"
+    (le Saint-Graal) qui fuit le joueur (ou qui empêche le joueur de
+    l'approcher) tant que les diamants pourpres n'ont pas d'abord
+    été collectés;
