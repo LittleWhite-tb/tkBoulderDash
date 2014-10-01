@@ -2,9 +2,6 @@
 TODO
 ====
 
-    * ajouter la possibilité de faire varier la couleur du message
-    qui s'envole e.g. "yellow" --> "sienna";
-
     * ajouter les fantômes de la mine qui courent après le
     player_sprite;
 

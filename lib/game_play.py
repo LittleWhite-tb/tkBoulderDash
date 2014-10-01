@@ -157,6 +157,8 @@ class GamePlay:
         self.play_sound("player caught diamond", self.SNDTRACK_DIAMOND)
         # drop diamond from managed list
         self.remove_falling(sprite)
+        # show cool info on canvas
+        self.show_cool_info(sprite.xy, text="+200")
         # free some memory
         del sprite
         # update score
@@ -684,6 +686,27 @@ class GamePlay:
                 25 * (ticks + 2), self.scroll_to_player, ticks, True
             )
         # end if
+    # end def
+
+
+    def show_cool_info (self, tuple_xy, **options):
+        """
+            shows a short flying text at position (x, y);
+        """
+        # inits
+        _frms = options.pop("frames", 5)
+        _delay = options.pop("delay", 50)
+        _opts = dict(
+            text="cool info",
+            font="{} 28".format(FONT2),
+            fill="yellow",
+        )
+        _opts.update(options)
+        x, y = tuple_xy
+        _fx = FXFT.TkGameFXFlyingText(self.canvas)
+        _fx.create_text(x, y, **_opts)
+        # show cool info
+        _fx.start(frames=_frms, delay=_delay)
     # end def
 
 
