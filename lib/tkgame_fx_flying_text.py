@@ -30,8 +30,7 @@ from . import tkgame_animations as AP
 class TkGameFXFlyingText:
     """
         Game special effects:
-        canvas flying text along a curve function y = f(x);
-        admits vertical vector v = (0, dy);
+        canvas flying text along (curve(x), curve(y)) functions;
     """
 
     def __init__ (self, canvas, **kw):
@@ -49,42 +48,25 @@ class TkGameFXFlyingText:
     # end def
 
 
-    def animation_loop (self, startx, starty, stopx, stopy, stepx, stepy, frame=0):
+    def animation_loop (self, x, y, ratio_x, ratio_y, frame=0):
         """
             special effects animation loop;
         """
-        print("args:", startx, starty, stopx, stopy, stepx, stepy, frame)
-        # can move along a curve?
-        if stepx:
-            # curve function
-            try:
-                # y = f(x)
-                starty = self.curve(startx)
-                print("(startx, starty):", (startx, starty))
-            except:
-                # do *NOT* change previous value of starty
-                pass
-            # end try
+        # curve functions
+        try:
+            x = self.curve_x(ratio_x * frame)
+            y = self.curve_y(ratio_y * frame)
+        except:
+            pass
         else:
-            # vertical move
-            starty += stepy
-        # end if
-        # update positions
-        startx += stepx
-        # rebind values
-        if abs(startx) >= abs(stopx):
-            startx = stopx
-        # end if
-        if abs(starty) >= abs(stopy):
-            starty = stopy
-        # end if
-        # update display
-        x, y = (self.x0 + startx, self.y0 - starty)
-        if self.shadow:
-            rx, ry, color = self.shadow
-            self.canvas.coords(self.cid_shadow, x + rx, y + ry)
-        # end if
-        self.canvas.coords(self.cid_text, x, y)
+            # update display
+            _x, _y = (self.x0 + x, self.y0 - y)
+            if self.shadow:
+                rx, ry, color = self.shadow
+                self.canvas.coords(self.cid_shadow, _x + rx, _y + ry)
+            # end if
+            self.canvas.coords(self.cid_text, _x, _y)
+        # end try
         # should keep on animating?
         if frame < self.frames:
             # update frame
@@ -92,7 +74,7 @@ class TkGameFXFlyingText:
             # loop again
             self.animations.run_after(
                 self.delay, self.animation_loop,
-                startx, starty, stopx, stopy, stepx, stepy, frame
+                x, y, ratio_x, ratio_y, frame
             )
         # animation ended
         else:
@@ -130,48 +112,73 @@ class TkGameFXFlyingText:
     # end def
 
 
-    def fx_hyperbolic (self, numerator=1):
+    def fx_cos (self, amplitude=1, offset=0):
         """
-            curve function y = f(x);
-            closure for hyperbolic curve y = a / x;
+            closure for cosinusoidal curve f(x) = a * cos(x + b);
         """
-        return lambda x: numerator / x
+        return lambda x: amplitude * math.cos(x + offset)
     # end def
 
 
-    def fx_linear (self, coeff=1):
+    def fx_hyperbolic (self, numerator=1, offset=0):
         """
-            curve function y = f(x);
-            closure for linear curve y = a * x;
+            closure for hyperbolic curve f(x) = a / (x + b);
         """
-        return lambda x: coeff * x
+        return lambda x: numerator / (x + offset)
     # end def
 
 
-    def fx_log (self, amplitude=1):
+    def fx_linear (self, coeff=1, offset=0):
         """
-            curve function y = f(x);
-            closure for base-10 logarithmic curve y = a * log10(x);
+            closure for linear curve f(x) = a * (x + b);
         """
-        return lambda x: amplitude * math.log10(x)
+        return lambda x: coeff * (x + offset)
     # end def
 
 
-    def fx_ln (self, amplitude=1):
+    def fx_log10 (self, amplitude=1, offset=0):
         """
-            curve function y = f(x);
-            closure for natural logarithmic curve y = a * ln(x);
+            closure for base-10 logarithmic curve
+            f(x) = a * log10(x + b);
         """
-        return lambda x: amplitude * math.log(x)
+        return lambda x: amplitude * math.log10(x + offset)
     # end def
 
 
-    def fx_quadratic (self, amplitude=1):
+    def fx_ln (self, amplitude=1, offset=0):
         """
-            curve function y = f(x);
-            closure for quadratic curve y = a * x**2;
+            closure for natural logarithmic curve f(x) = a * ln(x + b);
         """
-        return lambda x: amplitude * x**2
+        return lambda x: amplitude * math.log(x + offset)
+    # end def
+
+
+    def fx_quadratic (self, amplitude=1, offset=0):
+        """
+            closure for quadratic curve f(x) = a * (x + b)**2;
+        """
+        return lambda x: amplitude * (x + offset)**2
+    # end def
+
+
+    def fx_sin (self, amplitude=1, offset=0):
+        """
+            closure for sinusoidal curve f(x) = a * sin(x + b);
+        """
+        return lambda x: amplitude * math.sin(x + offset)
+    # end def
+
+
+    def get_curve (self, callback):
+        """
+            returns @callback if is callable;
+            returns default linear curve otherwise;
+        """
+        if callable(callback):
+            return callback
+        else:
+            return self.fx_linear()
+        # end if
     # end def
 
 
@@ -180,10 +187,11 @@ class TkGameFXFlyingText:
             member keyword inits;
         """
         # keyword inits
-        self.delay = kw.get("delay") or 100
-        self.vector = kw.get("vector") or (0, -100)
-        self.frames = kw.get("frames") or 10
-        self.curve = kw.get("curve")
+        self.delay = kw.get("delay") or 50
+        self.vector = kw.get("vector") or (0, 100)
+        self.frames = kw.get("frames") or 20
+        self.curve_x = self.get_curve(kw.get("curve_x"))
+        self.curve_y = self.get_curve(kw.get("curve_y"))
     # end def
 
 
@@ -204,19 +212,15 @@ class TkGameFXFlyingText:
         """
         # param inits
         self.init_kw(**kw)
-        # param controls
-        if not callable(self.curve):
-            self.curve = self.fx_linear()
-        # end if
         # got something to animate?
         if self.cid_text:
             # inits
             vx, vy = self.vector
-            dx = vx / self.frames
-            dy = -vy / self.frames
+            ratio_x = vx / self.frames
+            ratio_y = vy / self.frames
             # run animation loop
             self.animations.run_after(
-                self.delay, self.animation_loop, 0, 0, vx, vy, dx, dy
+                self.delay, self.animation_loop, 0, 0, ratio_x, ratio_y
             )
         # no text by there!
         else:
