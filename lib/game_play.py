@@ -32,6 +32,7 @@ from . import tkgame_animations as AP
 from . import tkgame_audio as AU
 from . import tkgame_canvas_fixedlayer as FL
 from . import tkgame_events as EM
+from . import tkgame_fx_flying_text as FXFT
 from . import tkgame_fx_rotating_sun as FXRS
 
 
@@ -447,6 +448,17 @@ class GamePlay:
         """
             player is now really dead;
         """
+        # animated text
+        x, y = self.viewport_center_xy()
+        _fx = FXFT.TkGameFXFlyingText(self.canvas)
+        _fx.create_text(
+            x, y,
+            text="GAME OVER",
+            font="{} 56".format(FONT1),
+            fill="white",
+            shadow=(+4, +4, "darkred"),
+        )
+        _fx.start(vector=(100, -50), curve=_fx.fx_log, delay=50)
         self.animations.run_after(3000, self.owner.main_menu_screen)
     # end def
 

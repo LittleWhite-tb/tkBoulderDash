@@ -49,7 +49,7 @@ class TkGameFXFlyingText:
     # end def
 
 
-    def animation_loop (self, startx, starty, stopx, stopy, stepx, stepy):
+    def animation_loop (self, startx, starty, stopx, stopy, stepx, stepy, frame=0):
         """
             special effects animation loop;
         """
@@ -84,11 +84,13 @@ class TkGameFXFlyingText:
         # end if
         self.canvas.coords(self.cid_text, x, y)
         # should keep on animating?
-        if abs(starty) < abs(stopy) or abs(startx) < abs(stopx):
+        if frame < self.frames:
+            # update frame tick
+            frame += 1
             # loop again
             self.animations.run_after(
                 self.delay, self.animation_loop,
-                startx, starty, stopx, stopy, stepx, stepy
+                startx, starty, stopx, stopy, stepx, stepy, frame
             )
         # animation ended
         else:
@@ -111,7 +113,8 @@ class TkGameFXFlyingText:
         if self.shadow:
             # inits
             rx, ry, color = self.shadow
-            s_opts = options.copy().update(fill=color)
+            s_opts = options.copy()
+            s_opts.update(fill=color)
             # create shadow text
             self.cid_shadow = self.canvas.create_text(
                 x + rx, y + ry, **s_opts
@@ -125,48 +128,48 @@ class TkGameFXFlyingText:
     # end def
 
 
-    def fx_hyperbolic (self, x):
+    def fx_hyperbolic (self, numerator=1):
         """
             curve function y = f(x);
-            hyperbolic curve y = 1/x;
+            closure for hyperbolic curve y = a / x;
         """
-        return 1.0/x
+        return lambda x: numerator / x
     # end def
 
 
-    def fx_linear (self, x):
+    def fx_linear (self, coeff=1):
         """
             curve function y = f(x);
-            linear curve y = x;
+            closure for linear curve y = a * x;
         """
-        return x
+        return lambda x: coeff * x
     # end def
 
 
-    def fx_log (self, x):
+    def fx_log (self, amplitude=1):
         """
             curve function y = f(x);
-            base-10 logarithmic curve y = log10(x);
+            closure for base-10 logarithmic curve y = a * log10(x);
         """
-        return math.log10(x)
+        return lambda x: amplitude * math.log10(x)
     # end def
 
 
-    def fx_ln (self, x):
+    def fx_ln (self, amplitude=1):
         """
             curve function y = f(x);
-            natural logarithmic curve y = ln(x);
+            closure for natural logarithmic curve y = a * ln(x);
         """
-        return math.log(x)
+        return lambda x: amplitude * math.log(x)
     # end def
 
 
-    def fx_quadratic (self, x):
+    def fx_quadratic (self, amplitude=1):
         """
             curve function y = f(x);
-            quadratic curve y = x^2;
+            closure for quadratic curve y = a * x**2;
         """
-        return x**2
+        return lambda x: amplitude * x**2
     # end def
 
 
@@ -201,7 +204,7 @@ class TkGameFXFlyingText:
         self.init_kw(**kw)
         # param controls
         if not callable(self.curve):
-            self.curve = self.fx_linear
+            self.curve = self.fx_linear()
         # end if
         # got something to animate?
         if self.cid_text:
@@ -218,7 +221,7 @@ class TkGameFXFlyingText:
             # error
             raise FXFlyingTextError(
                 "no text to animate. "
-                "Please, use {0}.create_text() method"
+                "Please, use {0}.create_text() method "
                 "to set up some animated text "
                 "before calling {0}.start() method."
                 .format(__class__.__name__)
