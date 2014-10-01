@@ -33,7 +33,7 @@ class TkGameFXFlyingText:
         canvas flying text along (curve(x), curve(y)) functions;
     """
 
-    def __init__ (self, canvas, **kw):
+    def __init__ (self, canvas):
         """
             class constructor
         """
@@ -44,7 +44,6 @@ class TkGameFXFlyingText:
         self.cid_text = 0
         self.cid_shadow = 0
         self.x0, self.y0 = (0, 0)
-        self.init_kw(**kw)
     # end def
 
 
@@ -57,6 +56,7 @@ class TkGameFXFlyingText:
             x = self.curve_x(ratio_x * frame)
             y = self.curve_y(ratio_y * frame)
         except:
+            #~ print("exception on curve calculations")
             pass
         else:
             # update display
@@ -187,6 +187,7 @@ class TkGameFXFlyingText:
             member keyword inits;
         """
         # keyword inits
+        self.keep_alive = bool(kw.get("keep_alive"))
         self.delay = kw.get("delay") or 50
         self.vector = kw.get("vector") or (0, 100)
         self.frames = kw.get("frames") or 20
@@ -243,7 +244,9 @@ class TkGameFXFlyingText:
         # stop eventual loop
         self.animations.stop(self.animation_loop)
         # call hook method
-        self.on_animation_end()
+        if not self.keep_alive:
+            self.on_animation_end()
+        # end if
     # end def
 
 # end class TkGameFXFlyingText

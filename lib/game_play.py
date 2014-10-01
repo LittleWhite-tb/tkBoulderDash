@@ -452,13 +452,16 @@ class GamePlay:
         x, y = self.viewport_center_xy()
         _fx = FXFT.TkGameFXFlyingText(self.canvas)
         _fx.create_text(
-            x, y,
-            text="GAME OVER",
-            font="{} 56".format(FONT1),
-            fill="white",
+            x, y + 50,
+            text=_("GAME OVER"),
+            font="{} 48".format(FONT1),
+            fill="yellow",
             shadow=(+4, +4, "darkred"),
         )
-        _fx.start()
+        _fx.start(
+            curve_y=_fx.fx_ln(amplitude=20, offset=1),
+            keep_alive=True,
+        )
         self.animations.run_after(3000, self.owner.main_menu_screen)
     # end def
 
