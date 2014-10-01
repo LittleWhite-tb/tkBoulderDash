@@ -152,18 +152,6 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         """
         # player is dead
         super().destroy(*args, **kw)
-        # text animation
-        #~ _opts = dict(text=_("Bobo!"), font="{} 32".format(FONT1))
-        #~ self.canvas.create_text(
-            #~ self.x + 3, self.y + 3,
-            #~ fill="black",
-            #~ **_opts
-        #~ )
-        #~ self.canvas.create_text(
-            #~ self.x, self.y,
-            #~ fill="khaki1",
-            #~ **_opts
-        #~ )
         # events handling
         self.events.raise_event("Main:Player:Dead")
     # end def
