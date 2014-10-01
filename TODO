@@ -2,14 +2,6 @@
 TODO
 ====
 
-    * chiader beaucoup plus le niveau 2 (priorité 1);
-
-    * niveau 1 chiadé OK;
-
-    * ajouter la fonctionnalité "message qui s'envole" à partir
-    d'une position (x, y) donnée du canevas graphique (pas de
-    calculs relatifs au viewport, svp);
-
     * ajouter la possibilité de faire varier la couleur du message
     qui s'envole e.g. "yellow" --> "sienna";
 

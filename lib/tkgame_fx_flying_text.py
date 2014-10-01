@@ -40,6 +40,7 @@ class TkGameFXFlyingText:
         # member inits
         self.canvas = canvas
         self.animations = AP.get_animation_pool()
+        self.colors = dict()
         self.shadow = None
         self.cid_text = 0
         self.cid_shadow = 0
@@ -64,8 +65,14 @@ class TkGameFXFlyingText:
             if self.shadow:
                 rx, ry, color = self.shadow
                 self.canvas.coords(self.cid_shadow, _x + rx, _y + ry)
+                self.canvas.itemconfigure(
+                    self.cid_shadow, fill=self.get_shadow_color(frame)
+                )
             # end if
             self.canvas.coords(self.cid_text, _x, _y)
+            self.canvas.itemconfigure(
+                self.cid_text, fill=self.get_text_color(frame)
+            )
         # end try
         # should keep on animating?
         if frame < self.frames:
@@ -91,12 +98,14 @@ class TkGameFXFlyingText:
         """
         # inits
         self.x0, self.y0 = (x, y)
+        self.colors["text"] = options.get("fill")
         self.shadow = options.pop("shadow", None)
         self.cid_shadow = 0
         # shadow feature asked?
         if self.shadow:
             # inits
             rx, ry, color = self.shadow
+            self.colors["shadow"] = color
             s_opts = options.copy()
             s_opts.update(fill=color)
             # create shadow text
@@ -169,16 +178,19 @@ class TkGameFXFlyingText:
     # end def
 
 
-    def get_curve (self, callback):
+    def get_callback (self, *callbacks):
         """
-            returns @callback if is callable;
-            returns default linear curve otherwise;
+            returns the first callable callback function if found;
+            raises an exception FXFlyingTextError otherwise;
         """
-        if callable(callback):
-            return callback
-        else:
-            return self.fx_linear()
-        # end if
+        for _cb in callbacks:
+            if callable(_cb):
+                return _cb
+            # end if
+        # end for
+        raise FXFlyingTextError(
+            "unable to get a callable callback function."
+        )
     # end def
 
 
@@ -191,8 +203,18 @@ class TkGameFXFlyingText:
         self.delay = kw.get("delay") or 50
         self.vector = kw.get("vector") or (0, 100)
         self.frames = kw.get("frames") or 20
-        self.curve_x = self.get_curve(kw.get("curve_x"))
-        self.curve_y = self.get_curve(kw.get("curve_y"))
+        self.curve_x = self.get_callback(
+            kw.get("curve_x"), self.fx_linear()
+        )
+        self.curve_y = self.get_callback(
+            kw.get("curve_y"), self.fx_linear()
+        )
+        self.get_text_color = self.get_callback(
+            kw.get("get_text_color"), self.text_color
+        )
+        self.get_shadow_color = self.get_callback(
+            kw.get("get_shadow_color"), self.shadow_color
+        )
     # end def
 
 
@@ -204,6 +226,15 @@ class TkGameFXFlyingText:
         # drop text from canvas
         self.canvas.delete(self.cid_shadow)
         self.canvas.delete(self.cid_text)
+    # end def
+
+
+    def shadow_color (self, frame):
+        """
+            retrieves shadow color along @frame value;
+            hook method to be reimplemented in subclass;
+        """
+        return self.colors.get("shadow")
     # end def
 
 
@@ -247,6 +278,15 @@ class TkGameFXFlyingText:
         if not self.keep_alive:
             self.on_animation_end()
         # end if
+    # end def
+
+
+    def text_color (self, frame):
+        """
+            retrieves text color along @frame value;
+            hook method to be reimplemented in subclass;
+        """
+        return self.colors.get("text")
     # end def
 
 # end class TkGameFXFlyingText
