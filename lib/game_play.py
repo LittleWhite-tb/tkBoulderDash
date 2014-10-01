@@ -739,7 +739,7 @@ class GamePlay:
         """
             updates timer countdown display;
         """
-        self.objects.countdown = max(
+        _c = self.objects.countdown = max(
             0, min(600, self.objects.countdown - 1)
         )
         self.canvas.itemconfigure(
@@ -747,15 +747,19 @@ class GamePlay:
             text=self.format_time()
         )
         # hurry up!
-        if self.objects.countdown <= 10:
+        if _c <= 10:
             self.canvas.itemconfigure(
                 self.cid_countdown, fill="tomato"
             )
-            self.play_sound("countdown beep", self.SNDTRACK_BACKGROUND)
+            if _c and not (_c % 2):
+                self.play_sound(
+                    "countdown alarm", self.SNDTRACK_BACKGROUND
+                )
+            # end if
             self.animations.run_after(250, self.blink_countdown)
         # end if
         # time is out!
-        if not self.objects.countdown:
+        if not _c:
             self.animations.stop(self.blink_countdown)
             self.objects.player_sprite.splashed()
         # keep on counting down
