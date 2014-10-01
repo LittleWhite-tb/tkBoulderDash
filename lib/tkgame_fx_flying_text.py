@@ -29,7 +29,9 @@ from . import tkgame_animations as AP
 
 class TkGameFXFlyingText:
     """
-        Game special effects: canvas flying text;
+        Game special effects:
+        canvas flying text along a curve function y = f(x);
+        admits vertical vector v = (0, dy);
     """
 
     def __init__ (self, canvas, **kw):
@@ -39,6 +41,7 @@ class TkGameFXFlyingText:
         # member inits
         self.canvas = canvas
         self.animations = AP.get_animation_pool()
+        self.shadow = None
         self.cid_text = 0
         self.cid_shadow = 0
         self.x0, self.y0 = (0, 0)
@@ -50,12 +53,48 @@ class TkGameFXFlyingText:
         """
             special effects animation loop;
         """
-        # inits
-        # loop again
-        self.animations.run_after(
-            self.delay, self.animation_loop,
-            startx, starty, stopx, stopy, stepx, stepy
-        )
+        # can move along a curve?
+        if stepx:
+            # update positions
+            startx += stepx
+            # curve function
+            try:
+                # y = f(x)
+                starty = self.curve(startx)
+            except:
+                # do *NOT* change previous value of starty
+                pass
+            # end try
+        else:
+            # vertical move
+            starty += stepy
+        # end if
+        # rebind values
+        if abs(startx) >= abs(stopx):
+            startx = stopx
+        # end if
+        if abs(starty) >= abs(stopy):
+            starty = stopy
+        # end if
+        # update display
+        x, y = (self.x0 + startx, self.y0 + starty)
+        if self.shadow:
+            rx, ry, color = self.shadow
+            self.canvas.coords(self.cid_shadow, x + rx, y + ry)
+        # end if
+        self.canvas.coords(self.cid_text, x, y)
+        # should keep on animating?
+        if abs(starty) < abs(stopy) or abs(startx) < abs(stopx):
+            # loop again
+            self.animations.run_after(
+                self.delay, self.animation_loop,
+                startx, starty, stopx, stopy, stepx, stepy
+            )
+        # animation ended
+        else:
+            # stop all!
+            self.stop()
+        # end if
     # end def
 
 
@@ -66,12 +105,12 @@ class TkGameFXFlyingText:
         """
         # inits
         self.x0, self.y0 = (x, y)
-        shadow = options.pop("shadow", None)
+        self.shadow = options.pop("shadow", None)
         self.cid_shadow = 0
         # shadow feature asked?
-        if shadow:
+        if self.shadow:
             # inits
-            rx, ry, color = shadow
+            rx, ry, color = self.shadow
             s_opts = options.copy().update(fill=color)
             # create shadow text
             self.cid_shadow = self.canvas.create_text(
@@ -125,7 +164,7 @@ class TkGameFXFlyingText:
     def fx_quadratic (self, x):
         """
             curve function y = f(x);
-            quadratic curve y = x**2;
+            quadratic curve y = x^2;
         """
         return x**2
     # end def
@@ -143,6 +182,17 @@ class TkGameFXFlyingText:
     # end def
 
 
+    def on_animation_end (self, *args, **kw):
+        """
+            hook method to be reimplemented in subclass;
+            manages the end of a given animation loop;
+        """
+        # drop text from canvas
+        self.canvas.delete(self.cid_shadow)
+        self.canvas.delete(self.cid_text)
+    # end def
+
+
     def start (self, **kw):
         """
             starts animation loop on demand;
@@ -153,14 +203,48 @@ class TkGameFXFlyingText:
         if not callable(self.curve):
             self.curve = self.fx_linear
         # end if
-        # inits
-        vx, vy = self.vector
-        dx = vx / self.frames
-        dy = vy / self.frames
-        # run animation loop
-        self.animations.run_after(
-            self.delay, self.animation_loop, 0, 0, vx, vy, dx, dy
-        )
+        # got something to animate?
+        if self.cid_text:
+            # inits
+            vx, vy = self.vector
+            dx = vx / self.frames
+            dy = vy / self.frames
+            # run animation loop
+            self.animations.run_after(
+                self.delay, self.animation_loop, 0, 0, vx, vy, dx, dy
+            )
+        # no text by there!
+        else:
+            # error
+            raise FXFlyingTextError(
+                "no text to animate. "
+                "Please, use {0}.create_text() method"
+                "to set up some animated text "
+                "before calling {0}.start() method."
+                .format(__class__.__name__)
+            )
+        # end if
+    # end def
+
+
+    def stop (self, *args, **kw):
+        """
+            stops animation loop on demand;
+        """
+        # stop eventual loop
+        self.animations.stop(self.animation_loop)
+        # call hook method
+        self.on_animation_end()
     # end def
 
 # end class TkGameFXFlyingText
+
+
+
+class FXFlyingTextError (Exception):
+    """
+        exception handler for class TkGameFXFlyingText;
+    """
+    pass
+
+# end class FXFlyingTextError
