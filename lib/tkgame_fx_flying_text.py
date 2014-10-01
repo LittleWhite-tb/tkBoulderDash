@@ -53,14 +53,14 @@ class TkGameFXFlyingText:
         """
             special effects animation loop;
         """
+        print("args:", startx, starty, stopx, stopy, stepx, stepy, frame)
         # can move along a curve?
         if stepx:
-            # update positions
-            startx += stepx
             # curve function
             try:
                 # y = f(x)
                 starty = self.curve(startx)
+                print("(startx, starty):", (startx, starty))
             except:
                 # do *NOT* change previous value of starty
                 pass
@@ -69,6 +69,8 @@ class TkGameFXFlyingText:
             # vertical move
             starty += stepy
         # end if
+        # update positions
+        startx += stepx
         # rebind values
         if abs(startx) >= abs(stopx):
             startx = stopx
@@ -77,7 +79,7 @@ class TkGameFXFlyingText:
             starty = stopy
         # end if
         # update display
-        x, y = (self.x0 + startx, self.y0 + starty)
+        x, y = (self.x0 + startx, self.y0 - starty)
         if self.shadow:
             rx, ry, color = self.shadow
             self.canvas.coords(self.cid_shadow, x + rx, y + ry)
@@ -85,7 +87,7 @@ class TkGameFXFlyingText:
         self.canvas.coords(self.cid_text, x, y)
         # should keep on animating?
         if frame < self.frames:
-            # update frame tick
+            # update frame
             frame += 1
             # loop again
             self.animations.run_after(
@@ -211,7 +213,7 @@ class TkGameFXFlyingText:
             # inits
             vx, vy = self.vector
             dx = vx / self.frames
-            dy = vy / self.frames
+            dy = -vy / self.frames
             # run animation loop
             self.animations.run_after(
                 self.delay, self.animation_loop, 0, 0, vx, vy, dx, dy

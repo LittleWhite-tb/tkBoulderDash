@@ -458,7 +458,7 @@ class GamePlay:
             fill="white",
             shadow=(+4, +4, "darkred"),
         )
-        _fx.start(vector=(100, -50), curve=_fx.fx_log, delay=50)
+        _fx.start(vector=(1000, 200), curve=_fx.fx_ln(20), delay=50)
         self.animations.run_after(3000, self.owner.main_menu_screen)
     # end def
 
