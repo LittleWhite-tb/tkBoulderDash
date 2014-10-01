@@ -395,6 +395,7 @@ class GamePlay:
             self.canvas.delete("pause_group")
             self.events.raise_event("Main:Game:Resumed")
             self.scroll_to_player()
+            self.update_falldown()
             self.bind_canvas_events()
             self.update_game_data()
         # pause game
@@ -404,6 +405,7 @@ class GamePlay:
             self.animations.stop(
                 self.scroll_to_player,
                 self.scroll_animation_loop,
+                self.update_falldown,
                 self.update_countdown,
             )
             self.events.raise_event("Main:Game:Paused")
