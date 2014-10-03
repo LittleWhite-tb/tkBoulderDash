@@ -87,6 +87,59 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
     }
 
 
+    def ai_loop (self):
+        """
+            player tracking AI logics;
+        """
+        # game paused?
+        if self.game_paused:
+            # wait
+            self.state_idle()
+        # game resumed
+        else:
+            # inits
+            px, py = self.player_xy
+            x, y = self.xy
+            dx, dy = (px - x, py - y)
+            # moving inits
+            moved = False
+            # moving horizontally
+            if dx < 0:
+                moved = self.move_left()
+            elif dx > 0:
+                moved = self.move_right()
+            # end if
+            # moving vertically
+            if dy < 0:
+                moved = moved or self.move_up()
+            elif dy > 0:
+                moved = moved or self.move_down()
+            # end if
+            if not moved:
+                self.state_idle()
+            # end if
+        # end if
+        # loop again
+        self.animations.run_after(800, self.ai_loop)
+    # end def
+
+
+    def bind_events (self):
+        """
+            event bindings;
+        """
+        self.events.connect_dict(
+            {
+                "Main:Player:Moved": self.player_moved,
+                "Main:Game:Started": self.game_started,
+                "Main:Game:Paused": self.game_suspended,
+                "Main:Game:Resumed": self.game_resumed,
+                #~ "Main:Game:Over": self.game_over,
+            }
+        )
+    # end def
+
+
     def filter_collisions (self, c_dict):
         """
             controls whether collisions with other sprites should
@@ -100,6 +153,10 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
             if "player" in sprite.role:
                 # freeze!
                 sprite.freeze()
+            # got some earth?
+            elif "earth" in sprite.role:
+                # dig it!
+                sprite.destroy()
             else:
                 # denied movement
                 return False
@@ -107,6 +164,38 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         # end if
         # allowed movement
         return True
+    # end def
+
+
+    def game_resumed (self, *args, **kw):
+        """
+            event handler;
+            game is resumed;
+        """
+        # inits
+        self.game_paused = False
+    # end def
+
+
+    def game_started (self, *args, **kw):
+        """
+            event handler;
+            game has started;
+        """
+        # dummy pos
+        self.player_xy = self.xy
+        # start AI loop
+        self.animations.run_after(2000, self.ai_loop)
+    # end def
+
+
+    def game_suspended (self, *args, **kw):
+        """
+            event handler;
+            game is paused;
+        """
+        # inits
+        self.game_paused = True
     # end def
 
 
@@ -118,7 +207,11 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         # super class inits
         super().init_sprite(**kw)
         # member inits
+        self.game_paused = False
         self.direction = "right"
+        self.player_xy = None
+        # event bindings
+        self.bind_events()
     # end def
 
 
@@ -137,8 +230,9 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
             moves down;
         """
-        self.state_walk()
-        self.move_sprite(0, +1, callback=self.filter_collisions)
+        #~ self.state_walk()
+        self.state_idle()
+        return self.move_sprite(0, +1, callback=self.filter_collisions)
     # end def
 
 
@@ -147,8 +241,8 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
             moves left;
         """
         self.state_walk("left")
-        self.move_sprite(-1, 0, callback=self.filter_collisions)
         self.animations.run_after(500, self.state_idle)
+        return self.move_sprite(-1, 0, callback=self.filter_collisions)
     # end def
 
 
@@ -157,8 +251,8 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
             moves right;
         """
         self.state_walk("right")
-        self.move_sprite(+1, 0, callback=self.filter_collisions)
         self.animations.run_after(500, self.state_idle)
+        return self.move_sprite(+1, 0, callback=self.filter_collisions)
     # end def
 
 
@@ -166,8 +260,9 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
             moves up;
         """
-        self.state_walk()
-        self.move_sprite(0, -1, callback=self.filter_collisions)
+        #~ self.state_walk()
+        self.state_idle()
+        return self.move_sprite(0, -1, callback=self.filter_collisions)
     # end def
 
 
@@ -179,6 +274,15 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         super().destroy(*args, **kw)
         # events handling
         self.events.raise_event("Main:Zombie:Dead", sprite=self)
+    # end def
+
+
+    def player_moved (self, sprite, *args, **kw):
+        """
+            event handler;
+            player moved: update target position;
+        """
+        self.player_xy = sprite.xy
     # end def
 
 
