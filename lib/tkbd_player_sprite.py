@@ -54,6 +54,12 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
             "delay": 100,
         },
 
+        "frozen": {
+            "loop": False,
+            "sequence": True,
+            "delay": 100,
+        },
+
         "splashed": {
             "loop": False,
             "sequence": True,
@@ -86,6 +92,16 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         # end if
         # allowed movement
         return True
+    # end def
+
+
+    def freeze (self, *args, **kw):
+        """
+            player has been frozen by a zombie!
+        """
+        self.animations.stop(self.player_idle)
+        self.state = "frozen"
+        self.events.raise_event("Main:Player:Frozen")
     # end def
 
 

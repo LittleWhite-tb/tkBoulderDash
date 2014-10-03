@@ -36,7 +36,14 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
     # class constants
     STATUS = {
 
+        # idle right
         "default": {
+            "loop": True,
+            "sequence": True,
+            "delay": 200,
+        },
+
+        "idle_left": {
             "loop": True,
             "sequence": True,
             "delay": 200,
@@ -54,10 +61,28 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
             "delay": 100,
         },
 
-        "attack": {
+        "attack_left": {
             "loop": True,
             "sequence": True,
-            "delay": 50,
+            "delay": 100,
+        },
+
+        "attack_right": {
+            "loop": True,
+            "sequence": True,
+            "delay": 100,
+        },
+
+        "die_left": {
+            "loop": False,
+            "sequence": True,
+            "delay": 100,
+        },
+
+        "die_right": {
+            "loop": False,
+            "sequence": True,
+            "delay": 100,
         },
     }
 
@@ -71,14 +96,10 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         sprite = c_dict["sprite"]
         # got something?
         if sprite:
-            # is overable?
-            if sprite.is_overable:
-                # run over it!
-                sprite.destroy()
-            # is pushable?
-            elif sprite.is_movable:
-                # zombie may move only if sprite has moved
-                return sprite.has_moved(c_dict)
+            # touched player?
+            if "player" in sprite.role:
+                # freeze!
+                sprite.freeze()
             else:
                 # denied movement
                 return False
@@ -94,8 +115,10 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
             hook method to be reimplemented in subclass;
             this avoids re-declaring __init__ signatures all the time;
         """
+        # super class inits
+        super().init_sprite(**kw)
         # member inits
-        pass
+        self.direction = "right"
     # end def
 
 
@@ -122,6 +145,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
             moves left;
         """
+        self.direction = "left"
         self.state = "walk_left"
         self.move_sprite(-1, 0, callback=self.filter_collisions)
         self.animations.run_after(500, self.state_idle)
@@ -132,6 +156,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
             moves right;
         """
+        self.direction = "right"
         self.state = "walk_right"
         self.move_sprite(+1, 0, callback=self.filter_collisions)
         self.animations.run_after(500, self.state_idle)
@@ -151,7 +176,13 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
             zombie waits for events;
         """
         # zombie is idle
-        self.state = "default"
+        if self.direction == "right":
+            # idle right
+            self.state = "default"
+        else:
+            # idle left
+            self.state = "idle_left"
+        # end if
     # end def
 
 # end class TkBDZombieSprite

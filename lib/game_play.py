@@ -98,6 +98,7 @@ class GamePlay:
                 "Main:Earth:Digged": self.earth_digged,
                 "Main:Player:Moved": self.player_moved,
                 "Main:Player:Splashed": self.player_splashed,
+                "Main:Player:Frozen": self.player_frozen,
                 "Main:Player:Dead": self.player_dead,
                 "Main:Diamond:Collected": self.diamond_collected,
                 "Main:Diamond:TouchedDown": self.diamond_touched_down,
@@ -465,6 +466,17 @@ class GamePlay:
             keep_alive=True,
         )
         self.animations.run_after(3000, self.owner.main_menu_screen)
+    # end def
+
+
+    def player_frozen (self, *args, **kw):
+        """
+            player has been frozen by an enemy;
+        """
+        # canvas event unbindings
+        self.unbind_canvas_events()
+        # play sound
+        self.play_sound("player frozen", self.SNDTRACK_PLAYER)
     # end def
 
 
