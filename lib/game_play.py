@@ -70,7 +70,7 @@ class GamePlay:
         self.game_paused = False
         self.score = 0
 
-        #~ self.level = 2 # debugging
+        self.level = 4 # debugging
 
     # end def
 
@@ -219,7 +219,7 @@ class GamePlay:
         # reset options
         _opts = dict(
             anchor=TK.CENTER,
-            text=self.objects.level_name,
+            text=_(self.objects.level_name),
             font="{} 48".format(FONT1),
             tags="headings",
         )
@@ -234,7 +234,7 @@ class GamePlay:
             _cx, _cy - 80,
             text="level {}".format(self.level),
             font="{} 36".format(FONT2),
-            fill="bisque1",
+            fill="white",
             tags="headings",
         )
         # add to viewport fixed layer

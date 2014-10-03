@@ -1,0 +1,93 @@
+{
+    "level_name": "Zombies",
+
+    "countdown": 240,
+
+    "defs":
+    {
+        " ":
+        {
+            "role": "Empty"
+        },
+
+        "R":
+        {
+            "role": "Rock",
+            "class": "TkBDRockSprite",
+            "module": "tkbd_rock_sprite",
+            "images_dir": "rock"
+        },
+
+        "M":
+        {
+            "role": "Rock/Diamond",
+            "class": "TkBDRockDiamondSprite",
+            "module": "tkbd_rockdiamond_sprite",
+            "images_dir": "rockdiamond"
+        },
+
+        ".":
+        {
+            "role": "Earth",
+            "class": "TkBDEarthSprite",
+            "module": "tkbd_earth_sprite",
+            "images_dir": "earth"
+        },
+
+        "*":
+        {
+            "role": "Diamond",
+            "class": "TkBDDiamondSprite",
+            "module": "tkbd_diamond_sprite",
+            "images_dir": "diamond"
+        },
+
+        "X":
+        {
+            "role": "Wall",
+            "class": "TkBDWallSprite",
+            "module": "tkbd_wall_sprite",
+            "images_dir": "wall"
+        },
+
+        "Z":
+        {
+            "role": "Zombie",
+            "class": "TkBDZombieSprite",
+            "module": "tkbd_zombie_sprite",
+            "images_dir": "zombie"
+        },
+
+        "P":
+        {
+            "role": "Player",
+            "class": "TkBDPlayerSprite",
+            "module": "tkbd_player_sprite",
+            "images_dir": "player"
+        }
+    },
+
+    "matrix":
+    [
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "X..............................................X..*....*...X",
+        "X..............................................X.XXXXXXXXX.X",
+        "X..............................................X...........X",
+        "X...........................................XXXX...........X",
+        "X...........................................X..R      Z    X",
+        "X........................................XXXX.XRXXXXXXXXXXXX",
+        "X.............................................X*...........X",
+        "X........................................XXXXXXX...........X",
+        "X.................................................P........X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    ]
+}
