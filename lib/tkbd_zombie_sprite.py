@@ -64,13 +64,13 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         "attack_left": {
             "loop": True,
             "sequence": True,
-            "delay": 100,
+            "delay": 50,
         },
 
         "attack_right": {
             "loop": True,
             "sequence": True,
-            "delay": 100,
+            "delay": 50,
         },
 
         "die_left": {
@@ -129,7 +129,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         # super class move_animation
         super().move_animation(c_dict)
         # zombie sprite moved
-        self.events.raise_event("Main:Zombie:Moved")
+        self.events.raise_event("Main:Zombie:Moved", sprite=self)
     # end def
 
 
@@ -137,6 +137,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
             moves down;
         """
+        self.state_walk()
         self.move_sprite(0, +1, callback=self.filter_collisions)
     # end def
 
@@ -145,8 +146,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
             moves left;
         """
-        self.direction = "left"
-        self.state = "walk_left"
+        self.state_walk("left")
         self.move_sprite(-1, 0, callback=self.filter_collisions)
         self.animations.run_after(500, self.state_idle)
     # end def
@@ -156,8 +156,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
             moves right;
         """
-        self.direction = "right"
-        self.state = "walk_right"
+        self.state_walk("right")
         self.move_sprite(+1, 0, callback=self.filter_collisions)
         self.animations.run_after(500, self.state_idle)
     # end def
@@ -167,7 +166,39 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
             moves up;
         """
+        self.state_walk()
         self.move_sprite(0, -1, callback=self.filter_collisions)
+    # end def
+
+
+    def on_sequence_end (self, *args, **kw):
+        """
+            on image animation sequence end;
+        """
+        # zombie is dead
+        super().destroy(*args, **kw)
+        # events handling
+        self.events.raise_event("Main:Zombie:Dead", sprite=self)
+    # end def
+
+
+    def state_attack (self, *args, **kw):
+        """
+            zombie attacks player;
+        """
+        # zombie attacks player
+        self.state = "attack_{}".format(self.direction)
+    # end def
+
+
+    def state_die (self, *args, **kw):
+        """
+            zombie dies now;
+        """
+        # zombie dies
+        self.state = "die_{}".format(self.direction)
+        # notify game frame
+        self.events.raise_event("Main:Zombie:Dying", sprite=self)
     # end def
 
 
@@ -183,6 +214,19 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
             # idle left
             self.state = "idle_left"
         # end if
+    # end def
+
+
+    def state_walk (self, direction=None, *args, **kw):
+        """
+            zombie walks toward player;
+        """
+        # param inits
+        if direction:
+            self.direction = str(direction).lower()
+        # end if
+        # zombie walks
+        self.state = "walk_{}".format(self.direction)
     # end def
 
 # end class TkBDZombieSprite

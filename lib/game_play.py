@@ -198,6 +198,10 @@ class GamePlay:
         for _sprite in self.objects.matrix.objects():
             _sprite.start()
         # end for
+        # set player to foreground
+        self.canvas.tag_raise(
+            self.objects.player_sprite.canvas_id, TK.ALL
+        )
         # reset canvas text items viewport fixed layer
         self.fixed_layer.clear()
         # init options
@@ -253,8 +257,8 @@ class GamePlay:
             scrollregion=self.objects.matrix.bbox_xy(),
         )
         self.scroll_to_player(ticks=25.0, autoloop=False)
-        self.animations.run_after(2000, self.update_falldown)
         self.animations.run_after(1800, self.remove_headings)
+        self.animations.run_after(1200, self.update_falldown)
         self.animations.run_after(1000, self.bind_events)
         self.animations.run_after(1000, self.scroll_to_player)
         self.animations.run_after(800, self.update_game_data)

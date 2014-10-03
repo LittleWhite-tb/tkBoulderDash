@@ -80,6 +80,50 @@ class TkGameAnimationPool:
     # end def
 
 
+    def lock (self, *callbacks):
+        """
+            stops and then locks scheduled threads, if any;
+        """
+        # browse list of callbacks
+        for _cb in callbacks:
+            # stop thread
+            self.stop(_cb)
+            # lock future thread calls
+            self.lockers[_cb] = True
+        # end for
+    # end def
+
+
+    def lock_all (self):
+        """
+            locks all registered callbacks;
+        """
+        self.lock(*self.tid.keys())
+    # end def
+
+
+    def release (self, *callbacks):
+        """
+            releases listed threads lockers, if any;
+        """
+        # browse list of callbacks
+        for _cb in callbacks:
+            # stop thread
+            self.stop(_cb)
+            # release locker for future thread calls
+            self.lockers[_cb] = False
+        # end for
+    # end def
+
+
+    def release_all (self):
+        """
+            releases locker for all registered callbacks;
+        """
+        self.release(*self.tid.keys())
+    # end def
+
+
     def run_after (self, delay, callback, *args):
         """
             runs a delayed thread;
@@ -92,6 +136,20 @@ class TkGameAnimationPool:
         # schedule new thread id for further call
         self.tid[callback] = self.root.after(
             delay, self._atomic, callback, *args
+        )
+    # end def
+
+
+    def run_after_idle (self, callback, *args):
+        """
+            runs a delayed thread after mainloop enters in idle mode
+            i.e. when all events are done;
+        """
+        # stop previous running thread, if any
+        self.stop(callback)
+        # schedule new thread id for further call
+        self.tid[callback] = self.root.after_idle(
+            self._atomic, callback, *args
         )
     # end def
 
@@ -110,7 +168,7 @@ class TkGameAnimationPool:
     # end def
 
 
-    def stop_all (self):
+    def stop_all (self, *args, **kw):
         """
             stops all scheduled threads;
             clears up all thread-ids dictionary;

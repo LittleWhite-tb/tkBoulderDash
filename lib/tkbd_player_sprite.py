@@ -57,13 +57,13 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         "frozen": {
             "loop": False,
             "sequence": True,
-            "delay": 100,
+            "delay": 50,
         },
 
         "splashed": {
             "loop": False,
             "sequence": True,
-            "delay": 40,
+            "delay": 50,
         },
     }
 
@@ -77,8 +77,12 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         sprite = c_dict["sprite"]
         # got something?
         if sprite:
+            # touched an enemy?
+            if "enemy" in sprite.role:
+                # player is dead!
+                self.freeze()
             # is overable?
-            if sprite.is_overable:
+            elif sprite.is_overable:
                 # run over it!
                 sprite.destroy()
             # is pushable?
@@ -97,11 +101,11 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
 
     def freeze (self, *args, **kw):
         """
-            player has been frozen by a zombie!
+            player has been frozen by an enemy;
         """
-        self.animations.stop(self.player_idle)
+        self.animations.lock(self.player_idle)
         self.state = "frozen"
-        self.events.raise_event("Main:Player:Frozen")
+        self.events.raise_event("Main:Player:Frozen", sprite=self)
     # end def
 
 
@@ -122,7 +126,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         # super class move_animation
         super().move_animation(c_dict)
         # player sprite moved
-        self.events.raise_event("Main:Player:Moved")
+        self.events.raise_event("Main:Player:Moved", sprite=self)
     # end def
 
 
@@ -130,6 +134,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         """
             moves down;
         """
+        # move sprite
         self.move_sprite(0, +1, callback=self.filter_collisions)
     # end def
 
@@ -138,6 +143,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         """
             moves left;
         """
+        # move sprite
         self.state = "walk_left"
         self.move_sprite(-1, 0, callback=self.filter_collisions)
         self.animations.run_after(500, self.player_idle)
@@ -148,6 +154,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         """
             moves right;
         """
+        # move sprite
         self.state = "walk_right"
         self.move_sprite(+1, 0, callback=self.filter_collisions)
         self.animations.run_after(500, self.player_idle)
@@ -158,6 +165,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         """
             moves up;
         """
+        # move sprite
         self.move_sprite(0, -1, callback=self.filter_collisions)
     # end def
 
@@ -169,7 +177,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         # player is dead
         super().destroy(*args, **kw)
         # events handling
-        self.events.raise_event("Main:Player:Dead")
+        self.events.raise_event("Main:Player:Dead", sprite=self)
     # end def
 
 
@@ -186,9 +194,9 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         """
             player has been splashed;
         """
-        self.animations.stop(self.player_idle)
+        self.animations.lock(self.player_idle)
         self.state = "splashed"
-        self.events.raise_event("Main:Player:Splashed")
+        self.events.raise_event("Main:Player:Splashed", sprite=self)
     # end def
 
 # end class TkBDPlayerSprite

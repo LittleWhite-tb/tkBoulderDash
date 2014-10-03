@@ -94,8 +94,9 @@ class TkGameCanvasSprite:
             event handler for sprite destruction;
             should be reimplemented in subclass;
         """
-        # stop animations
+        # stop and lock animations
         self.stop()
+        self.animations.lock(self.image_animation_loop)
         # delete from canvas
         self.canvas.delete(self.canvas_id)
     # end def

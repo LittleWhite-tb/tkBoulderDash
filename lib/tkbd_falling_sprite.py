@@ -47,10 +47,10 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
             event handler for sprite destruction;
             should be reimplemented in subclass;
         """
-        # ancestor first
-        super().destroy(*args, **kw)
         # stop animations
-        self.animations.stop(self.falling_loop)
+        self.animations.lock(self.falling_loop)
+        # super class
+        super().destroy(*args, **kw)
     # end def
 
 
