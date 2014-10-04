@@ -40,7 +40,7 @@ class TkBDZDiamondSprite (S.TkBDDiamondSprite):
         "default": {
             "loop": True,
             "sequence": True,
-            "delay": 200,
+            "delay": 100,
         },
     }
 

@@ -25,6 +25,7 @@
 """
 
 # lib imports
+import random
 from . import tkgame_matrix_sprite as S
 
 
@@ -116,7 +117,8 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
             elif dy > 0:
                 moved = moved or self.move_down()
             # end if
-            if abs(dx) < 3 * cs and abs(dy) < 2 * cs: # FIXME: add random
+            if random.randint(1, 4) == 3 and \
+                                not dy and abs(dx) < 3 * cs:
                 self.state_attack()
             elif not moved:
                 self.state_idle()
@@ -138,7 +140,6 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
                 "Main:Game:Paused": self.game_suspended,
                 "Main:Game:Resumed": self.game_resumed,
                 #~ "Main:Game:Over": self.game_over,
-                "Main:ZDiamond:Collected": self.killed,
             }
         )
     # end def
@@ -181,13 +182,13 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
     # end def
 
 
-    def game_started (self, *args, **kw):
+    def game_started (self, player_sprite, *args, **kw):
         """
             event handler;
             game has started;
         """
-        # dummy pos
-        self.player_xy = self.xy
+        # player pos
+        self.player_xy = player_sprite.xy
         # start AI loop
         self.animations.run_after(2000, self.ai_loop)
     # end def
@@ -260,9 +261,12 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
             moves left;
         """
-        self.state_walk("left")
-        self.animations.run_after(500, self.state_idle)
-        return self.move_sprite(-1, 0, callback=self.filter_collisions)
+        moved = self.move_sprite(-1, 0, callback=self.filter_collisions)
+        if moved:
+            self.state_walk("left")
+            self.animations.run_after(1000, self.state_idle)
+        # end if
+        return moved
     # end def
 
 
@@ -270,9 +274,12 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
             moves right;
         """
-        self.state_walk("right")
-        self.animations.run_after(500, self.state_idle)
-        return self.move_sprite(+1, 0, callback=self.filter_collisions)
+        moved = self.move_sprite(+1, 0, callback=self.filter_collisions)
+        if moved:
+            self.state_walk("right")
+            self.animations.run_after(1000, self.state_idle)
+        # end if
+        return moved
     # end def
 
 

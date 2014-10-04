@@ -277,7 +277,11 @@ class GamePlay:
         self.animations.run_after(1000, self.scroll_to_player)
         self.animations.run_after(800, self.update_game_data)
         # notify game has started
-        self.events.raise_event("Main:Game:Started")
+        self.events.raise_event(
+            "Main:Game:Started",
+            player_sprite=self.objects.player_sprite,
+            objects=self.objects,
+        )
     # end def
 
 
@@ -965,6 +969,13 @@ class GamePlay:
         self.score_add(500)
         # decrement diamonds count
         self.decrease_diamonds_count()
+        # remove one zombie only
+        for sprite in self.objects.matrix.objects():
+            if "zombie" in sprite.role and hasattr(sprite, "killed"):
+                sprite.killed()
+                break
+            # end if
+        # end for
     # end def
 
 
