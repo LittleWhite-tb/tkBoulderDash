@@ -72,7 +72,7 @@ class GamePlay:
         self.game_paused = False
         self.score = 0
 
-        self.level = 4 # debugging
+        #~ self.level = 4 # debugging
 
     # end def
 
