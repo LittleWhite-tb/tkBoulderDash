@@ -190,7 +190,9 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         # player pos
         self.player_xy = player_sprite.xy
         # start AI loop
-        self.animations.run_after(2000, self.ai_loop)
+        self.animations.run_after(
+            2000 + 100 * random.randint(0, 10), self.ai_loop
+        )
     # end def
 
 
