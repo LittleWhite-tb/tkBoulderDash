@@ -219,7 +219,6 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         self.player_xy = None
         # event bindings
         self.bind_events()
-        print("zombie!")
     # end def
 
 
