@@ -64,13 +64,13 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         "attack_left": {
             "loop": True,
             "sequence": True,
-            "delay": 50,
+            "delay": 100,
         },
 
         "attack_right": {
             "loop": True,
             "sequence": True,
-            "delay": 50,
+            "delay": 100,
         },
 
         "die_left": {
@@ -98,6 +98,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         # game resumed
         else:
             # inits
+            cs = self.matrix.cellsize
             px, py = self.player_xy
             x, y = self.xy
             dx, dy = (px - x, py - y)
@@ -115,7 +116,9 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
             elif dy > 0:
                 moved = moved or self.move_down()
             # end if
-            if not moved:
+            if abs(dx) < 3 * cs and abs(dy) < 2 * cs: # FIXME: add random
+                self.state_attack()
+            elif not moved:
                 self.state_idle()
             # end if
         # end if
@@ -135,6 +138,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
                 "Main:Game:Paused": self.game_suspended,
                 "Main:Game:Resumed": self.game_resumed,
                 #~ "Main:Game:Over": self.game_over,
+                "Main:ZDiamond:Collected": self.killed,
             }
         )
     # end def
@@ -215,6 +219,22 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
     # end def
 
 
+    def killed (self, *args, **kw):
+        """
+            zombie has been killed by some sprite;
+        """
+        # stop animations
+        self.animations.lock(
+            self.ai_loop,
+            self.state_idle,
+            self.state_attack,
+            self.state_walk,
+        )
+        # zombie dies now
+        self.state_die()
+    # end def
+
+
     def move_animation (self, c_dict):
         """
             sprite moving animation;
@@ -292,6 +312,8 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
         # zombie attacks player
         self.state = "attack_{}".format(self.direction)
+        # notify game frame
+        self.events.raise_event("Main:Zombie:Attacking", sprite=self)
     # end def
 
 

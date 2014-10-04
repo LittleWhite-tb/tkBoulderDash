@@ -56,8 +56,20 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
             # ancestor first
             super().destroy(*args, **kw)
             # events handling
-            self.events.raise_event("Main:Diamond:Collected", sprite=self)
+            self.events.raise_event(
+                "Main:{}:Collected".format(self.get_event_name()),
+                sprite=self
+            )
         # end if
+    # end def
+
+
+    def get_event_name (self):
+        """
+            hook method to be reimplemented in subclass;
+            returns current 'event name' for this sprite class;
+        """
+        return "Diamond"
     # end def
 
 
@@ -77,7 +89,10 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
         """
             hook method to be implemented by subclass;
         """
-        self.events.raise_event("Main:Diamond:TouchedDown", sprite=self)
+        self.events.raise_event(
+            "Main:{}:TouchedDown".format(self.get_event_name()),
+            sprite=self
+        )
     # end def
 
 # end class TkBDDiamondSprite

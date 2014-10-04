@@ -42,6 +42,14 @@
             "images_dir": "diamond"
         },
 
+        "!":
+        {
+            "role": "Diamond/Zombie-Killer",
+            "class": "TkBDZDiamondSprite",
+            "module": "tkbd_zdiamond_sprite",
+            "images_dir": "zdiamond"
+        },
+
         "X":
         {
             "role": "Wall",
@@ -76,7 +84,7 @@
         "X........................XXXX.XXXXXXXXX.XXXXXXXX.XXX.XXRXX.X",
         "X.............................X.......X........R......Z....X",
         "X.............................X.......X..XXXX.XRXXXXXXXXXXXX",
-        "X.............................X.Z.....X......MX*...........X",
+        "X.............................X.Z.....X......MX*.......!...X",
         "X.............................XXXRXXRXX.XXXXXRXXXXXX..XXXX.X",
         "X........................................P...*X..........X.X",
         "X............................XXXXXXXXXXXXXX.XXX..........X.X",

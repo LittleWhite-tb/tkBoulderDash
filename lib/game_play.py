@@ -106,6 +106,10 @@ class GamePlay:
                 "Main:Rock:TouchedDown": self.rock_touched_down,
                 "Main:RockDiamond:Changing": self.rockdiamond_changing,
                 "Main:RockDiamond:Changed": self.rockdiamond_changed,
+                "Main:ZDiamond:Collected": self.zdiamond_collected,
+                "Main:ZDiamond:TouchedDown": self.diamond_touched_down,
+                "Main:Zombie:Attacking": self.zombie_attacking,
+                "Main:Zombie:Dying": self.zombie_dying,
             }
         )
         self.bind_canvas_events()
@@ -150,20 +154,10 @@ class GamePlay:
     # end def
 
 
-    def diamond_collected (self, sprite, *args, **kw):
+    def decrease_diamonds_count (self, *args, **kw):
         """
-            event handler for diamond catch;
+            updates diamond collection counter;
         """
-        # play sound
-        self.play_sound("player caught diamond", self.SNDTRACK_DIAMOND)
-        # drop diamond from managed list
-        self.remove_falling(sprite)
-        # show cool info on canvas
-        self.show_cool_info(sprite.xy, text="+200")
-        # free some memory
-        del sprite
-        # update score
-        self.score_add(200)
         # update remaining diamonds
         self.objects.diamonds_count -= 1
         # update display
@@ -173,6 +167,25 @@ class GamePlay:
             # yeah! winner!
             self.won_level()
         # end if
+    # end def
+
+
+    def diamond_collected (self, sprite, *args, **kw):
+        """
+            event handler for diamond catch;
+        """
+        # play sound
+        self.play_sound("diamond collected", self.SNDTRACK_DIAMOND)
+        # drop diamond from managed list
+        self.remove_falling(sprite)
+        # show cool info on canvas
+        self.show_cool_info(sprite.xy, text="+200")
+        # free some memory
+        del sprite
+        # update score
+        self.score_add(200)
+        # decrement diamonds count
+        self.decrease_diamonds_count()
     # end def
 
 
@@ -270,10 +283,10 @@ class GamePlay:
 
     def earth_digged (self, *args, **kw):
         """
-            event handler for player digging earth;
+            event handler for digged earth;
         """
         # play sound
-        self.play_sound("player digged earth", self.SNDTRACK_PLAYER)
+        self.play_sound("earth digged", self.SNDTRACK_BACKGROUND)
         # update score with +50 pts
         self.score_add(50)
     # end if
@@ -933,6 +946,49 @@ class GamePlay:
             font="{} 24".format(FONT2),
             fill=kw.get("title_color") or "white",
         )
+    # end def
+
+
+    def zdiamond_collected (self, sprite, *args, **kw):
+        """
+            event handler for zdiamond catch;
+        """
+        # play sound
+        self.play_sound("zdiamond collected", self.SNDTRACK_DIAMOND)
+        # drop diamond from managed list
+        self.remove_falling(sprite)
+        # show cool info on canvas
+        self.show_cool_info(sprite.xy, text="+500")
+        # free some memory
+        del sprite
+        # update score
+        self.score_add(500)
+        # decrement diamonds count
+        self.decrease_diamonds_count()
+    # end def
+
+
+    def zombie_attacking (self, sprite, *args, **kw):
+        """
+            event handler for attacking zombie;
+        """
+        # play sound
+        self.play_sound("zombie attacking", self.SNDTRACK_BACKGROUND)
+    # end def
+
+
+    def zombie_dying (self, sprite, *args, **kw):
+        """
+            event handler for dying zombie;
+        """
+        # play sound
+        self.play_sound("zombie dying", self.SNDTRACK_BACKGROUND)
+        # show cool info on canvas
+        self.show_cool_info(sprite.xy, text="+100")
+        # free some memory
+        del sprite
+        # update score
+        self.score_add(100)
     # end def
 
 # end class GamePlay
