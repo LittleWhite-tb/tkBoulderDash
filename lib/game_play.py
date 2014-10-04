@@ -49,6 +49,7 @@ class GamePlay:
     SNDTRACK_ROCK = 3
     SNDTRACK_ROCKDIAMOND = 4
     SNDTRACK_BACKGROUND = 5
+    SNDTRACK_ENEMY = 6
 
 
     def __init__ (self, owner, canvas, level=1):
@@ -60,7 +61,7 @@ class GamePlay:
         self.canvas = canvas
         self.level = level
         self.events = EM.get_event_manager()
-        self.soundtracks = tuple(AU.new_audio_player() for i in range(5))
+        self.soundtracks = tuple(AU.new_audio_player() for i in range(6))
         self.animations = AP.get_animation_pool()
         self.objects = OM.ObjectMapper(
             canvas=self.canvas, images_dir="images/sprites",
@@ -250,7 +251,7 @@ class GamePlay:
         )
         self.cid_level_number = self.canvas.create_text(
             _cx, _cy - 80,
-            text="level {}".format(self.level),
+            text=_("level {}").format(self.level),
             font="{} 36".format(FONT2),
             fill="white",
             tags="headings",
@@ -963,6 +964,14 @@ class GamePlay:
         self.remove_falling(sprite)
         # show cool info on canvas
         self.show_cool_info(sprite.xy, text="+500")
+        self.show_cool_info(
+            sprite.xy,
+            text=_("you killed a zombie!"),
+            font="{} 20".format(FONT1),
+            fill="white",
+            delay=100,
+            frames=10,
+        )
         # free some memory
         del sprite
         # update score
@@ -984,7 +993,7 @@ class GamePlay:
             event handler for attacking zombie;
         """
         # play sound
-        self.play_sound("zombie attacking", self.SNDTRACK_BACKGROUND)
+        self.play_sound("zombie attacking", self.SNDTRACK_ENEMY)
     # end def
 
 
@@ -993,7 +1002,7 @@ class GamePlay:
             event handler for dying zombie;
         """
         # play sound
-        self.play_sound("zombie dying", self.SNDTRACK_BACKGROUND)
+        self.play_sound("zombie dying", self.SNDTRACK_ENEMY)
         # show cool info on canvas
         self.show_cool_info(sprite.xy, text="+100")
         # free some memory

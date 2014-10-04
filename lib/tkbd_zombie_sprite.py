@@ -117,7 +117,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
             elif dy > 0:
                 moved = moved or self.move_down()
             # end if
-            if random.randint(1, 4) == 3 and \
+            if random.randint(1, 3) == 3 and \
                                 not dy and abs(dx) < 3 * cs:
                 self.state_attack()
             elif not moved:
@@ -253,9 +253,11 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
             moves down;
         """
-        #~ self.state_walk()
-        self.state_idle()
-        return self.move_sprite(0, +1, callback=self.filter_collisions)
+        moved = self.move_sprite(0, +1, callback=self.filter_collisions)
+        if moved:
+            self.state_walk()
+        # end if
+        return moved
     # end def
 
 
@@ -266,7 +268,6 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         moved = self.move_sprite(-1, 0, callback=self.filter_collisions)
         if moved:
             self.state_walk("left")
-            self.animations.run_after(1000, self.state_idle)
         # end if
         return moved
     # end def
@@ -279,7 +280,6 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         moved = self.move_sprite(+1, 0, callback=self.filter_collisions)
         if moved:
             self.state_walk("right")
-            self.animations.run_after(1000, self.state_idle)
         # end if
         return moved
     # end def
@@ -289,9 +289,11 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
             moves up;
         """
-        #~ self.state_walk()
-        self.state_idle()
-        return self.move_sprite(0, -1, callback=self.filter_collisions)
+        moved = self.move_sprite(0, -1, callback=self.filter_collisions)
+        if moved:
+            self.state_walk()
+        # end if
+        return moved
     # end def
 
 
@@ -362,6 +364,8 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         # end if
         # zombie walks
         self.state = "walk_{}".format(self.direction)
+        # reset to idle in a while
+        self.animations.run_after(1000, self.state_idle)
     # end def
 
 # end class TkBDZombieSprite

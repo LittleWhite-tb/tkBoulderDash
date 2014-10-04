@@ -166,15 +166,15 @@ msgstr ""
 
 
 msgid ""
-"Bobo!"
+"you killed a zombie!"
 msgstr ""
-"Bobo !"
+"et un zombie en moins !"
 
 
 msgid ""
-""
+"level {}"
 msgstr ""
-""
+"niveau {}"
 
 
 msgid ""

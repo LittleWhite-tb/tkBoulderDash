@@ -78,12 +78,12 @@
     "matrix":
     [
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "X................Z.........................................X",
+        "X..........................................................X",
         "X.XXXXXXXXXX.XXXXXXXXXXX.XXXXXXXXXX.XXXXXXXXXXX.XXXXXXXXXX.X",
-        "X.X...*R..MX.......M.....X........X.............X.......MX.X",
-        "X.X.XXXXX.MX.XX.XX.XX.XX.X........R.XXXXXXXXXXX.X......RRX.X",
-        "X.X........X...R......*R.X........R.............R...Z....X.X",
-        "X.XXXXXXXRRX.XXX..XXX.XX.XXXXXXXXXX.XXXXXXXXXXX.RXXXXXXXXX.X",
+        "X.X...*R..!X...*...M.....X*.M.....X....M........X*......MX.X",
+        "XZX.XXXXX.MX.X.X.X.X.X.X.X.X*.....R.XX.XX.XX.XX.X......RRX.X",
+        "X.X*......MX.......*..*R.X!XRR... R...R.....R...R...Z...*X.X",
+        "X.XXXXXXXRRX.XX.XX.XX.XX.XXXXXXXXXX.X.X.X.X.X.X.RXXXXXXXXX.X",
         "X...........P.................Z............................X",
         "XXXXXXXXX *XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
         "X..........................................................X",
