@@ -118,7 +118,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
                 moved = moved or self.move_down()
             # end if
             if random.randint(1, 3) == 3 and \
-                                not dy and abs(dx) < 3 * cs:
+                                not dy and abs(dx) < 4 * cs:
                 self.state_attack()
             elif not moved:
                 self.state_idle()
@@ -219,6 +219,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         self.player_xy = None
         # event bindings
         self.bind_events()
+        print("zombie!")
     # end def
 
 

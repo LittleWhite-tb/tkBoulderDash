@@ -44,12 +44,13 @@ class GamePlay:
     # class constants
     TPL_LEVEL_FILE = "data/json/level_{}.json"
 
-    SNDTRACK_PLAYER = 1
-    SNDTRACK_DIAMOND = 2
-    SNDTRACK_ROCK = 3
-    SNDTRACK_ROCKDIAMOND = 4
-    SNDTRACK_BACKGROUND = 5
-    SNDTRACK_ENEMY = 6
+    SNDTRACK_ALARM = 1
+    SNDTRACK_PLAYER = 2
+    SNDTRACK_DIAMOND = 3
+    SNDTRACK_ROCK = 4
+    SNDTRACK_ROCKDIAMOND = 5
+    SNDTRACK_BACKGROUND = 6
+    SNDTRACK_ENEMY = 7
 
 
     def __init__ (self, owner, canvas, level=1):
@@ -61,7 +62,7 @@ class GamePlay:
         self.canvas = canvas
         self.level = level
         self.events = EM.get_event_manager()
-        self.soundtracks = tuple(AU.new_audio_player() for i in range(6))
+        self.soundtracks = tuple(AU.new_audio_player() for i in range(7))
         self.animations = AP.get_animation_pool()
         self.objects = OM.ObjectMapper(
             canvas=self.canvas, images_dir="images/sprites",
@@ -793,7 +794,7 @@ class GamePlay:
             )
             if _c and not (_c % 2):
                 self.play_sound(
-                    "countdown alarm", self.SNDTRACK_BACKGROUND
+                    "countdown alarm", self.SNDTRACK_ALARM
                 )
             # end if
             self.animations.run_after(250, self.blink_countdown)
