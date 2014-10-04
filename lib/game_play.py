@@ -969,7 +969,7 @@ class GamePlay:
         self.score_add(500)
         # decrement diamonds count
         self.decrease_diamonds_count()
-        # remove one zombie only
+        # remove only one zombie at a time
         for sprite in self.objects.matrix.objects():
             if "zombie" in sprite.role and hasattr(sprite, "killed"):
                 sprite.killed()
