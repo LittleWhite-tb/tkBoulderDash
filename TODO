@@ -2,9 +2,6 @@
 TODO
 ====
 
-    * ajouter les fantômes de la mine qui courent après le
-    player_sprite;
-
     * ajouter le coffre "trésor des Anciens" avec le sprite "clé en
     or" à collecter pour déclencher l'ouverture de ce coffre au look
     pirates des caraïbes; le coffre reste inactif tant que la clé
