@@ -178,8 +178,9 @@ class TkGameAnimationPool:
             # stop scheduled thread
             self.root.after_cancel(_tid)
         # end for
-        # clear all dict
+        # clear all dicts
         self.tid.clear()
+        self.lockers.clear()
     # end def
 
 # end class TkGameAnimationPool

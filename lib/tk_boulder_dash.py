@@ -275,8 +275,6 @@ Have fun!""")
         # inits
         self.music.set_volume(self.GAME_MUSIC_VOLUME/2.0)
         self.unbind_events()
-        # reset score from here
-        self.game_play.score = 0
         self.game_play.run()
     # end def
 

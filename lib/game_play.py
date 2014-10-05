@@ -83,6 +83,7 @@ class GamePlay:
         """
         self.canvas.bind_all("<Escape>", self.on_key_escape)
         self.canvas.bind_all("<space>", self.pause_game)
+        self.canvas.bind_all("<R>", self.run)
         self.canvas.bind_all("<Key>", self.on_key_pressed)
         self.canvas.bind("<Button-1>", self.on_mouse_down)
         self.canvas.bind("<Motion>", self.on_mouse_move)
@@ -606,6 +607,9 @@ class GamePlay:
         """
         # try to draw current level
         try:
+            # reset score from here
+            self.score = 0
+            # draw current level
             self.draw_level()
         # got in trouble
         except Exception as e:
