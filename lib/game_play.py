@@ -44,13 +44,15 @@ class GamePlay:
     # class constants
     TPL_LEVEL_FILE = "data/json/level_{}.json"
 
-    SNDTRACK_ALARM = 1
-    SNDTRACK_PLAYER = 2
-    SNDTRACK_DIAMOND = 3
-    SNDTRACK_ROCK = 4
-    SNDTRACK_ROCKDIAMOND = 5
-    SNDTRACK_BACKGROUND = 6
-    SNDTRACK_ENEMY = 7
+    SNDTRACK = {
+        "alarm": 1,
+        "player": 2,
+        "diamond": 3,
+        "rock": 4,
+        "rockdiamond": 5,
+        "background": 6,
+        "enemy": 7,
+    }
 
 
     def __init__ (self, owner, canvas, level=1):
@@ -62,7 +64,9 @@ class GamePlay:
         self.canvas = canvas
         self.level = level
         self.events = EM.get_event_manager()
-        self.soundtracks = tuple(AU.new_audio_player() for i in range(7))
+        self.soundtracks = tuple(
+            AU.new_audio_player() for i in len(self.SNDTRACK)
+        )
         self.animations = AP.get_animation_pool()
         self.objects = OM.ObjectMapper(
             canvas=self.canvas, images_dir="images/sprites",
@@ -79,6 +83,7 @@ class GamePlay:
 
     def bind_canvas_events (self, *args, **kw):
         """
+            event handler;
             canvas event bindings;
         """
         self.canvas.bind_all("<Escape>", self.on_key_escape)
@@ -93,6 +98,7 @@ class GamePlay:
 
     def bind_events (self, *args, **kw):
         """
+            event handler;
             app-wide event bindings;
         """
         # connecting people...
@@ -142,10 +148,11 @@ class GamePlay:
 
     def clear_canvas (self, *args, **kw):
         """
+            event handler;
             clears canvas and stops unexpected events;
         """
         # stop any scheduled thread
-        self.animations.stop_all()
+        self.animations.clear_all()
         # unbind all events
         self.unbind_events()
         # clear canvas
@@ -160,6 +167,7 @@ class GamePlay:
 
     def decrease_diamonds_count (self, *args, **kw):
         """
+            event handler;
             updates diamond collection counter;
         """
         # update remaining diamonds
@@ -179,7 +187,7 @@ class GamePlay:
             event handler for diamond catch;
         """
         # play sound
-        self.play_sound("diamond collected", self.SNDTRACK_DIAMOND)
+        self.play_sound("diamond collected", "diamond")
         # drop diamond from managed list
         self.remove_falling(sprite)
         # show cool info on canvas
@@ -198,7 +206,7 @@ class GamePlay:
             event handler for diamond touchdown;
         """
         # play sound
-        self.play_sound("diamond touched down", self.SNDTRACK_DIAMOND)
+        self.play_sound("diamond touched down", "diamond")
         # update general falldown procedure
         # CAUTION: falldown procedure is now independent
         pass
@@ -294,7 +302,7 @@ class GamePlay:
             event handler for digged earth;
         """
         # play sound
-        self.play_sound("earth digged", self.SNDTRACK_BACKGROUND)
+        self.play_sound("earth digged", "background")
         # update score with +50 pts
         self.score_add(50)
     # end if
@@ -342,6 +350,7 @@ class GamePlay:
 
     def next_level (self, *args, **kw):
         """
+            event handler;
             looks for a next level JSON data file, if any;
             shows won_all() splash screen otherwise;
         """
@@ -418,6 +427,7 @@ class GamePlay:
 
     def pause_game (self, *args, **kw):
         """
+            event handler;
             user asked for a game pause/resume;
         """
         # got to resume?
@@ -463,10 +473,11 @@ class GamePlay:
     # end def
 
 
-    def play_sound (self, sound_name, track=1, volume=0.5):
+    def play_sound (self, sound_name, trackname=None, volume=0.5):
         """
             plays asynchronous sound;
         """
+        track = self.SNDTRACK.get(str(trackname).lower()) or 1
         track = max(1, min(track, len(self.soundtracks))) - 1
         sound_name = str(sound_name).replace(" ", "-")
         self.soundtracks[track].play(
@@ -477,6 +488,7 @@ class GamePlay:
 
     def player_dead (self, *args, **kw):
         """
+            event handler;
             player is now really dead;
         """
         # animated text
@@ -502,17 +514,19 @@ class GamePlay:
 
     def player_frozen (self, *args, **kw):
         """
+            event handler;
             player has been frozen by an enemy;
         """
         # canvas event unbindings
         self.unbind_canvas_events()
         # play sound
-        self.play_sound("player frozen", self.SNDTRACK_PLAYER)
+        self.play_sound("player frozen", "player")
     # end def
 
 
     def player_moved (self, *args, **kw):
         """
+            event handler;
             player has moved, rocks and diamonds may fall down;
         """
         # CAUTION: falldown procedure is now independent
@@ -522,17 +536,19 @@ class GamePlay:
 
     def player_splashed (self, *args, **kw):
         """
+            event handler;
             player has been splashed;
         """
         # canvas event unbindings
         self.unbind_canvas_events()
         # play sound
-        self.play_sound("player dead", self.SNDTRACK_PLAYER)
+        self.play_sound("player dead", "player")
     # end def
 
 
     def remove_falling (self, sprite, *args, **kw):
         """
+            event handler;
             removes sprite from falling_sprites list;
         """
         # drop sprite from managed list
@@ -544,6 +560,7 @@ class GamePlay:
 
     def remove_headings (self, *args, **kw):
         """
+            event handler;
             removes level name and number display offs;
         """
         # delete from canvas display off
@@ -566,7 +583,7 @@ class GamePlay:
             event handler for rock pushes;
         """
         # play sound
-        self.play_sound("rock pushed aside", self.SNDTRACK_PLAYER)
+        self.play_sound("rock pushed aside", "player")
     # end def
 
 
@@ -575,7 +592,7 @@ class GamePlay:
             event handler for rock touchdown;
         """
         # play sound
-        self.play_sound("rock touched down", self.SNDTRACK_ROCK)
+        self.play_sound("rock touched down", "rock")
         # update general falldown procedure
         # CAUTION: falldown procedure is now independent
         pass
@@ -597,13 +614,14 @@ class GamePlay:
         """
         # play sound
         self.play_sound(
-            "rockdiamond changing", self.SNDTRACK_ROCKDIAMOND
+            "rockdiamond changing", "rockdiamond"
         )
     # end def
 
 
     def run (self, *args, **kw):
         """
+            event handler;
             game play inits;
         """
         # try to draw current level
@@ -757,6 +775,7 @@ class GamePlay:
 
     def unbind_canvas_events (self, *args, **kw):
         """
+            event handler;
             canvas event unbindings;
         """
         # canvas events unbind
@@ -772,6 +791,7 @@ class GamePlay:
 
     def unbind_events (self, *args, **kw):
         """
+            event handler;
             app-wide event unbindings;
         """
         # unbind app events
@@ -783,6 +803,7 @@ class GamePlay:
 
     def update_countdown (self, *args, **kw):
         """
+            event handler;
             updates timer countdown display;
         """
         _c = self.objects.countdown = max(
@@ -799,7 +820,7 @@ class GamePlay:
             )
             if _c and not (_c % 2):
                 self.play_sound(
-                    "countdown alarm", self.SNDTRACK_ALARM
+                    "countdown alarm", "alarm"
                 )
             # end if
             self.animations.run_after(250, self.blink_countdown)
@@ -817,6 +838,7 @@ class GamePlay:
 
     def update_diamonds_count (self, *args, **kw):
         """
+            event handler;
             updates diamond count display;
         """
         # update display
@@ -829,6 +851,7 @@ class GamePlay:
 
     def update_falldown (self, *args, **kw):
         """
+            event handler;
             updates falling down procedure;
         """
         for sprite in self.objects.falling_sprites:
@@ -840,6 +863,7 @@ class GamePlay:
 
     def update_game_data (self, *args, **kw):
         """
+            event handler;
             updates all game data display offs;
         """
         self.update_diamonds_count()
@@ -850,6 +874,7 @@ class GamePlay:
 
     def update_score (self, value=None, *args, **kw):
         """
+            event handler;
             updates diamond count display;
         """
         # update display
@@ -892,7 +917,7 @@ class GamePlay:
             subtitle_color="powder blue"
         )
         # play sound
-        self.play_sound("player won all", self.SNDTRACK_BACKGROUND)
+        self.play_sound("player won all", "background")
         # reset level
         self.level = 1
         # events binding
@@ -921,7 +946,7 @@ class GamePlay:
         )
         # play sound
         self.owner.music.stop()
-        self.play_sound("player won level", self.SNDTRACK_BACKGROUND)
+        self.play_sound("player won level", "background")
         # go to next level
         self.animations.run_after(4000, self.next_level)
     # end def
@@ -965,7 +990,7 @@ class GamePlay:
             event handler for zdiamond catch;
         """
         # play sound
-        self.play_sound("zdiamond collected", self.SNDTRACK_DIAMOND)
+        self.play_sound("zdiamond collected", "diamond")
         # drop diamond from managed list
         self.remove_falling(sprite)
         # show cool info on canvas
@@ -999,7 +1024,7 @@ class GamePlay:
             event handler for attacking zombie;
         """
         # play sound
-        self.play_sound("zombie attacking", self.SNDTRACK_ENEMY)
+        self.play_sound("zombie attacking", "enemy")
     # end def
 
 
@@ -1008,7 +1033,7 @@ class GamePlay:
             event handler for dying zombie;
         """
         # play sound
-        self.play_sound("zombie dying", self.SNDTRACK_ENEMY)
+        self.play_sound("zombie dying", "enemy")
         # show cool info on canvas
         self.show_cool_info(sprite.xy, text="+100")
         # free some memory
