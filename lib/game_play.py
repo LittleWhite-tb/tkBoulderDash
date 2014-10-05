@@ -88,6 +88,7 @@ class GamePlay:
         """
         self.canvas.bind_all("<Escape>", self.on_key_escape)
         self.canvas.bind_all("<space>", self.pause_game)
+        self.canvas.bind_all("<Return>", self.run)
         self.canvas.bind_all("<r>", self.run)
         self.canvas.bind_all("<Key>", self.on_key_pressed)
         self.canvas.bind("<Button-1>", self.on_mouse_down)
@@ -781,6 +782,7 @@ class GamePlay:
         # canvas events unbind
         self.canvas.unbind_all("<Escape>")
         self.canvas.unbind_all("<space>")
+        self.canvas.unbind_all("<Return>")
         self.canvas.unbind_all("<r>")
         self.canvas.unbind_all("<Key>")
         self.canvas.unbind("<Button-1>")
