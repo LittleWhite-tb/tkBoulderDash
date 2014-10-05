@@ -46,15 +46,15 @@ msgstr ""
 
 
 msgid ""
-"* Use arrow keys to move into four directions.\n"
-"* Use spacebar key to pause game.\n"
-"* Press escape key to trap out from a game level.\n"
-"* Press escape key once more to quit game."
+"* <arrow> keys to move.\n"
+"* <spacebar> key to pause game.\n"
+"* <R> or <Return> key to (re)play.\n"
+"* <escape> key to trap/quit game."
 msgstr ""
-"* Utilisez les touches fléchées pour vous déplacer dans toutes les directions.\n"
+"* Utilisez les touches fléchées pour vous déplacer.\n"
 "* Pressez la barre d'espacement pour mettre le jeu en pause.\n"
-"* Pressez la touche d'échappement pour sortir en cours de partie.\n"
-"* Pressez une seconde fois cette touche pour quitter le jeu."
+"* Pressez <R> ou <Entrée> pour (re)jouer.\n"
+"* Pressez la touche d'échappement pour sortir d'une partie ou pour quitter le jeu."
 
 
 msgid ""

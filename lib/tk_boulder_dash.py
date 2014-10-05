@@ -124,6 +124,7 @@ class TkBoulderDash (TK.Frame):
         """
         self.bind_all("<Escape>", self.quit_game)
         self.bind_all("<Return>", self.run_game)
+        self.bind_all("<r>", self.run_game)
     # end def
 
 
@@ -158,10 +159,10 @@ Have fun!""")
         self.set_heading("KEYBOARD MAPPINGS")
         # body
         self.set_body("""\
-* Use arrow keys to move into four directions.
-* Use spacebar key to pause game.
-* Press escape key to trap out from a game level.
-* Press escape key once more to quit game.""")
+* <arrow> keys to move.
+* <spacebar> key to pause game.
+* <R> or <Return> key to (re)play.
+* <escape> key to trap/quit game.""")
         # footer
         self.set_footer()
         # events binding
@@ -298,7 +299,7 @@ Have fun!""")
         """
             shows a menu screen footer text;
         """
-        footer = footer or "Click to continue"
+        footer = footer or _("Click to continue")
         self.canvas.create_text(
             self.cw//2, self.ch - 20,
             anchor=TK.S,
@@ -313,7 +314,7 @@ Have fun!""")
         """
             shows a menu screen heading text;
         """
-        heading = heading or "MENU SCREEN"
+        heading = heading or _("MENU SCREEN")
         x = self.cw//2
         _title = dict(
             anchor=TK.N, text=_(heading), font=self.HEAD_FONT,
@@ -368,6 +369,7 @@ Have fun!""")
         self.unbind_all("<Key>")
         self.unbind_all("<Escape>")
         self.unbind_all("<Return>")
+        self.unbind_all("<r>")
     # end def
 
 # end class TkBoulderDash
