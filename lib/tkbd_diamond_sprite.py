@@ -26,6 +26,7 @@
 """
 
 # lib imports
+import random
 from . import tkbd_falling_sprite as S
 
 
@@ -93,6 +94,20 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
             "Main:{}:TouchedDown".format(self.get_event_name()),
             sprite=self
         )
+    # end def
+
+
+    def update_image_animation_loop (self):
+        """
+            updates sprite's image animation loop;
+        """
+        # allowed to proceed?
+        if self.started:
+            self.animations.run_after(
+                100 + 100 * random.randint(1, 10),
+                self.image_animation_loop
+            )
+        # end if
     # end def
 
 # end class TkBDDiamondSprite
