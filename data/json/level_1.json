@@ -67,11 +67,11 @@
         "X........X*X........XXRXXXXXXXXX.XXX*R.X*..XX*X.X..XRX.....X",
         "X...................X *....*......*X**.X.X......X*..*..X*..X",
         "XXXXXXXXX...XXXXXXXXXXXXXXXXXXXXXXXXXXXXPXXXXXXXXXXXXXXXXXXX",
-        "X.R R.....R........*X..R...RRRRRR...R........*X.*X.....XRXRX",
-        "X.RX*RR*RR*R..X*..XXX.R*R..R****R..R*R.X.XXRX.X..X.XXX.X*X*X",
-        "X.R**X**R**RXXXXX......R...RRRRRR...R..X...*..R RX...R...X.X",
-        "X.RRRRRRRRRRR...X.XXX..................X.XXXX.R.RXXX.X.XRX.X",
-        "X..X........*.X....*X......XX  XX......X*.....X......X.....X",
+        "XR R.....R.........*X..R...RRRRRR...R........*X.*X.....XRXRX",
+        "XRX*RR*RR*R..XX*.XXXX.R*R..R****R..R*R.X.XXRX.X..X.XXX.X*X*X",
+        "XR**X**R**RXXXXX.......R...RRRRRR...R..X...*..R RX...R...X.X",
+        "XRRRRRRRRRRR...X.XXXX..................X.XXXX.R.RXXX.X.XRX.X",
+        "XXXXXXXX...*.X.....*X......XX  XX......X*.....X......X.....X",
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     ]
 }
