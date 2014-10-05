@@ -187,7 +187,7 @@ class GamePlay:
             event handler for diamond catch;
         """
         # play sound
-        self.play_sound("diamond collected", "diamond")
+        self.play_sound("diamond collected", trackname="diamond")
         # drop diamond from managed list
         self.remove_falling(sprite)
         # show cool info on canvas
@@ -206,7 +206,7 @@ class GamePlay:
             event handler for diamond touchdown;
         """
         # play sound
-        self.play_sound("diamond touched down", "diamond")
+        self.play_sound("diamond touched down", trackname="diamond")
         # update general falldown procedure
         # CAUTION: falldown procedure is now independent
         pass
@@ -302,7 +302,7 @@ class GamePlay:
             event handler for digged earth;
         """
         # play sound
-        self.play_sound("earth digged", "background")
+        self.play_sound("earth digged", trackname="background")
         # update score with +50 pts
         self.score_add(50)
     # end if
@@ -520,7 +520,7 @@ class GamePlay:
         # canvas event unbindings
         self.unbind_canvas_events()
         # play sound
-        self.play_sound("player frozen", "player")
+        self.play_sound("player frozen", trackname="player")
     # end def
 
 
@@ -542,7 +542,7 @@ class GamePlay:
         # canvas event unbindings
         self.unbind_canvas_events()
         # play sound
-        self.play_sound("player dead", "player")
+        self.play_sound("player dead", trackname="player")
     # end def
 
 
@@ -583,7 +583,7 @@ class GamePlay:
             event handler for rock pushes;
         """
         # play sound
-        self.play_sound("rock pushed aside", "player")
+        self.play_sound("rock pushed aside", trackname="player")
     # end def
 
 
@@ -592,7 +592,7 @@ class GamePlay:
             event handler for rock touchdown;
         """
         # play sound
-        self.play_sound("rock touched down", "rock")
+        self.play_sound("rock touched down", trackname="rock")
         # update general falldown procedure
         # CAUTION: falldown procedure is now independent
         pass
@@ -614,7 +614,7 @@ class GamePlay:
         """
         # play sound
         self.play_sound(
-            "rockdiamond changing", "rockdiamond"
+            "rockdiamond changing", trackname="rockdiamond"
         )
     # end def
 
@@ -820,7 +820,7 @@ class GamePlay:
             )
             if _c and not (_c % 2):
                 self.play_sound(
-                    "countdown alarm", "alarm"
+                    "countdown alarm", trackname="alarm"
                 )
             # end if
             self.animations.run_after(250, self.blink_countdown)
@@ -917,7 +917,7 @@ class GamePlay:
             subtitle_color="powder blue"
         )
         # play sound
-        self.play_sound("player won all", "background")
+        self.play_sound("player won all", trackname="background")
         # reset level
         self.level = 1
         # events binding
@@ -946,7 +946,7 @@ class GamePlay:
         )
         # play sound
         self.owner.music.stop()
-        self.play_sound("player won level", "background")
+        self.play_sound("player won level", trackname="background")
         # go to next level
         self.animations.run_after(4000, self.next_level)
     # end def
@@ -990,7 +990,7 @@ class GamePlay:
             event handler for zdiamond catch;
         """
         # play sound
-        self.play_sound("zdiamond collected", "diamond")
+        self.play_sound("zdiamond collected", trackname="diamond")
         # drop diamond from managed list
         self.remove_falling(sprite)
         # show cool info on canvas
@@ -1024,7 +1024,7 @@ class GamePlay:
             event handler for attacking zombie;
         """
         # play sound
-        self.play_sound("zombie attacking", "enemy")
+        self.play_sound("zombie attacking", trackname="enemy")
     # end def
 
 
@@ -1033,7 +1033,7 @@ class GamePlay:
             event handler for dying zombie;
         """
         # play sound
-        self.play_sound("zombie dying", "enemy")
+        self.play_sound("zombie dying", trackname="enemy")
         # show cool info on canvas
         self.show_cool_info(sprite.xy, text="+100")
         # free some memory
