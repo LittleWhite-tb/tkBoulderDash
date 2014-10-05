@@ -381,6 +381,8 @@ class GamePlay:
         """
             player asked for exiting;
         """
+        # disable local events
+        self.unbind_events()
         # go to main menu screen
         self.owner.main_menu_screen()
     # end def
@@ -929,10 +931,10 @@ class GamePlay:
         self.play_sound("player won all", trackname="background")
         # reset level
         self.level = 1
-        # events binding
-        self.canvas.bind_all("<Escape>", self.on_key_escape)
         # main menu screen
         self.animations.run_after(3300, self.owner.main_menu_screen)
+        # events binding
+        self.canvas.bind_all("<Escape>", self.on_key_escape)
     # end def
 
 
@@ -958,6 +960,8 @@ class GamePlay:
         self.play_sound("player won level", trackname="background")
         # go to next level
         self.animations.run_after(4000, self.next_level)
+        # events binding
+        self.canvas.bind_all("<Escape>", self.on_key_escape)
     # end def
 
 
