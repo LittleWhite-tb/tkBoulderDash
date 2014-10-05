@@ -171,7 +171,7 @@ class TkGameAnimationPool:
     def stop_all (self, *args, **kw):
         """
             stops all scheduled threads;
-            clears up all thread-ids dictionary;
+            clears up all dictionaries (thread ids + lockers);
         """
         # loop on all thread ids
         for _tid in self.tid.values():
