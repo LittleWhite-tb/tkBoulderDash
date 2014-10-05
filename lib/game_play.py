@@ -65,7 +65,7 @@ class GamePlay:
         self.level = level
         self.events = EM.get_event_manager()
         self.soundtracks = tuple(
-            AU.new_audio_player() for i in len(self.SNDTRACK)
+            AU.new_audio_player() for i in range(len(self.SNDTRACK))
         )
         self.animations = AP.get_animation_pool()
         self.objects = OM.ObjectMapper(

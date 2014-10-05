@@ -336,9 +336,9 @@ Have fun!""")
             shows a menu screen background image (splash picture);
         """
         # events shut down
+        self.unbind_events()
         self.canvas.unbind("<Button-1>")
         self.game_play.clear_canvas()
-        self.unbind_events()
         # set background image
         self.photo = TK.PhotoImage(file="images/{}.gif".format(fname))
         self.canvas.create_image(0, 0, anchor=TK.NW, image=self.photo)
@@ -355,7 +355,7 @@ Have fun!""")
         """
         self.show_splash("splash")
         self.music.play("audio/{}".format(self.GAME_MUSIC))
-        self.canvas.bind_all("<Key>", self.main_menu_screen)
+        self.bind_all("<Key>", self.main_menu_screen)
         self.canvas.bind("<Button-1>", self.main_menu_screen)
         self.animations.run_after(7000, self.game_rules_screen)
     # end def
@@ -365,6 +365,7 @@ Have fun!""")
         """
             event unbindings;
         """
+        self.unbind_all("<Key>")
         self.unbind_all("<Escape>")
         self.unbind_all("<Return>")
     # end def
