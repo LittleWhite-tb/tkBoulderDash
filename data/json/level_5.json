@@ -1,0 +1,101 @@
+{
+    "level_name": "Zombies",
+
+    "countdown": 300,
+
+    "defs":
+    {
+        " ":
+        {
+            "role": "Empty"
+        },
+
+        "R":
+        {
+            "role": "Rock",
+            "class": "TkBDRockSprite",
+            "module": "tkbd_rock_sprite",
+            "images_dir": "rock"
+        },
+
+        "M":
+        {
+            "role": "Rock/Diamond",
+            "class": "TkBDRockDiamondSprite",
+            "module": "tkbd_rockdiamond_sprite",
+            "images_dir": "rockdiamond"
+        },
+
+        ".":
+        {
+            "role": "Earth",
+            "class": "TkBDEarthSprite",
+            "module": "tkbd_earth_sprite",
+            "images_dir": "earth"
+        },
+
+        "*":
+        {
+            "role": "Diamond",
+            "class": "TkBDDiamondSprite",
+            "module": "tkbd_diamond_sprite",
+            "images_dir": "diamond"
+        },
+
+        "!":
+        {
+            "role": "Diamond/Zombie-Killer",
+            "class": "TkBDZDiamondSprite",
+            "module": "tkbd_zdiamond_sprite",
+            "images_dir": "zdiamond"
+        },
+
+        "X":
+        {
+            "role": "Wall",
+            "class": "TkBDWallSprite",
+            "module": "tkbd_wall_sprite",
+            "images_dir": "wall"
+        },
+
+        "Z":
+        {
+            "role": "Enemy/Zombie",
+            "class": "TkBDZombieSprite",
+            "module": "tkbd_zombie_sprite",
+            "images_dir": "zombie"
+        },
+
+        "P":
+        {
+            "role": "Player",
+            "class": "TkBDPlayerSprite",
+            "module": "tkbd_player_sprite",
+            "images_dir": "player"
+        }
+    },
+
+    "matrix":
+    [
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "X....*..........*..R..*.......*........R.*..........*.....ZX",
+        "X*XXXXXXXXXX.XXXXXXXXXXX.XXXXXXXXXX.XXXXXXXXXXX.XXXXXXXXXX.X",
+        "X.X...*R..!X...*...M.....X*.M.....X....M........X*.X**..MX.X",
+        "X.X.XXXXX.MX.X.X.X.X.X.X.X.X*...X.R.XX.XX.XX.XX.X..X.X.RRX.X",
+        "X.X*......MX.......*..*R.X!XRR.*X R...R...*.R...R...ZX..!X.X",
+        "XZXXXXXXXRRX.XX.XX.XX.XX.XXXXXXXXXX.X.X.X.X.X.X.RXXXXXXXXX.X",
+        "X...........P.................Z....*....*..........*.....**X",
+        "XXXXXXXXX *XXXXXXXXXXXXXXX.MXXXXRRXXXXXRRXXXXRRXXXXXXRRXXXXX",
+        "X....*.......*...*.............*.....*.......*.......*.....X",
+        "X.XXXXXXXXXXXXXXXXXXXX..XXXRXXXXXXXXX..X.XXXXXXXXXXXXX..XXXX",
+        "X.X.M.X...X..*..X..*.X....**.....................Z.....*...X",
+        "X.X.X.X.X.X.XX.XXX.X.X.XXXXXXXXX.X.XX.XXX.XXXX.XXXXX.XXXXXXX",
+        "X.X.X.X.*....X..X..X...X...RR**X.......R*....*R.........*..X",
+        "X.Z.X...X.X..*.....X.X.R...*R*RXXXXXX.XXXXX.XXXX.XXX.XX.XM.X",
+        "X.X...X.X.*.....X....X.R X**R*!X M.....*M.......M.....R..M.X",
+        "X.X.X.X...X..X.XXX...X.XXXXXXXXXRX..X..XR.X..X..XR.X..X..X X",
+        "X.X.X.X.X.X.XX..X..X.X..*X...X....X...X*...X.*.X....X...X!RX",
+        "X*..X*R*X....X..*..X...X...X..*X....X.Z...**.X..*R....X...RX",
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    ]
+}

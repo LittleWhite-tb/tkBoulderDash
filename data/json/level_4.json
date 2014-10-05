@@ -1,7 +1,7 @@
 {
-    "level_name": "Zombies",
+    "level_name": "The Pool",
 
-    "countdown": 300,
+    "countdown": 210,
 
     "defs":
     {
@@ -42,14 +42,6 @@
             "images_dir": "diamond"
         },
 
-        "!":
-        {
-            "role": "Diamond/Zombie-Killer",
-            "class": "TkBDZDiamondSprite",
-            "module": "tkbd_zdiamond_sprite",
-            "images_dir": "zdiamond"
-        },
-
         "X":
         {
             "role": "Wall",
@@ -58,12 +50,20 @@
             "images_dir": "wall"
         },
 
-        "Z":
+        "W":
         {
-            "role": "Enemy/Zombie",
-            "class": "TkBDZombieSprite",
-            "module": "tkbd_zombie_sprite",
-            "images_dir": "zombie"
+            "role": "Background/Water",
+            "class": "TkBDWaterSprite",
+            "module": "tkbd_water_sprite",
+            "images_dir": "water"
+        },
+
+        "B":
+        {
+            "role": "Background/Barrier/Group1",
+            "class": "TkBDSyncBarrierSprite",
+            "module": "tkbd_syncbarrier_sprite",
+            "images_dir": "barrier"
         },
 
         "P":
@@ -78,24 +78,24 @@
     "matrix":
     [
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "X....*..........*..R..*.......*........R.*..........*.....ZX",
-        "X*XXXXXXXXXX.XXXXXXXXXXX.XXXXXXXXXX.XXXXXXXXXXX.XXXXXXXXXX.X",
-        "X.X...*R..!X...*...M.....X*.M.....X....M........X*.X**..MX.X",
-        "X.X.XXXXX.MX.X.X.X.X.X.X.X.X*...X.R.XX.XX.XX.XX.X..X.X.RRX.X",
-        "X.X*......MX.......*..*R.X!XRR.*X R...R...*.R...R...ZX..!X.X",
-        "XZXXXXXXXRRX.XX.XX.XX.XX.XXXXXXXXXX.X.X.X.X.X.X.RXXXXXXXXX.X",
-        "X...........P.................Z....*....*..........*.....**X",
-        "XXXXXXXXX *XXXXXXXXXXXXXXX.MXXXXRRXXXXXRRXXXXRRXXXXXXRRXXXXX",
-        "X....*.......*...*.............*.....*.......*.......*.....X",
-        "X.XXXXXXXXXXXXXXXXXXXX..XXXRXXXXXXXXX..X.XXXXXXXXXXXXX..XXXX",
-        "X.X.M.X...X..*..X..*.X....**.....................Z.....*...X",
-        "X.X.X.X.X.X.XX.XXX.X.X.XXXXXXXXX.X.XX.XXX.XXXX.XXXXX.XXXXXXX",
-        "X.X.X.X.*....X..X..X...X...RR**X.......R*....*R.........*..X",
-        "X.Z.X...X.X..*.....X.X.R...*R*RXXXXXX.XXXXX.XXXX.XXX.XX.XM.X",
-        "X.X...X.X.*.....X....X.R X**R*!X M.....*M.......M.....R..M.X",
-        "X.X.X.X...X..X.XXX...X.XXXXXXXXXRX..X..XR.X..X..XR.X..X..X X",
-        "X.X.X.X.X.X.XX..X..X.X..*X...X....X...X*...X.*.X....X...X!RX",
-        "X*..X*R*X....X..*..X...X...X..*X....X.Z...**.X..*R....X...RX",
+        "X...XXXM.MRM.*XX...*........*..XX........*XWWWX...........*X",
+        "X.X......*RRXXXX.XXXXXXXXXXXXX.XXRXXXXXXXXXXXXXXXX.XXXXXX.XX",
+        "X.XXXX.R*MRXX....*.....*....XX.XX.XXX.R...XRM..X*X...*.*X.XX",
+        "X....XXXX.XXX.XXXXXXXXXXXXX.XX.X..X....X....*X...XXXXXXXX..X",
+        "X.XX........X.*...XWWWWWWX..XX......XXXXXXXXRXXXXX...*.....X",
+        "X.XXXXXXXXX.XXXXX.XWWWWWWX.XXX.XXXXXXXXXXWWX*..X.X.XXXXXXX.X",
+        "X*........X.*.....XXXXXXXX.XX.........M XXXX.X.X.X.XRR RXX.X",
+        "XXXMXX.XX...X.XXXXXRRXXX...*X.XXXXXXX.RXX.X..X.X.X.XRRRRX..X",
+        "X...XX.XXXRRX.........*X.XXXX.X*XWWWX...X...XX.X.X.XRRRMX.XX",
+        "X.X.XX..RXXXX.XXXXXXXX.X.XX...X.XWWWXR*.R.XXXX.X.X.XRRR*X.XX",
+        "X.X.XXXXM.P.X...XWWWWX.X.XX.X.X.XXXXXXXXXXX........XRRRXX..X",
+        "X.X...*X..X.XXX.XWWWWX.X.*X.X...............XXXXXXXXX.XXXX.X",
+        "X.X.X.XXRRX...*.XXXXXX.XX.X.XXXXXXXX.MXXXXXXX..............X",
+        "X.X.X.XXXXXXXXXXX......XX.X...................XXXXXXXBXXXXXX",
+        "X*X.X.............XXXXXXX.X.XXXXXXXXXXXXXXXXXXX..RX        X",
+        "X.X.XXXXXXXXXXXX.M..X.....X.X.... R...............BWWWWWXX*X",
+        "X*X.XWWWWWWWWWWX*RX.XXXXXXX.X.....R.....XXXXXXXXXXXWWWWWXXXX",
+        "X*XRXWWWWWWWWWWX RX....*X*......R.....R        *XXXWWWWWXXXX",
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     ]
 }
