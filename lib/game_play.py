@@ -83,7 +83,7 @@ class GamePlay:
         """
         self.canvas.bind_all("<Escape>", self.on_key_escape)
         self.canvas.bind_all("<space>", self.pause_game)
-        self.canvas.bind_all("<R>", self.run)
+        self.canvas.bind_all("<r>", self.run)
         self.canvas.bind_all("<Key>", self.on_key_pressed)
         self.canvas.bind("<Button-1>", self.on_mouse_down)
         self.canvas.bind("<Motion>", self.on_mouse_move)
@@ -154,6 +154,7 @@ class GamePlay:
         self.canvas.configure(bg="black", scrollregion=(0, 0, 0, 0))
         self.canvas.xview_moveto(0)
         self.canvas.yview_moveto(0)
+        # show garbage collector status
     # end def
 
 
@@ -601,7 +602,7 @@ class GamePlay:
     # end def
 
 
-    def run (self):
+    def run (self, *args, **kw):
         """
             game play inits;
         """
@@ -761,6 +762,7 @@ class GamePlay:
         # canvas events unbind
         self.canvas.unbind_all("<Escape>")
         self.canvas.unbind_all("<space>")
+        self.canvas.unbind_all("<r>")
         self.canvas.unbind_all("<Key>")
         self.canvas.unbind("<Button-1>")
         self.canvas.unbind("<Motion>")

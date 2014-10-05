@@ -80,6 +80,19 @@ class TkGameAnimationPool:
     # end def
 
 
+    def clear_all (self, *args, **kw):
+        """
+            event handler;
+            stops all pending threads and releases all registered
+            lockers;
+            clears up all dictionaries;
+        """
+        # these will clear up all dictionaries
+        self.stop_all(*args, **kw)
+        self.release_all(*args, **kw)
+    # end def
+
+
     def lock (self, *callbacks):
         """
             stops and then locks scheduled threads, if any;
@@ -116,11 +129,13 @@ class TkGameAnimationPool:
     # end def
 
 
-    def release_all (self):
+    def release_all (self, *args, **kw):
         """
-            releases locker for all registered callbacks;
+            event handler;
+            releases all lockers;
         """
-        self.release(*self.tid.keys())
+        # simply clear all dictionary
+        self.lockers.clear()
     # end def
 
 
@@ -170,17 +185,17 @@ class TkGameAnimationPool:
 
     def stop_all (self, *args, **kw):
         """
+            event handler;
             stops all scheduled threads;
-            clears up all dictionaries (thread ids + lockers);
+            clears up all thread ids dictionary;
         """
         # loop on all thread ids
         for _tid in self.tid.values():
             # stop scheduled thread
             self.root.after_cancel(_tid)
         # end for
-        # clear all dicts
+        # clear dict
         self.tid.clear()
-        self.lockers.clear()
     # end def
 
 # end class TkGameAnimationPool
