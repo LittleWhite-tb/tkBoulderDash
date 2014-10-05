@@ -76,6 +76,15 @@ class GamePlay:
         self.game_paused = False
         self.score = 0
 
+        # instance constant defs
+        self.KEYMAP = {
+            "<Escape>": self.on_key_escape,
+            "<space>": self.pause_game,
+            "<Return>": self.run,
+            "<r>": self.run,
+            "<Key>": self.on_key_pressed,
+        }
+
         #~ self.level = 4 # debugging
 
     # end def
@@ -86,11 +95,11 @@ class GamePlay:
             event handler;
             canvas event bindings;
         """
-        self.canvas.bind_all("<Escape>", self.on_key_escape)
-        self.canvas.bind_all("<space>", self.pause_game)
-        self.canvas.bind_all("<Return>", self.run)
-        self.canvas.bind_all("<r>", self.run)
-        self.canvas.bind_all("<Key>", self.on_key_pressed)
+        # canvas keyboard event bindings
+        for _seq, _cb in self.KEYMAP.items():
+            self.canvas.bind_all(_seq, _cb)
+        # end for
+        # canvas mouse event bindings
         self.canvas.bind("<Button-1>", self.on_mouse_down)
         self.canvas.bind("<Motion>", self.on_mouse_move)
         self.canvas.bind("<ButtonRelease-1>", self.on_mouse_up)
@@ -152,17 +161,16 @@ class GamePlay:
             event handler;
             clears canvas and stops unexpected events;
         """
-        # stop any scheduled thread
-        self.animations.clear_all()
         # unbind all events
         self.unbind_events()
+        # stop any scheduled thread
+        self.animations.clear_all()
         # clear canvas
         self.canvas.delete(TK.ALL)
         # reset canvas
         self.canvas.configure(bg="black", scrollregion=(0, 0, 0, 0))
         self.canvas.xview_moveto(0)
         self.canvas.yview_moveto(0)
-        # show garbage collector status
     # end def
 
 
@@ -779,12 +787,11 @@ class GamePlay:
             event handler;
             canvas event unbindings;
         """
-        # canvas events unbind
-        self.canvas.unbind_all("<Escape>")
-        self.canvas.unbind_all("<space>")
-        self.canvas.unbind_all("<Return>")
-        self.canvas.unbind_all("<r>")
-        self.canvas.unbind_all("<Key>")
+        # canvas keyboard event unbindings
+        for _seq in self.KEYMAP:
+            self.canvas.unbind_all(_seq)
+        # end for
+        # canvas mouse event unbindings
         self.canvas.unbind("<Button-1>")
         self.canvas.unbind("<Motion>")
         self.canvas.unbind("<ButtonRelease-1>")
