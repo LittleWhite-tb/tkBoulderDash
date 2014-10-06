@@ -142,6 +142,21 @@ class TkGameEventManager:
     # end def
 
 
+    def disconnect_group (self, groupname):
+        """
+            disconnects only signals which name starts with @groupname;
+        """
+        # browse signals list
+        for _signal in set(self.connections):
+            # signal in group?
+            if str(_signal).startswith(groupname):
+                # disconnect signal
+                self.connections.pop(_signal, None)
+            # end if
+        # end for
+    # end def
+
+
     def raise_event (self, signal, *args, **kw):
         """
             calls all attached slots to the given signal name  with

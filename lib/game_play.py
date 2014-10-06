@@ -64,7 +64,6 @@ class GamePlay:
         self.level = level
         self.animations = AP.get_animation_pool()
         self.events = EM.get_event_manager()
-        self.events_dict = dict()
         self.soundtracks = tuple(
             AU.new_audio_player() for i in range(len(self.SNDTRACK))
         )
@@ -111,26 +110,26 @@ class GamePlay:
             event handler;
             app-wide event bindings;
         """
-        # member inits
-        self.events_dict = {
-            "Game:Earth:Digged": self.earth_digged,
-            "Game:Player:Moved": self.player_moved,
-            "Game:Player:Splashed": self.player_splashed,
-            "Game:Player:Frozen": self.player_frozen,
-            "Game:Player:Dead": self.player_dead,
-            "Game:Diamond:Collected": self.diamond_collected,
-            "Game:Diamond:TouchedDown": self.diamond_touched_down,
-            "Game:Rock:Pushed": self.rock_pushed_aside,
-            "Game:Rock:TouchedDown": self.rock_touched_down,
-            "Game:RockDiamond:Changing": self.rockdiamond_changing,
-            "Game:RockDiamond:Changed": self.rockdiamond_changed,
-            "Game:ZDiamond:Collected": self.zdiamond_collected,
-            "Game:ZDiamond:TouchedDown": self.diamond_touched_down,
-            "Game:Zombie:Attacking": self.zombie_attacking,
-            "Game:Zombie:Dying": self.zombie_dying,
-        }
         # connecting people...
-        self.events.connect_dict(self.events_dict)
+        self.events.connect_dict(
+            {
+                "Game:Earth:Digged": self.earth_digged,
+                "Game:Player:Moved": self.player_moved,
+                "Game:Player:Splashed": self.player_splashed,
+                "Game:Player:Frozen": self.player_frozen,
+                "Game:Player:Dead": self.player_dead,
+                "Game:Diamond:Collected": self.diamond_collected,
+                "Game:Diamond:TouchedDown": self.diamond_touched_down,
+                "Game:Rock:Pushed": self.rock_pushed_aside,
+                "Game:Rock:TouchedDown": self.rock_touched_down,
+                "Game:RockDiamond:Changing": self.rockdiamond_changing,
+                "Game:RockDiamond:Changed": self.rockdiamond_changed,
+                "Game:ZDiamond:Collected": self.zdiamond_collected,
+                "Game:ZDiamond:TouchedDown": self.diamond_touched_down,
+                "Game:Zombie:Attacking": self.zombie_attacking,
+                "Game:Zombie:Dying": self.zombie_dying,
+            }
+        )
         self.bind_canvas_events()
     # end def
 
@@ -236,7 +235,7 @@ class GamePlay:
         self.fixed_layer.clear()
         # init options
         _opts = dict(font="{} 26".format(FONT1), fill="bisque1")
-        _cx, _cy = self.center_xy(self.canvas)
+        _cx, _cy = self.canvas.center_xy()
         _cw = self.canvas.winfo_reqwidth()
         # init remaining diamonds
         self.cid_diamonds_count = self.canvas.create_text(
@@ -741,7 +740,7 @@ class GamePlay:
         x, y = self.objects.player_sprite.xy
         x0, y0 = self.viewport_center_xy()
         dx, dy = (x - x0), (y - y0)
-        cx, cy = self.center_xy(self.canvas)
+        cx, cy = self.canvas.center_xy()
         cw = self.canvas.winfo_reqwidth()
         mw, mh = self.objects.matrix.width_height()
         # fixing canvas fuzzy values

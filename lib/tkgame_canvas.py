@@ -82,4 +82,21 @@ class TkGameCanvas (BW.TkGameBaseWidget, TK.Canvas):
         self.yview_moveto(0)
     # end def
 
+
+    def viewport_center_xy (self):
+        """
+            returns (x, y) tuple for canvas' viewport central point;
+        """
+        return self.viewport_xy(self.center_xy())
+    # end def
+
+
+    def viewport_xy (self, xy):
+        """
+            returns (x, y) tuple for a canvas viewport point location;
+        """
+        # viewport --> scrollregion conversion
+        return (self.canvasx(xy[0]), self.canvasy(xy[1]))
+    # end def
+
 # end class TkGameCanvas
