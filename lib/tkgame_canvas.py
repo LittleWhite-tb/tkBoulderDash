@@ -67,4 +67,19 @@ class TkGameCanvas (BW.TkGameBaseWidget, TK.Canvas):
         self._safe_init(TK.Canvas, master, **options)
     # end def
 
+
+    def clear (self, *args, **kw):
+        """
+            event handler;
+            clears up canvas contents;
+            resets canvas to initial scrolling position (0, 0);
+        """
+        # clear canvas
+        self.delete(TK.ALL)
+        # reset canvas
+        self.configure(scrollregion=(0, 0, 0, 0))
+        self.xview_moveto(0)
+        self.yview_moveto(0)
+    # end def
+
 # end class TkGameCanvas

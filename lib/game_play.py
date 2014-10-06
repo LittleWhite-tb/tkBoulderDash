@@ -55,19 +55,19 @@ class GamePlay:
     }
 
 
-    def __init__ (self, owner, canvas, level=1):
+    def __init__ (self, canvas, level=1):
         """
             class constructor;
         """
         # member inits
-        self.owner = owner
         self.canvas = canvas
         self.level = level
+        self.animations = AP.get_animation_pool()
         self.events = EM.get_event_manager()
+        self.events_dict = dict()
         self.soundtracks = tuple(
             AU.new_audio_player() for i in range(len(self.SNDTRACK))
         )
-        self.animations = AP.get_animation_pool()
         self.objects = OM.ObjectMapper(
             canvas=self.canvas, images_dir="images/sprites",
         )
@@ -111,26 +111,26 @@ class GamePlay:
             event handler;
             app-wide event bindings;
         """
+        # member inits
+        self.events_dict = {
+            "Game:Earth:Digged": self.earth_digged,
+            "Game:Player:Moved": self.player_moved,
+            "Game:Player:Splashed": self.player_splashed,
+            "Game:Player:Frozen": self.player_frozen,
+            "Game:Player:Dead": self.player_dead,
+            "Game:Diamond:Collected": self.diamond_collected,
+            "Game:Diamond:TouchedDown": self.diamond_touched_down,
+            "Game:Rock:Pushed": self.rock_pushed_aside,
+            "Game:Rock:TouchedDown": self.rock_touched_down,
+            "Game:RockDiamond:Changing": self.rockdiamond_changing,
+            "Game:RockDiamond:Changed": self.rockdiamond_changed,
+            "Game:ZDiamond:Collected": self.zdiamond_collected,
+            "Game:ZDiamond:TouchedDown": self.diamond_touched_down,
+            "Game:Zombie:Attacking": self.zombie_attacking,
+            "Game:Zombie:Dying": self.zombie_dying,
+        }
         # connecting people...
-        self.events.connect_dict(
-            {
-                "Main:Earth:Digged": self.earth_digged,
-                "Main:Player:Moved": self.player_moved,
-                "Main:Player:Splashed": self.player_splashed,
-                "Main:Player:Frozen": self.player_frozen,
-                "Main:Player:Dead": self.player_dead,
-                "Main:Diamond:Collected": self.diamond_collected,
-                "Main:Diamond:TouchedDown": self.diamond_touched_down,
-                "Main:Rock:Pushed": self.rock_pushed_aside,
-                "Main:Rock:TouchedDown": self.rock_touched_down,
-                "Main:RockDiamond:Changing": self.rockdiamond_changing,
-                "Main:RockDiamond:Changed": self.rockdiamond_changed,
-                "Main:ZDiamond:Collected": self.zdiamond_collected,
-                "Main:ZDiamond:TouchedDown": self.diamond_touched_down,
-                "Main:Zombie:Attacking": self.zombie_attacking,
-                "Main:Zombie:Dying": self.zombie_dying,
-            }
-        )
+        self.events.connect_dict(self.events_dict)
         self.bind_canvas_events()
     # end def
 
@@ -166,11 +166,7 @@ class GamePlay:
         # stop any scheduled thread
         self.animations.clear_all()
         # clear canvas
-        self.canvas.delete(TK.ALL)
-        # reset canvas
-        self.canvas.configure(bg="black", scrollregion=(0, 0, 0, 0))
-        self.canvas.xview_moveto(0)
-        self.canvas.yview_moveto(0)
+        self.canvas.clear()
     # end def
 
 
@@ -357,6 +353,15 @@ class GamePlay:
     # end def
 
 
+    def goto_main_menu (self, *args, **kw):
+        """
+            event handler;
+            ask to return to game's main menu;
+        """
+        self.events.raise_event("Main:Menu:ShowMainMenu")
+    # end def
+
+
     def next_level (self, *args, **kw):
         """
             event handler;
@@ -381,10 +386,10 @@ class GamePlay:
         """
             player asked for exiting;
         """
-        # disable local events
+        # disable gameplay events
         self.unbind_events()
         # go to main menu screen
-        self.owner.main_menu_screen()
+        self.goto_main_menu()
     # end def
 
 
@@ -519,7 +524,7 @@ class GamePlay:
         # notify game has ended
         self.events.raise_event("Main:Game:Over")
         # return to main menu screen
-        self.animations.run_after(3000, self.owner.main_menu_screen)
+        self.animations.run_after(3000, self.goto_main_menu)
     # end def
 
 
@@ -803,10 +808,10 @@ class GamePlay:
     def unbind_events (self, *args, **kw):
         """
             event handler;
-            app-wide event unbindings;
+            gameplay event unbindings;
         """
-        # unbind app events
-        self.events.disconnect_all()
+        # unbind gameplay events
+        self.events.disconnect_all(*self.events_dict.keys())
         # unbind canvas events
         self.unbind_canvas_events()
     # end def
@@ -927,12 +932,14 @@ class GamePlay:
             title_color="lemon chiffon",
             subtitle_color="powder blue"
         )
+        # stop game music background
+        self.events.raise_event("Main:Music:Stop")
         # play sound
         self.play_sound("player won all", trackname="background")
         # reset level
         self.level = 1
         # main menu screen
-        self.animations.run_after(3300, self.owner.main_menu_screen)
+        self.animations.run_after(3300, self.goto_main_menu)
         # events binding
         self.canvas.bind_all("<Escape>", self.on_key_escape)
     # end def
@@ -955,8 +962,9 @@ class GamePlay:
             title_color="yellow",
             subtitle_color="antique white"
         )
+        # stop game music background
+        self.events.raise_event("Main:Music:Stop")
         # play sound
-        self.owner.music.stop()
         self.play_sound("player won level", trackname="background")
         # go to next level
         self.animations.run_after(4000, self.next_level)

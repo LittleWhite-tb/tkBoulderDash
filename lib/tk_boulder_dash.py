@@ -68,9 +68,21 @@ class TkBoulderDash (GF.TkGameFrame):
         """
             tkevent bindings;
         """
-        for _seq, _cb in self.KEYMAP.items():
+        # app-wide tkinter event bindings
+        for _seq, _cb in self.TKEVENTS.items():
             self.bind_all(_seq, _cb)
         # end for
+        # app-wide events (not to be unbound in any case)
+        self.events.connect_dict(
+            {
+                "Main:Menu:ShowSplash", self.screen_splash,
+                "Main:Menu:ShowMainMenu", self.screen_main_menu,
+                "Main:Menu:ShowGameRules", self.screen_game_rules,
+                "Main:Menu:ShowKeymap", self.screen_keymap,
+                "Main:Music:Start", self.start_music,
+                "Main:Music:Stop", self.stop_music,
+            }
+        )
     # end def
 
 
@@ -78,7 +90,7 @@ class TkBoulderDash (GF.TkGameFrame):
         """
             hook method to be reimplemented in subclass;
         """
-        # mainwindow inits
+        # main window inits
         self.root = TK._default_root
         self.root.protocol("WM_DELETE_WINDOW", self.quit_game)
         self.root.title(
@@ -89,7 +101,7 @@ class TkBoulderDash (GF.TkGameFrame):
         )
         # member inits
         self.music = AU.new_audio_player()
-        self.KEYMAP = {
+        self.TKEVENTS = {
             "<Escape>": self.quit_game,
             "<Return>": self.run_game,
             "<r>": self.run_game,
@@ -107,7 +119,7 @@ class TkBoulderDash (GF.TkGameFrame):
         self.cx, self.cy = self.canvas.center_xy()
         self.cw, self.ch = self.canvas.size()
         # gameplay inits
-        self.game_play = GP.GamePlay(self, self.canvas, level=1)
+        self.game_play = GP.GamePlay(self.canvas, level=1)
     # end def
 
 
@@ -129,8 +141,9 @@ class TkBoulderDash (GF.TkGameFrame):
     # end def
 
 
-    def quit_game (self, event=None):
+    def quit_game (self, *args, **kw):
         """
+            event handler;
             quit game dialog confirmation;
         """
         # event unbindings
@@ -147,8 +160,9 @@ class TkBoulderDash (GF.TkGameFrame):
     # end def
 
 
-    def run (self, **kw):
+    def run (self, *args, **kw):
         """
+            event handler;
             running game frame;
         """
         # first menu screen
@@ -156,13 +170,14 @@ class TkBoulderDash (GF.TkGameFrame):
     # end def
 
 
-    def run_game (self, *args):
+    def run_game (self, *args, **kw):
         """
+            event handler;
             running current game level;
         """
         # inits
+        self.unbind_all_events()
         self.music.set_volume(self.GAME_MUSIC_VOLUME/2.0)
-        self.unbind_tkevents()
         self.game_play.run()
     # end def
 
@@ -183,7 +198,7 @@ But never forget: it's only a game.
 Have fun!""")
         # footer
         self.set_footer()
-        # events binding
+        # canvas only mouse events
         self.canvas.bind("<Button-1>", self.screen_main_menu)
     # end def
 
@@ -204,7 +219,7 @@ Have fun!""")
 * <escape> key to trap/quit game.""")
         # footer
         self.set_footer()
-        # events binding
+        # canvas only mouse events
         self.canvas.bind("<Button-1>", self.screen_main_menu)
     # end def
 
@@ -258,8 +273,20 @@ Have fun!""")
             "a Python3-Tkinter port of the "
             "famous Boulder Dash\u2122 game"
         )
-        # rebind events
+        # canvas only mouse events
         self.canvas.bind("<Button-1>", self.menu_clicked)
+    # end def
+
+
+    def screen_splash (self, *args):
+        """
+            first menu screen;
+        """
+        self.show_splash("splash")
+        self.start_music()
+        self.animations.run_after(7000, self.screen_game_rules)
+        # canvas only mouse events
+        self.canvas.bind("<Button-1>", self.screen_main_menu)
     # end def
 
 
@@ -320,7 +347,6 @@ Have fun!""")
         """
         # events shut down
         self.unbind_tkevents()
-        self.canvas.unbind("<Button-1>")
         self.game_play.clear_canvas()
         # set background image
         self.photo = TK.PhotoImage(file="images/{}.gif".format(fname))
@@ -332,14 +358,33 @@ Have fun!""")
     # end def
 
 
-    def screen_splash (self, *args):
+    def start_music (self, *args, **kw):
         """
-            first menu screen;
+            event handler;
+            starts game music background;
         """
-        self.show_splash("splash")
+        self.music.set_volume(self.GAME_MUSIC_VOLUME)
         self.music.play("audio/{}".format(self.GAME_MUSIC))
-        self.canvas.bind("<Button-1>", self.screen_main_menu)
-        self.animations.run_after(7000, self.screen_game_rules)
+    # end def
+
+
+    def stop_music (self, *args, **kw):
+        """
+            event handler;
+            stops game music background;
+        """
+        self.music.stop()
+    # end def
+
+
+    def unbind_all_events (self):
+        """
+             unbinds all local events;
+        """
+        # unbind keyboard events
+        self.unbind_tkevents()
+        # unbind mouse events
+        self.canvas.unbind("<Button-1>")
     # end def
 
 
@@ -347,7 +392,8 @@ Have fun!""")
         """
             event unbindings;
         """
-        for _seq in self.KEYMAP:
+        # app-wide tkinter event unbindings
+        for _seq in self.TKEVENTS:
             self.unbind_all(_seq)
         # end for
     # end def
