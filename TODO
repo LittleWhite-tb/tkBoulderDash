@@ -11,7 +11,7 @@ TODO
     qui empêche le joueur de l'approcher tant que des diamants
     dédiés n'ont pas d'abord été collectés;
 
-    * passer en phase Beta;
+    * passer en phase "development status - Beta";
 
     * ajouter une BDD sqlite3 avec son wrapper de gestion;
 
