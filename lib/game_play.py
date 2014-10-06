@@ -83,7 +83,7 @@ class GamePlay:
             "<Key>": self.on_key_pressed,
         }
 
-        self.level = 3 # debugging
+        self.level = 5 # debugging
 
     # end def
 
