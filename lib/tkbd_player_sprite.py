@@ -105,7 +105,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         """
         self.animations.lock(self.player_idle)
         self.state = "frozen"
-        self.events.raise_event("Main:Player:Frozen", sprite=self)
+        self.events.raise_event("Game:Player:Frozen", sprite=self)
     # end def
 
 
@@ -126,7 +126,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         # super class move_animation
         super().move_animation(c_dict)
         # player sprite moved
-        self.events.raise_event("Main:Player:Moved", sprite=self)
+        self.events.raise_event("Game:Player:Moved", sprite=self)
     # end def
 
 
@@ -177,7 +177,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         # player is dead
         super().destroy(*args, **kw)
         # events handling
-        self.events.raise_event("Main:Player:Dead", sprite=self)
+        self.events.raise_event("Game:Player:Dead", sprite=self)
     # end def
 
 
@@ -196,7 +196,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         """
         self.animations.lock(self.player_idle)
         self.state = "splashed"
-        self.events.raise_event("Main:Player:Splashed", sprite=self)
+        self.events.raise_event("Game:Player:Splashed", sprite=self)
     # end def
 
 # end class TkBDPlayerSprite

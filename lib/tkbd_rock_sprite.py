@@ -47,7 +47,7 @@ class TkBDRockSprite (S.TkBDFallingSprite):
             c_dict["sx"], 0, lambda c: not c["sprite"]
         )
         if _moved:
-            self.events.raise_event("Main:Rock:Pushed", sprite=self)
+            self.events.raise_event("Game:Rock:Pushed", sprite=self)
         # end if
         return _moved
     # end def
@@ -69,7 +69,7 @@ class TkBDRockSprite (S.TkBDFallingSprite):
         """
             hook method to be implemented by subclass;
         """
-        self.events.raise_event("Main:Rock:TouchedDown", sprite=self)
+        self.events.raise_event("Game:Rock:TouchedDown", sprite=self)
     # end def
 
 # end class TkBDRockSprite

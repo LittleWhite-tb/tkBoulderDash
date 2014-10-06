@@ -41,7 +41,7 @@ class TkBDWaterSprite (S.TkGameMatrixSprite):
         # ancestor first
         super().destroy(*args, **kw)
         # events handling
-        self.events.raise_event("Main:Water:Removed")
+        self.events.raise_event("Game:Water:Removed")
     # end def
 
 

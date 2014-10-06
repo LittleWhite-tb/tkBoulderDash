@@ -135,7 +135,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         """
         self.events.connect_dict(
             {
-                "Main:Player:Moved": self.player_moved,
+                "Game:Player:Moved": self.player_moved,
                 "Main:Game:Started": self.game_started,
                 "Main:Game:Paused": self.game_suspended,
                 "Main:Game:Resumed": self.game_resumed,
@@ -245,7 +245,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         # super class move_animation
         super().move_animation(c_dict)
         # zombie sprite moved
-        self.events.raise_event("Main:Zombie:Moved", sprite=self)
+        self.events.raise_event("Game:Zombie:Moved", sprite=self)
     # end def
 
 
@@ -304,7 +304,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         # zombie is dead
         super().destroy(*args, **kw)
         # events handling
-        self.events.raise_event("Main:Zombie:Dead", sprite=self)
+        self.events.raise_event("Game:Zombie:Dead", sprite=self)
     # end def
 
 
@@ -324,7 +324,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         # zombie attacks player
         self.state = "attack_{}".format(self.direction)
         # notify game frame
-        self.events.raise_event("Main:Zombie:Attacking", sprite=self)
+        self.events.raise_event("Game:Zombie:Attacking", sprite=self)
     # end def
 
 
@@ -335,7 +335,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         # zombie dies
         self.state = "die_{}".format(self.direction)
         # notify game frame
-        self.events.raise_event("Main:Zombie:Dying", sprite=self)
+        self.events.raise_event("Game:Zombie:Dying", sprite=self)
     # end def
 
 

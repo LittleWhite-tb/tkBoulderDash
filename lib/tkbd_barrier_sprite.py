@@ -57,7 +57,7 @@ class TkBDBarrierSprite (S.TkGameMatrixSprite):
             hook method to be reimplemented in subclass;
             returns formatted event name;
         """
-        return "Main:Barrier:{}".format(str(action).capitalize())
+        return "Game:Barrier:{}".format(str(action).capitalize())
     # end def
 
 

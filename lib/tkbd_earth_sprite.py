@@ -41,7 +41,7 @@ class TkBDEarthSprite (S.TkGameMatrixSprite):
         # ancestor first
         super().destroy(*args, **kw)
         # events handling
-        self.events.raise_event("Main:Earth:Digged")
+        self.events.raise_event("Game:Earth:Digged")
     # end def
 
 

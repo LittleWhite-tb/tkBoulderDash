@@ -58,7 +58,7 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
             super().destroy(*args, **kw)
             # events handling
             self.events.raise_event(
-                "Main:{}:Collected".format(self.get_event_name()),
+                "Game:{}:Collected".format(self.get_event_name()),
                 sprite=self
             )
         # end if
@@ -91,7 +91,7 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
             hook method to be implemented by subclass;
         """
         self.events.raise_event(
-            "Main:{}:TouchedDown".format(self.get_event_name()),
+            "Game:{}:TouchedDown".format(self.get_event_name()),
             sprite=self
         )
     # end def
