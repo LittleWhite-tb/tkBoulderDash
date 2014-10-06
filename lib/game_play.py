@@ -467,7 +467,7 @@ class GamePlay:
             )
             self.events.raise_event("Main:Game:Paused")
             # show some text
-            x, y = self.viewport_center_xy()
+            x, y = self.canvas.viewport_center_xy()
             _opts = dict(
                 anchor=TK.CENTER,
                 text=_("PAUSE"),
@@ -507,7 +507,7 @@ class GamePlay:
             player is now really dead;
         """
         # animated text
-        x, y = self.viewport_center_xy()
+        x, y = self.canvas.viewport_center_xy()
         _fx = FXFT.TkGameFXFlyingText(self.canvas)
         _fx.create_text(
             x, y + 50,
@@ -737,11 +737,11 @@ class GamePlay:
             asks camera to track to player;
         """
         # animation inits
-        x, y = self.objects.player_sprite.xy
-        x0, y0 = self.viewport_center_xy()
-        dx, dy = (x - x0), (y - y0)
         cx, cy = self.canvas.center_xy()
         cw = self.canvas.winfo_reqwidth()
+        x, y = self.objects.player_sprite.xy
+        x0, y0 = self.canvas.viewport_xy((cx, cy))
+        dx, dy = (x - x0), (y - y0)
         mw, mh = self.objects.matrix.width_height()
         # fixing canvas fuzzy values
         if abs(dx) < 2 or x > mw - cx:
@@ -899,23 +899,6 @@ class GamePlay:
     # end def
 
 
-    def viewport_center_xy (self):
-        """
-            returns (x, y) tuple for canvas' viewport central point;
-        """
-        return self.viewport_xy(self.center_xy(self.canvas))
-    # end def
-
-
-    def viewport_xy (self, xy):
-        """
-            returns (x, y) tuple for a canvas viewport point location;
-        """
-        # viewport --> scrollregion conversion
-        return (self.canvas.canvasx(xy[0]), self.canvas.canvasy(xy[1]))
-    # end def
-
-
     def won_all (self):
         """
             player won everything! congrats!
@@ -977,7 +960,7 @@ class GamePlay:
             texts for winning screens;
         """
         # inits
-        x, y = self.viewport_center_xy()
+        x, y = self.canvas.center_xy()
         _opts = dict(text=_(title), font="{} 48".format(FONT1))
         # texts
         self.canvas.create_text(
