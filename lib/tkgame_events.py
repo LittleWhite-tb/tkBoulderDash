@@ -172,7 +172,7 @@ class TkGameEventManager:
             # update signal slots collection
             self.connections[signal] = _slots
             # browse the set
-            for _slot in _slots:
+            for _slot in _slots.copy():
                 # call each slot one by one
                 # with arguments and keywords
                 _slot(*args, **kw)
