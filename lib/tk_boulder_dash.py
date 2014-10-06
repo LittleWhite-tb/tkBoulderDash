@@ -46,7 +46,7 @@ __builtins__["FONT2"] = "{andrea karime}"
 
 class TkBoulderDash (GF.TkGameFrame):
     """
-        game mainframe class;
+        game main frame;
     """
 
     # class constants
@@ -72,17 +72,6 @@ class TkBoulderDash (GF.TkGameFrame):
         for _seq, _cb in self.TKEVENTS.items():
             self.bind_all(_seq, _cb)
         # end for
-        # app-wide events (not to be unbound in any case)
-        self.events.connect_dict(
-            {
-                "Main:Menu:ShowSplash", self.screen_splash,
-                "Main:Menu:ShowMainMenu", self.screen_main_menu,
-                "Main:Menu:ShowGameRules", self.screen_game_rules,
-                "Main:Menu:ShowKeymap", self.screen_keymap,
-                "Main:Music:Start", self.start_music,
-                "Main:Music:Stop", self.stop_music,
-            }
-        )
     # end def
 
 
@@ -120,6 +109,17 @@ class TkBoulderDash (GF.TkGameFrame):
         self.cw, self.ch = self.canvas.size()
         # gameplay inits
         self.game_play = GP.GamePlay(self.canvas, level=1)
+        # app-wide events (not to be unbound in any case)
+        self.events.connect_dict(
+            {
+                "Main:Menu:ShowSplash", self.screen_splash,
+                "Main:Menu:ShowMainMenu", self.screen_main_menu,
+                "Main:Menu:ShowGameRules", self.screen_game_rules,
+                "Main:Menu:ShowKeymap", self.screen_keymap,
+                "Main:Music:Start", self.start_music,
+                "Main:Music:Stop", self.stop_music,
+            }
+        )
     # end def
 
 
@@ -309,7 +309,7 @@ Have fun!""")
         """
             shows a menu screen footer text;
         """
-        footer = footer or _("Click to continue")
+        footer = footer or "Click to continue"
         self.canvas.create_text(
             self.cx, self.ch - 20,
             anchor=TK.S,
@@ -324,7 +324,7 @@ Have fun!""")
         """
             shows a menu screen heading text;
         """
-        heading = heading or _("MENU SCREEN")
+        heading = heading or "MENU SCREEN"
         _title = dict(
             anchor=TK.N, text=_(heading), font=self.HEAD_FONT,
         )
@@ -346,14 +346,14 @@ Have fun!""")
             shows a menu screen background image (splash picture);
         """
         # events shut down
-        self.unbind_tkevents()
+        self.unbind_all_events()
         self.game_play.clear_canvas()
         # set background image
         self.photo = TK.PhotoImage(file="images/{}.gif".format(fname))
         self.canvas.create_image(0, 0, anchor=TK.NW, image=self.photo)
         # set music volume level
         self.music.set_volume(self.GAME_MUSIC_VOLUME)
-        # rebind events
+        # rebind tkevents only
         self.bind_tkevents()
     # end def
 
