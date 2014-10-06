@@ -68,13 +68,12 @@ class GamePlay:
             AU.new_audio_player() for i in range(len(self.SNDTRACK))
         )
         self.objects = OM.ObjectMapper(
-            canvas=self.canvas, images_dir="images/sprites",
+            canvas, images_dir="images/sprites"
         )
         self.fixed_layer = FL.get_fixed_layer(canvas)
         self.mouse_down = False
         self.game_paused = False
         self.score = 0
-
         # instance constant defs
         self.KEYMAP = {
             "<Escape>": self.on_key_escape,
@@ -144,14 +143,6 @@ class GamePlay:
         )
         flag = not flag
         self.animations.run_after(250, self.blink_countdown, flag)
-    # end def
-
-
-    def center_xy (self, widget):
-        """
-            returns (x, y) tuple of a tkinter widget central point;
-        """
-        return (widget.winfo_reqwidth()/2, widget.winfo_reqheight()/2)
     # end def
 
 
@@ -810,7 +801,7 @@ class GamePlay:
             gameplay event unbindings;
         """
         # unbind gameplay events
-        self.events.disconnect_all(*self.events_dict.keys())
+        self.events.disconnect_group("Game:")
         # unbind canvas events
         self.unbind_canvas_events()
     # end def
