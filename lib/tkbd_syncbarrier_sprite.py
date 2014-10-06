@@ -34,6 +34,28 @@ class TkBDSyncBarrierSprite (S.TkBDBarrierSprite):
         Role group synchronized barrier sprite in the mine;
     """
 
+    def bind_events (self, *args, **kw):
+        """
+            class event bindings;
+        """
+        # bind events
+        self.events.connect(
+            self.get_event_name("removed"), self.destroy
+        )
+    # end def
+
+
+    def destroy (self, *args, **kw):
+        """
+            falling sprites may remove this sprite;
+        """
+        # unbind events before dying!
+        self.unbind_events()
+        # delegate to super class
+        super().destroy(*args, **kw)
+    # end def
+
+
     def get_event_name (self, action):
         """
             hook method to be reimplemented in subclass;
@@ -53,20 +75,29 @@ class TkBDSyncBarrierSprite (S.TkBDBarrierSprite):
     def role (self, value):
         # disconnect old events
         if hasattr(self, "__role") and self.__role:
-            self.events.disconnect(self.get_event_name("removed"))
+            self.unbind_events()
         # end if
         # init new value
         self.__role = str(value)
         # group sync event bindings
-        self.events.connect(
-            self.get_event_name("removed"), self.destroy
-        )
+        self.bind_events()
     # end def
 
 
     @role.deleter
     def role (self):
         del self.__role
+    # end def
+
+
+    def unbind_events (self, *args, **kw):
+        """
+            class event unbindings;
+        """
+        # unbind events
+        self.events.disconnect(
+            self.get_event_name("removed"), self.destroy
+        )
     # end def
 
 # end class TkBDSyncBarrierSprite

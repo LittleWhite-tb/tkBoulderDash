@@ -83,7 +83,7 @@ class GamePlay:
             "<Key>": self.on_key_pressed,
         }
 
-        self.level = 5 # debugging
+        self.level = 4 # debugging
 
     # end def
 
@@ -802,6 +802,7 @@ class GamePlay:
         """
         # unbind gameplay events
         self.events.disconnect_group("Game:")
+        self.events.disconnect_group("Main:Game:")
         # unbind canvas events
         self.unbind_canvas_events()
     # end def

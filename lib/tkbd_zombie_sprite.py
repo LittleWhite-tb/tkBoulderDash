@@ -139,7 +139,7 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
                 "Main:Game:Started": self.game_started,
                 "Main:Game:Paused": self.game_suspended,
                 "Main:Game:Resumed": self.game_resumed,
-                "Main:Game:Over": self.game_over,
+                #~ "Main:Game:Over": self.game_over,
             }
         )
     # end def
@@ -169,16 +169,6 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         # end if
         # allowed movement
         return True
-    # end def
-
-
-    def game_over (self, *args, **kw):
-        """
-            event handler;
-            game is over;
-        """
-        # stop loops
-        self.animations.stop(self.ai_loop)
     # end def
 
 
