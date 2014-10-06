@@ -29,7 +29,8 @@ import tkinter as TK
 import tkinter.messagebox as MB
 from . import game_play as GP
 from . import tkgame_audio as AU
-from . import tkgame_animations as AP
+from . import tkgame_canvas as GC
+from . import tkgame_frame as GF
 from . import tkgame_i18n as i18n
 
 
@@ -43,7 +44,7 @@ __builtins__["FONT1"] = "{bd cartoon shout}"
 __builtins__["FONT2"] = "{andrea karime}"
 
 
-class TkBoulderDash (TK.Frame):
+class TkBoulderDash (GF.TkGameFrame):
     """
         game mainframe class;
     """
@@ -63,13 +64,21 @@ class TkBoulderDash (TK.Frame):
     GAME_MUSIC_VOLUME = 0.5
 
 
-    def __init__ (self, **kw):
+    def bind_tkevents (self):
         """
-            class constructor;
+            tkevent bindings;
         """
-        # super class inits
-        super().__init__()
-        self.configure(**self._only_tk(kw))
+        for _seq, _cb in self.KEYMAP.items():
+            self.bind_all(_seq, _cb)
+        # end for
+    # end def
+
+
+    def init_widget (self, **kw):
+        """
+            hook method to be reimplemented in subclass;
+        """
+        # mainwindow inits
         self.root = TK._default_root
         self.root.protocol("WM_DELETE_WINDOW", self.quit_game)
         self.root.title(
@@ -80,147 +89,25 @@ class TkBoulderDash (TK.Frame):
         )
         # member inits
         self.music = AU.new_audio_player()
-        self.animations = AP.get_animation_pool()
+        self.KEYMAP = {
+            "<Escape>": self.quit_game,
+            "<Return>": self.run_game,
+            "<r>": self.run_game,
+            "<Key>": self.screen_main_menu,
+        }
         # init widgets
-        self.canvas = TK.Canvas(
+        self.canvas = GC.TkGameCanvas(
             self,
-            highlightthickness=0,
             # aspect ratio 16:9 (800x450)
             width=800,
             height=450,
         )
         self.canvas.pack()
         # other inits
-        self.cw = self.canvas.winfo_reqwidth()
-        self.ch = self.canvas.winfo_reqheight()
+        self.cx, self.cy = self.canvas.center_xy()
+        self.cw, self.ch = self.canvas.size()
         # gameplay inits
         self.game_play = GP.GamePlay(self, self.canvas, level=1)
-    # end def
-
-
-    def _only_tk (self, kw):
-        r"""
-            protected method def;
-            filters external keywords to suit tkinter init options;
-            returns filtered dict() of keywords;
-        """
-        # inits
-        _dict = dict()
-        # TK widget *MUST* be init'ed before calling _only_tk() /!\
-        # self.configure() needs self.tk to work well
-        if hasattr(self, "tk") and hasattr(self, "configure"):
-            _attrs = set(self.configure().keys()) & set(kw.keys())
-            for _key in _attrs:
-                _dict[_key] = kw.get(_key)
-            # end for
-        # end if
-        return _dict
-    # end def
-
-
-    def bind_events (self):
-        """
-            event bindings;
-        """
-        self.bind_all("<Escape>", self.quit_game)
-        self.bind_all("<Return>", self.run_game)
-        self.bind_all("<r>", self.run_game)
-    # end def
-
-
-    def game_rules_screen (self, *args):
-        """
-            game rules menu screen;
-        """
-        # background image
-        self.show_splash("rules")
-        # heading
-        self.set_heading("GAME RULES")
-        # body
-        self.set_body("""\
-Go and catch all diamonds in the mine to get to the next level.
-Take care of countdown, enemies and other surprises...
-But never forget: it's only a game.
-Have fun!""")
-        # footer
-        self.set_footer()
-        # events binding
-        self.canvas.bind("<Button-1>", self.main_menu_screen)
-    # end def
-
-
-    def keymap_screen (self, *args):
-        """
-            keyboard mappings menu screen;
-        """
-        # background image
-        self.show_splash("keymap")
-        # heading
-        self.set_heading("KEYBOARD MAPPINGS")
-        # body
-        self.set_body("""\
-* <arrow> keys to move.
-* <spacebar> key to pause game.
-* <R> or <Return> key to (re)play.
-* <escape> key to trap/quit game.""")
-        # footer
-        self.set_footer()
-        # events binding
-        self.canvas.bind("<Button-1>", self.main_menu_screen)
-    # end def
-
-
-    def main_menu_screen (self, *args):
-        """
-            main menu menu screen;
-        """
-        # background image
-        self.show_splash("main_menu")
-        # heading
-        self.set_heading("MAIN MENU")
-        # inits
-        x, y = self.game_play.viewport_center_xy()
-        _opts = dict(
-            anchor=TK.CENTER,
-            font=self.MENU_ITEM_FONT,
-            fill=self.MENU_ITEM_COLOR,
-        )
-        # CAUTION:
-        # canvas.tag_bind() is buggy /!\
-        # do *NOT* use it
-        self.menu_id = dict()
-        # menu item inits
-        _id = self.canvas.create_text(
-            x, y - 100, text=_("Play"), **_opts
-        )
-        self.menu_id[_id] = self.run_game
-        # menu item inits
-        _id = self.canvas.create_text(
-            x, y - 40, text=_("Keyboard mappings"), **_opts
-        )
-        self.menu_id[_id] = self.keymap_screen
-        # menu item inits
-        _id = self.canvas.create_text(
-            x, y + 10, text=_("Game rules"), **_opts
-        )
-        self.menu_id[_id] = self.game_rules_screen
-        # menu item inits
-        _id = self.canvas.create_text(
-            x, y + 60, text=_("Splash screen"), **_opts
-        )
-        self.menu_id[_id] = self.splash_screen
-        # menu item inits
-        _id = self.canvas.create_text(
-            x, y + 110, text=_("Quit game"), **_opts
-        )
-        self.menu_id[_id] = self.quit_game
-        # footer
-        self.set_footer(
-            "a Python3-Tkinter port of the "
-            "famous Boulder Dash\u2122 game"
-        )
-        # rebind events
-        self.canvas.bind("<Button-1>", self.menu_clicked)
     # end def
 
 
@@ -247,7 +134,7 @@ Have fun!""")
             quit game dialog confirmation;
         """
         # event unbindings
-        self.unbind_events()
+        self.unbind_tkevents()
         # dialog confirmation
         if MB.askyesno(_("Question"), _("Really quit game?")):
             # quit game app
@@ -255,7 +142,7 @@ Have fun!""")
         # cancelled
         else:
             # rebind events
-            self.bind_events()
+            self.bind_tkevents()
         # end if
     # end def
 
@@ -265,7 +152,7 @@ Have fun!""")
             running game frame;
         """
         # first menu screen
-        self.splash_screen()
+        self.screen_splash()
     # end def
 
 
@@ -275,8 +162,104 @@ Have fun!""")
         """
         # inits
         self.music.set_volume(self.GAME_MUSIC_VOLUME/2.0)
-        self.unbind_events()
+        self.unbind_tkevents()
         self.game_play.run()
+    # end def
+
+
+    def screen_game_rules (self, *args):
+        """
+            game rules menu screen;
+        """
+        # background image
+        self.show_splash("rules")
+        # heading
+        self.set_heading("GAME RULES")
+        # body
+        self.set_body("""\
+Go and catch all diamonds in the mine to get to the next level.
+Take care of countdown, enemies and other surprises...
+But never forget: it's only a game.
+Have fun!""")
+        # footer
+        self.set_footer()
+        # events binding
+        self.canvas.bind("<Button-1>", self.screen_main_menu)
+    # end def
+
+
+    def screen_keymap (self, *args):
+        """
+            keyboard mappings menu screen;
+        """
+        # background image
+        self.show_splash("keymap")
+        # heading
+        self.set_heading("KEYBOARD MAPPINGS")
+        # body
+        self.set_body("""\
+* <arrow> keys to move.
+* <spacebar> key to pause game.
+* <R> or <Return> key to (re)play.
+* <escape> key to trap/quit game.""")
+        # footer
+        self.set_footer()
+        # events binding
+        self.canvas.bind("<Button-1>", self.screen_main_menu)
+    # end def
+
+
+    def screen_main_menu (self, *args):
+        """
+            main menu menu screen;
+        """
+        # background image
+        self.show_splash("main_menu")
+        # heading
+        self.set_heading("MAIN MENU")
+        # inits
+        x, y = (self.cx, self.cy)
+        _opts = dict(
+            anchor=TK.CENTER,
+            font=self.MENU_ITEM_FONT,
+            fill=self.MENU_ITEM_COLOR,
+        )
+        # CAUTION:
+        # canvas.tag_bind() is buggy /!\
+        # do *NOT* use it
+        self.menu_id = dict()
+        # menu item inits
+        _id = self.canvas.create_text(
+            x, y - 100, text=_("Play"), **_opts
+        )
+        self.menu_id[_id] = self.run_game
+        # menu item inits
+        _id = self.canvas.create_text(
+            x, y - 40, text=_("Keyboard mappings"), **_opts
+        )
+        self.menu_id[_id] = self.screen_keymap
+        # menu item inits
+        _id = self.canvas.create_text(
+            x, y + 10, text=_("Game rules"), **_opts
+        )
+        self.menu_id[_id] = self.screen_game_rules
+        # menu item inits
+        _id = self.canvas.create_text(
+            x, y + 60, text=_("Splash screen"), **_opts
+        )
+        self.menu_id[_id] = self.screen_splash
+        # menu item inits
+        _id = self.canvas.create_text(
+            x, y + 110, text=_("Quit game"), **_opts
+        )
+        self.menu_id[_id] = self.quit_game
+        # footer
+        self.set_footer(
+            "a Python3-Tkinter port of the "
+            "famous Boulder Dash\u2122 game"
+        )
+        # rebind events
+        self.canvas.bind("<Button-1>", self.menu_clicked)
     # end def
 
 
@@ -285,7 +268,7 @@ Have fun!""")
             shows a menu screen body text;
         """
         self.canvas.create_text(
-            self.cw//2, self.ch//2 + 10,
+            self.cx, self.cy + 10,
             anchor=TK.CENTER,
             text=_(body),
             font=self.BODY_FONT,
@@ -301,7 +284,7 @@ Have fun!""")
         """
         footer = footer or _("Click to continue")
         self.canvas.create_text(
-            self.cw//2, self.ch - 20,
+            self.cx, self.ch - 20,
             anchor=TK.S,
             text=_(footer),
             font=self.FOOTER_FONT,
@@ -315,17 +298,16 @@ Have fun!""")
             shows a menu screen heading text;
         """
         heading = heading or _("MENU SCREEN")
-        x = self.cw//2
         _title = dict(
             anchor=TK.N, text=_(heading), font=self.HEAD_FONT,
         )
         self.canvas.create_text(
-            x + 4, 34,
+            self.cx + 4, 34,
             fill=self.HEAD_SHADOW_COLOR,
             **_title
         )
         self.canvas.create_text(
-            x, 30,
+            self.cx, 30,
             fill=self.HEAD_COLOR,
             **_title
         )
@@ -337,7 +319,7 @@ Have fun!""")
             shows a menu screen background image (splash picture);
         """
         # events shut down
-        self.unbind_events()
+        self.unbind_tkevents()
         self.canvas.unbind("<Button-1>")
         self.game_play.clear_canvas()
         # set background image
@@ -346,30 +328,28 @@ Have fun!""")
         # set music volume level
         self.music.set_volume(self.GAME_MUSIC_VOLUME)
         # rebind events
-        self.bind_events()
+        self.bind_tkevents()
     # end def
 
 
-    def splash_screen (self, *args):
+    def screen_splash (self, *args):
         """
             first menu screen;
         """
         self.show_splash("splash")
         self.music.play("audio/{}".format(self.GAME_MUSIC))
-        self.bind_all("<Key>", self.main_menu_screen)
-        self.canvas.bind("<Button-1>", self.main_menu_screen)
-        self.animations.run_after(7000, self.game_rules_screen)
+        self.canvas.bind("<Button-1>", self.screen_main_menu)
+        self.animations.run_after(7000, self.screen_game_rules)
     # end def
 
 
-    def unbind_events (self):
+    def unbind_tkevents (self):
         """
             event unbindings;
         """
-        self.unbind_all("<Key>")
-        self.unbind_all("<Escape>")
-        self.unbind_all("<Return>")
-        self.unbind_all("<r>")
+        for _seq in self.KEYMAP:
+            self.unbind_all(_seq)
+        # end for
     # end def
 
 # end class TkBoulderDash
