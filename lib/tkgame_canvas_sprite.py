@@ -261,6 +261,16 @@ class TkGameCanvasSprite:
     # end def
 
 
+    def on_start (self, *args, **kw):
+        """
+            hook method to be reimplemented in subclass;
+            this happens just after self.start() has been called;
+        """
+        # enter the loop
+        self.update_image_animation_loop()
+    # end def
+
+
     def setup (self):
         """
             sets up sprite on canvas, if not already done;
@@ -291,8 +301,8 @@ class TkGameCanvasSprite:
         self.setup()
         # sprite has been started
         self.started = True
-        # enter the loop
-        self.update_image_animation_loop()
+        # hook method for subclass
+        self.on_start()
     # end def
 
 

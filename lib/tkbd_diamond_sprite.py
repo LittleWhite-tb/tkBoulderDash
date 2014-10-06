@@ -86,6 +86,19 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
     # end def
 
 
+    def on_start (self, *args, **kw):
+        """
+            hook method to be reimplemented in subclass;
+            this happens just after self.start() has been called;
+        """
+        # enter the loop (delayed)
+        self.animations.run_after(
+            100 + 100 * random.randint(1, 10),
+            self.update_image_animation_loop
+        )
+    # end def
+
+
     def touched_down (self):
         """
             hook method to be implemented by subclass;
@@ -94,20 +107,6 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
             "Game:{}:TouchedDown".format(self.get_event_name()),
             sprite=self
         )
-    # end def
-
-
-    def update_image_animation_loop (self):
-        """
-            updates sprite's image animation loop;
-        """
-        # allowed to proceed?
-        if self.started:
-            self.animations.run_after(
-                100 + 100 * random.randint(1, 10),
-                self.image_animation_loop
-            )
-        # end if
     # end def
 
 # end class TkBDDiamondSprite

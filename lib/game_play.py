@@ -83,7 +83,7 @@ class GamePlay:
             "<Key>": self.on_key_pressed,
         }
 
-        #~ self.level = 5 # debugging
+        self.level = 3 # debugging
 
     # end def
 
@@ -715,7 +715,7 @@ class GamePlay:
         # end if
         # loop again
         self.animations.run_after(
-            30,
+            25,
             self.scroll_animation_loop,
             startx, starty, stopx, stopy, stepx, stepy, cx, cy,
             cw, mw, mh
@@ -743,7 +743,7 @@ class GamePlay:
         # end if
         # run animation loop
         self.animations.run_after(
-            30,
+            25,
             self.scroll_animation_loop,
             x0, y0, x, y,
             dx/ticks, dy/ticks,
@@ -752,7 +752,7 @@ class GamePlay:
         # need to loop again?
         if autoloop:
             self.animations.run_after(
-                30 * (ticks + 2), self.scroll_to_player, ticks, True
+                25 * (ticks + 2), self.scroll_to_player, ticks, True
             )
         # end if
     # end def
