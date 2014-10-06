@@ -112,12 +112,12 @@ class TkBoulderDash (GF.TkGameFrame):
         # app-wide events (not to be unbound in any case)
         self.events.connect_dict(
             {
-                "Main:Menu:ShowSplash", self.screen_splash,
-                "Main:Menu:ShowMainMenu", self.screen_main_menu,
-                "Main:Menu:ShowGameRules", self.screen_game_rules,
-                "Main:Menu:ShowKeymap", self.screen_keymap,
-                "Main:Music:Start", self.start_music,
-                "Main:Music:Stop", self.stop_music,
+                "Main:Menu:ShowSplash": self.screen_splash,
+                "Main:Menu:ShowMainMenu": self.screen_main_menu,
+                "Main:Menu:ShowGameRules": self.screen_game_rules,
+                "Main:Menu:ShowKeymap": self.screen_keymap,
+                "Main:Music:Start": self.start_music,
+                "Main:Music:Stop": self.stop_music,
             }
         )
     # end def
