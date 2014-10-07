@@ -26,42 +26,40 @@
 """
 
 # lib imports
-import random
-from . import tkbd_falling_sprite as S
+from . import tkbd_diamond_sprite as S
 
 
-class TkBDDiamondSprite (S.TkBDFallingSprite):
+class TkBDTreasureSprite (S.TkBDDiamondSprite):
     """
-        Diamond sprite in the mine;
+        Treasure/Golden Key sprite in the mine;
     """
 
     # class constants
     STATUS = {
-
         "default": {
             "loop": True,
+            "sequence": True,
+            "delay": 200,
+        },
+
+        "open": {
+            "loop": False,
             "sequence": True,
             "delay": 100,
         },
     }
 
 
-    def destroy (self, *args, **kw):
+    def bind_events (self, *args, **kw):
         """
-            player caught the diamond;
+            class event bindings;
         """
-        # enabled?
-        if not self.locked:
-            # lock sprite for unexpected events
-            self.locked = True
-            # ancestor first
-            super().destroy(*args, **kw)
-            # notify gameplay
-            self.events.raise_event(
-                "Game:{}:Collected".format(self.get_event_name()),
-                sprite=self
-            )
-        # end if
+        # bind events
+        self.events.connect_dict(
+            {
+                "Game:GoldenKey:Collected": self.unlock_treasure,
+            }
+        )
     # end def
 
 
@@ -72,8 +70,32 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
         """
         # concerned event names:
         # "Game:{}:Collected"
+        # "Game:{}:Pushed"
         # "Game:{}:TouchedDown"
-        return "Diamond"
+        return "Treasure"
+    # end def
+
+
+    def has_moved (self, c_dict):
+        """
+            determines if the treasure can be pushed in the given
+            direction, provided it is an horizontal one;
+        """
+        # no vertical pushes admitted here
+        if c_dict["sy"]:
+            return False
+        # end if
+        # horizontal moves
+        _moved = self.move_sprite(
+            c_dict["sx"], 0, lambda c: not c["sprite"]
+        )
+        if _moved:
+            self.events.raise_event(
+                "Game:{}:Pushed".format(self.get_event_name()),
+                sprite=self
+            )
+        # end if
+        return _moved
     # end def
 
 
@@ -85,7 +107,8 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
         # super class inits
         super().init_sprite(**kw)
         # member inits
-        self.is_overable = True
+        self.is_overable = False
+        self.is_movable = True
     # end def
 
 
@@ -94,24 +117,10 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
             hook method to be reimplemented in subclass;
             this happens just after self.start() has been called;
         """
-        # enter the loop (delayed)
-        self.animations.run_after(
-            100 + 100 * random.randint(1, 10),
-            self.update_image_animation_loop
-        )
+        # super class inits
+        super().on_start(*args, **kw)
         # event bindings
         self.bind_events()
     # end def
 
-
-    def touched_down (self):
-        """
-            hook method to be implemented by subclass;
-        """
-        self.events.raise_event(
-            "Game:{}:TouchedDown".format(self.get_event_name()),
-            sprite=self
-        )
-    # end def
-
-# end class TkBDDiamondSprite
+# end class TkBDTreasureSprite

@@ -47,7 +47,7 @@ class TkGameCanvasSprite:
     }
 
 
-    def __init__ (self, owner, canvas, **kw):
+    def __init__ (self, owner, canvas, subclassed=False, **kw):
         """
             class constructor;
         """
@@ -66,7 +66,7 @@ class TkGameCanvasSprite:
         self.canvas_tags = kw.get("tags") or ""
         self.xy = (kw.get("x"), kw.get("y"))
         # for best simplification - hook method
-        if not kw.get("subclassed"):
+        if not subclassed:
             self.init_sprite(**kw)
         # end if
     # end def
@@ -77,6 +77,15 @@ class TkGameCanvasSprite:
             returns sprite's bounding box in canvas;
         """
         return self.canvas.bbox(self.canvas_id)
+    # end def
+
+
+    def bind_events (self, *args, **kw):
+        """
+            hook method to be reimplemented in subclass;
+            class event bindings;
+        """
+        pass
     # end def
 
 
@@ -97,6 +106,8 @@ class TkGameCanvasSprite:
         # stop and lock animations
         self.stop()
         self.animations.lock(self.image_animation_loop)
+        # remove events before dying!
+        self.unbind_events()
         # delete from canvas
         self.canvas.delete(self.canvas_id)
     # end def
@@ -268,6 +279,8 @@ class TkGameCanvasSprite:
         """
         # enter the loop
         self.update_image_animation_loop()
+        # bind events
+        self.bind_events()
     # end def
 
 
@@ -348,6 +361,15 @@ class TkGameCanvasSprite:
         # inits
         self.started = False
         self.animations.stop(self.image_animation_loop)
+    # end def
+
+
+    def unbind_events (self, *args, **kw):
+        """
+            hook method to be reimplemented in subclass;
+            class event unbindings;
+        """
+        pass
     # end def
 
 

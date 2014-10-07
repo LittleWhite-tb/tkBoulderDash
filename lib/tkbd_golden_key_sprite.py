@@ -29,21 +29,10 @@
 from . import tkbd_diamond_sprite as S
 
 
-class TkBDZDiamondSprite (S.TkBDDiamondSprite):
+class TkBDGoldenKeySprite (S.TkBDDiamondSprite):
     """
-        Zombie-killer Diamond sprite in the mine;
+        Treasure/Golden Key sprite in the mine;
     """
-
-    # class constants
-    STATUS = {
-
-        "default": {
-            "loop": True,
-            "sequence": True,
-            "delay": 100,
-        },
-    }
-
 
     def get_event_name (self):
         """
@@ -53,7 +42,7 @@ class TkBDZDiamondSprite (S.TkBDDiamondSprite):
         # concerned event names:
         # "Game:{}:Collected"
         # "Game:{}:TouchedDown"
-        return "ZDiamond"
+        return "GoldenKey"
     # end def
 
-# end class TkBDZDiamondSprite
+# end class TkBDGoldenKeySprite

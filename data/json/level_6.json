@@ -77,9 +77,9 @@
         "K":
         {
             "role": "Treasure/Key",
-            "class": "TkBDTreasureSprite",
-            "module": "tkbd_treasure_sprite",
-            "images_dir": "treasure"
+            "class": "TkBDGoldenKeySprite",
+            "module": "tkbd_golden_key_sprite",
+            "images_dir": "golden_key"
         },
 
         "P":
