@@ -131,17 +131,10 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
 
     def bind_events (self):
         """
-            event bindings;
+            hook method to be reimplemented in subclass;
+            class event bindings;
         """
-        self.events.connect_dict(
-            {
-                "Game:Player:Moved": self.player_moved,
-                "Main:Game:Started": self.game_started,
-                "Main:Game:Paused": self.game_suspended,
-                "Main:Game:Resumed": self.game_resumed,
-                #~ "Main:Game:Over": self.game_over,
-            }
-        )
+        self.events.connect_dict(self.events_dict)
     # end def
 
 
@@ -218,7 +211,13 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         self.direction = "right"
         self.player_xy = None
         # event bindings
-        self.bind_events()
+        self.events_dict = {
+            "Game:Player:Moved": self.player_moved,
+            "Main:Game:Started": self.game_started,
+            "Main:Game:Paused": self.game_suspended,
+            "Main:Game:Resumed": self.game_resumed,
+            #~ "Main:Game:Over": self.game_over,
+        }
     # end def
 
 
@@ -366,6 +365,15 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         self.state = "walk_{}".format(self.direction)
         # reset to idle in a while
         self.animations.run_after(1000, self.state_idle)
+    # end def
+
+
+    def unbind_events (self, *args, **kw):
+        """
+            hook method to be reimplemented in subclass;
+            class event unbindings;
+        """
+        self.events.disconnect_dict(self.events_dict)
     # end def
 
 # end class TkBDZombieSprite

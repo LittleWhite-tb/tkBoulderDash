@@ -142,6 +142,33 @@ class TkGameEventManager:
     # end def
 
 
+    def disconnect_dict (self, events_dict):
+        """
+            disconnects (signal, slots) pairs in dict() object;
+            slots can be a single callback or one of tuple, list, set;
+            returns True on success, False otherwise;
+        """
+        # param controls
+        if events_dict and isinstance(events_dict, dict):
+            # loop on items
+            for (_signal, _slots) in events_dict.items():
+                if isinstance(_slots, (tuple, list, set)):
+                    self.disconnect(_signal, *_slots)
+                else:
+                    self.disconnect(_signal, _slots)
+                # end if
+            # end for
+            # operation succeeded
+            return True
+        # unsupported
+        else:
+            raise TypeError("Expected plain dict() object type.")
+        # end if
+        # operation failed
+        return False
+    # end def
+
+
     def disconnect_group (self, groupname):
         """
             disconnects only signals which name starts with @groupname;
