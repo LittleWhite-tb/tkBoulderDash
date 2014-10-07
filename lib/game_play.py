@@ -638,7 +638,7 @@ class GamePlay:
             self.draw_level()
         # got in trouble
         except Exception as e:
-            raise e from None
+            #~ raise e from None
             # stop all!
             exit(
                 "An exception has occurred:\n{}\n"

@@ -306,10 +306,6 @@ class TkGameCanvasSprite:
         """
             sets up sprite on canvas, if not already done;
         """
-        # safety controls
-        if self.locked:
-            return
-        # end if
         # sets up sprite if not already done
         if not self.canvas_id:
             # create sprite on canvas
@@ -332,10 +328,6 @@ class TkGameCanvasSprite:
         """
             starting sprite's image animation loop;
         """
-        # safety controls
-        if self.locked:
-            return
-        # end if
         # set up sprite if not already done
         self.setup()
         # sprite has been started
@@ -355,10 +347,6 @@ class TkGameCanvasSprite:
 
     @state.setter
     def state (self, value):
-        # safety controls
-        if self.locked:
-            return
-        # end if
         # param controls
         if value in self.STATUS:
             # state has changed?
@@ -388,10 +376,6 @@ class TkGameCanvasSprite:
         """
             stops image animation loop;
         """
-        # safety controls
-        if self.locked:
-            return
-        # end if
         # inits
         self.started = False
         self.animations.stop(self.image_animation_loop)
@@ -411,12 +395,8 @@ class TkGameCanvasSprite:
         """
             updates sprite's image animation loop;
         """
-        # safety controls
-        if self.locked:
-            return
-        # end if
         # allowed to proceed?
-        if self.started:
+        if self.started and not self.locked:
             self.animations.run_after(1, self.image_animation_loop)
         # end if
     # end def
