@@ -37,7 +37,6 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
 
     # class constants
     STATUS = {
-
         "default": {
             "loop": True,
             "sequence": True,
@@ -52,9 +51,7 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
         """
         # enabled?
         if not self.locked:
-            # lock sprite for unexpected events
-            self.locked = True
-            # ancestor first
+            # super class inits
             super().destroy(*args, **kw)
             # notify gameplay
             self.events.raise_event(
