@@ -172,6 +172,7 @@ class TkGameEventManager:
     def disconnect_group (self, groupname):
         """
             disconnects only signals which name starts with @groupname;
+            for each signal, all slots are removed at once;
         """
         # browse signals list
         for _signal in set(self.connections):

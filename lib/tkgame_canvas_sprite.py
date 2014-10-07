@@ -328,12 +328,18 @@ class TkGameCanvasSprite:
         """
             starting sprite's image animation loop;
         """
-        # set up sprite if not already done
-        self.setup()
-        # sprite has been started
-        self.started = True
-        # hook method for subclass
-        self.on_start()
+        # not already running?
+        if not self.started:
+            # sprite is now started
+            self.started = True
+            # set up sprite if not already done
+            self.setup()
+            # hook method for subclass
+            self.on_start()
+        # notify error
+        else:
+            raise TkGameSpriteError("sprite has already been started.")
+        # end if
     # end def
 
 
