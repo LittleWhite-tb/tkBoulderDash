@@ -10,12 +10,12 @@
             "role": "Empty"
         },
 
-        "R":
+        "X":
         {
-            "role": "Rock",
-            "class": "TkBDRockSprite",
-            "module": "tkbd_rock_sprite",
-            "images_dir": "rock"
+            "role": "Wall",
+            "class": "TkBDWallSprite",
+            "module": "tkbd_wall_sprite",
+            "images_dir": "wall"
         },
 
         ".":
@@ -26,20 +26,20 @@
             "images_dir": "earth"
         },
 
+        "R":
+        {
+            "role": "Rock",
+            "class": "TkBDRockSprite",
+            "module": "tkbd_rock_sprite",
+            "images_dir": "rock"
+        },
+
         "*":
         {
             "role": "Diamond",
             "class": "TkBDDiamondSprite",
             "module": "tkbd_diamond_sprite",
             "images_dir": "diamond"
-        },
-
-        "X":
-        {
-            "role": "Wall",
-            "class": "TkBDWallSprite",
-            "module": "tkbd_wall_sprite",
-            "images_dir": "wall"
         },
 
         "P":

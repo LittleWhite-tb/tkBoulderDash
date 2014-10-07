@@ -10,6 +10,22 @@
             "role": "Empty"
         },
 
+        "X":
+        {
+            "role": "Wall",
+            "class": "TkBDWallSprite",
+            "module": "tkbd_wall_sprite",
+            "images_dir": "wall"
+        },
+
+        ".":
+        {
+            "role": "Earth",
+            "class": "TkBDEarthSprite",
+            "module": "tkbd_earth_sprite",
+            "images_dir": "earth"
+        },
+
         "R":
         {
             "role": "Rock",
@@ -26,14 +42,6 @@
             "images_dir": "rockdiamond"
         },
 
-        ".":
-        {
-            "role": "Earth",
-            "class": "TkBDEarthSprite",
-            "module": "tkbd_earth_sprite",
-            "images_dir": "earth"
-        },
-
         "*":
         {
             "role": "Diamond",
@@ -42,44 +50,20 @@
             "images_dir": "diamond"
         },
 
-        "!":
+        "%":
         {
-            "role": "Diamond/Zombie-Killer",
-            "class": "TkBDZDiamondSprite",
-            "module": "tkbd_zdiamond_sprite",
-            "images_dir": "zdiamond"
+            "role": "Diamond/Prize-Unlocker",
+            "class": "TkBDPUDiamondSprite",
+            "module": "tkbd_pudiamond_sprite",
+            "images_dir": "pudiamond"
         },
 
-        "X":
+        "U":
         {
-            "role": "Wall",
-            "class": "TkBDWallSprite",
-            "module": "tkbd_wall_sprite",
-            "images_dir": "wall"
-        },
-
-        "Z":
-        {
-            "role": "Enemy/Zombie",
-            "class": "TkBDZombieSprite",
-            "module": "tkbd_zombie_sprite",
-            "images_dir": "zombie"
-        },
-
-        "T":
-        {
-            "role": "Treasure/Loot",
-            "class": "TkBDTreasureSprite",
-            "module": "tkbd_treasure_sprite",
-            "images_dir": "treasure"
-        },
-
-        "K":
-        {
-            "role": "Treasure/Key",
-            "class": "TkBDTreasureSprite",
-            "module": "tkbd_treasure_sprite",
-            "images_dir": "treasure"
+            "role": "Prize/Trophy",
+            "class": "TkBDTrophySprite",
+            "module": "tkbd_trophy_sprite",
+            "images_dir": "trophy"
         },
 
         "P":
