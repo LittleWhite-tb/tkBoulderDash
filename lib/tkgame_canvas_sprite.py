@@ -59,6 +59,7 @@ class TkGameCanvasSprite:
         self.image_manager = IM.get_image_manager()
         self.images_dir = kw.get("images_dir") or ""
         self.role = kw.get("role") or ""
+        self.locked = False
         self.started = False
         self.__state = None
         self.state = kw.get("state") or "default"
@@ -103,13 +104,18 @@ class TkGameCanvasSprite:
             event handler for sprite destruction;
             should be reimplemented in subclass;
         """
-        # stop and lock animations
-        self.stop()
-        self.animations.lock(self.image_animation_loop)
-        # remove events before dying!
-        self.unbind_events()
-        # delete from canvas
-        self.canvas.delete(self.canvas_id)
+        # sprite is enabled?
+        if not self.locked:
+            # lock sprite to avoid unexpected events
+            self.locked = True
+            # stop and lock animations
+            self.stop()
+            self.animations.lock(self.image_animation_loop)
+            # remove events before dying!
+            self.unbind_events()
+            # delete from canvas
+            self.canvas.delete(self.canvas_id)
+        # end if
     # end def
 
 
@@ -129,6 +135,10 @@ class TkGameCanvasSprite:
         """
             sprite's image animation loop;
         """
+        # safety controls
+        if self.locked:
+            return
+        # end if
         # inits
         _status = self.STATUS[self.state]
         _image = self.image_manager.get_image(
@@ -226,6 +236,10 @@ class TkGameCanvasSprite:
         """
             here is the animation of a moving sprite;
         """
+        # safety controls
+        if self.locked:
+            return
+        # end if
         # moving is quite simple here
         # but you can reimplement this in your own subclasses
         dx, dy = c_dict["dx"], c_dict["dy"]
@@ -245,6 +259,10 @@ class TkGameCanvasSprite:
             callback function will get in argument
             self.look_ahead()'s return value;
         """
+        # safety controls
+        if self.locked:
+            return
+        # end if
         # param inits
         if not callable(callback):
             callback = lambda c_dict: not c_dict.get("sprites")
@@ -288,6 +306,10 @@ class TkGameCanvasSprite:
         """
             sets up sprite on canvas, if not already done;
         """
+        # safety controls
+        if self.locked:
+            return
+        # end if
         # sets up sprite if not already done
         if not self.canvas_id:
             # create sprite on canvas
@@ -310,6 +332,10 @@ class TkGameCanvasSprite:
         """
             starting sprite's image animation loop;
         """
+        # safety controls
+        if self.locked:
+            return
+        # end if
         # set up sprite if not already done
         self.setup()
         # sprite has been started
@@ -329,6 +355,10 @@ class TkGameCanvasSprite:
 
     @state.setter
     def state (self, value):
+        # safety controls
+        if self.locked:
+            return
+        # end if
         # param controls
         if value in self.STATUS:
             # state has changed?
@@ -358,6 +388,10 @@ class TkGameCanvasSprite:
         """
             stops image animation loop;
         """
+        # safety controls
+        if self.locked:
+            return
+        # end if
         # inits
         self.started = False
         self.animations.stop(self.image_animation_loop)
@@ -377,6 +411,10 @@ class TkGameCanvasSprite:
         """
             updates sprite's image animation loop;
         """
+        # safety controls
+        if self.locked:
+            return
+        # end if
         # allowed to proceed?
         if self.started:
             self.animations.run_after(1, self.image_animation_loop)
