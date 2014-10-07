@@ -38,7 +38,7 @@ class TkGameMatrixSprite (CS.TkGameCanvasSprite):
             class constructor
         """
         # super class inits
-        super().__init__(owner, canvas, subclassed=True, **_kw)
+        super().__init__(owner, canvas, subclassed=True, **kw)
         # member inits
         self.matrix = matrix
         self.row_column = (kw.get("row") or 0, kw.get("column") or 0)

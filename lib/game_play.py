@@ -83,7 +83,7 @@ class GamePlay:
             "<Key>": self.on_key_pressed,
         }
 
-        self.level = 6 # debugging
+        self.level = 3 # debugging
 
     # end def
 
@@ -638,6 +638,7 @@ class GamePlay:
             self.draw_level()
         # got in trouble
         except Exception as e:
+            raise e from None
             # stop all!
             exit(
                 "An exception has occurred:\n{}\n"
