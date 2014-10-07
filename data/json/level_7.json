@@ -1,0 +1,117 @@
+{
+    "level_name": "The Prize",
+
+    "countdown": 300,
+
+    "defs":
+    {
+        " ":
+        {
+            "role": "Empty"
+        },
+
+        "R":
+        {
+            "role": "Rock",
+            "class": "TkBDRockSprite",
+            "module": "tkbd_rock_sprite",
+            "images_dir": "rock"
+        },
+
+        "M":
+        {
+            "role": "Rock/Diamond",
+            "class": "TkBDRockDiamondSprite",
+            "module": "tkbd_rockdiamond_sprite",
+            "images_dir": "rockdiamond"
+        },
+
+        ".":
+        {
+            "role": "Earth",
+            "class": "TkBDEarthSprite",
+            "module": "tkbd_earth_sprite",
+            "images_dir": "earth"
+        },
+
+        "*":
+        {
+            "role": "Diamond",
+            "class": "TkBDDiamondSprite",
+            "module": "tkbd_diamond_sprite",
+            "images_dir": "diamond"
+        },
+
+        "!":
+        {
+            "role": "Diamond/Zombie-Killer",
+            "class": "TkBDZDiamondSprite",
+            "module": "tkbd_zdiamond_sprite",
+            "images_dir": "zdiamond"
+        },
+
+        "X":
+        {
+            "role": "Wall",
+            "class": "TkBDWallSprite",
+            "module": "tkbd_wall_sprite",
+            "images_dir": "wall"
+        },
+
+        "Z":
+        {
+            "role": "Enemy/Zombie",
+            "class": "TkBDZombieSprite",
+            "module": "tkbd_zombie_sprite",
+            "images_dir": "zombie"
+        },
+
+        "T":
+        {
+            "role": "Treasure/Loot",
+            "class": "TkBDTreasureSprite",
+            "module": "tkbd_treasure_sprite",
+            "images_dir": "treasure"
+        },
+
+        "K":
+        {
+            "role": "Treasure/Key",
+            "class": "TkBDTreasureSprite",
+            "module": "tkbd_treasure_sprite",
+            "images_dir": "treasure"
+        },
+
+        "P":
+        {
+            "role": "Player",
+            "class": "TkBDPlayerSprite",
+            "module": "tkbd_player_sprite",
+            "images_dir": "player"
+        }
+    },
+
+    "matrix":
+    [
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "X..........................................................X",
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    ]
+}
