@@ -45,7 +45,7 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
         "open": {
             "loop": False,
             "sequence": True,
-            "delay": 100,
+            "delay": 200,
         },
     }
 
@@ -55,11 +55,7 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
             class event bindings;
         """
         # bind events
-        self.events.connect_dict(
-            {
-                "Game:GoldenKey:Collected": self.unlock_treasure,
-            }
-        )
+        self.events.connect_dict(self.events_dict)
     # end def
 
 
@@ -109,18 +105,19 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
         # member inits
         self.is_overable = False
         self.is_movable = True
+        # event inits
+        self.events_dict = {
+            "Game:GoldenKey:Collected": self.unlock_treasure,
+        }
     # end def
 
 
-    def on_start (self, *args, **kw):
+    def unbind_events (self, *args, **kw):
         """
-            hook method to be reimplemented in subclass;
-            this happens just after self.start() has been called;
+            class event unbindings;
         """
-        # super class inits
-        super().on_start(*args, **kw)
-        # event bindings
-        self.bind_events()
+        # unbind events
+        self.events.disconnect_dict(self.events_dict)
     # end def
 
 # end class TkBDTreasureSprite

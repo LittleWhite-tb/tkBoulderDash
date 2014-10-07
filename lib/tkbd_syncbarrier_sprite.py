@@ -45,17 +45,6 @@ class TkBDSyncBarrierSprite (S.TkBDBarrierSprite):
     # end def
 
 
-    def destroy (self, *args, **kw):
-        """
-            falling sprites may remove this sprite;
-        """
-        # unbind events before dying!
-        self.unbind_events()
-        # delegate to super class
-        super().destroy(*args, **kw)
-    # end def
-
-
     def get_event_name (self, action):
         """
             hook method to be reimplemented in subclass;

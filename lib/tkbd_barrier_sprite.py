@@ -40,11 +40,9 @@ class TkBDBarrierSprite (S.TkGameMatrixSprite):
         """
         # enabled?
         if not self.locked:
-            # disable unexpected events
-            self.locked = True
-            # ancestor first
+            # super class inits
             super().destroy(*args, **kw)
-            # events handling
+            # notify gameplay
             self.events.raise_event(
                 self.get_event_name("removed"), sprite=self
             )
@@ -69,7 +67,6 @@ class TkBDBarrierSprite (S.TkGameMatrixSprite):
         # member inits
         self.is_overable = False
         self.is_movable = False
-        self.locked = False
     # end def
 
 # end class TkBDBarrierSprite

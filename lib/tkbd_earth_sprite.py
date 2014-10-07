@@ -36,12 +36,15 @@ class TkBDEarthSprite (S.TkGameMatrixSprite):
 
     def destroy (self, *args, **kw):
         """
-            player has digged earth block;
+            some sprite has digged earth block;
         """
-        # ancestor first
-        super().destroy(*args, **kw)
-        # events handling
-        self.events.raise_event("Game:Earth:Digged")
+        # enabled?
+        if not self.locked:
+            # super class inits
+            super().destroy(*args, **kw)
+            # notify gameplay
+            self.events.raise_event("Game:Earth:Digged")
+        # end if
     # end def
 
 

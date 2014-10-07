@@ -47,10 +47,13 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
             event handler for sprite destruction;
             should be reimplemented in subclass;
         """
-        # stop animations
-        self.animations.lock(self.falling_loop)
-        # super class
-        super().destroy(*args, **kw)
+        # enabled?
+        if not self.locked:
+            # stop animations
+            self.animations.lock(self.falling_loop)
+            # super class inits
+            super().destroy(*args, **kw)
+        # end if
     # end def
 
 
@@ -145,7 +148,6 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         self.is_movable = False
         self.is_falling = False
         self.need_looping = False
-        self.locked = False
     # end def
 
 

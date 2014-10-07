@@ -77,13 +77,13 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         "die_left": {
             "loop": False,
             "sequence": True,
-            "delay": 100,
+            "delay": 200,
         },
 
         "die_right": {
             "loop": False,
             "sequence": True,
-            "delay": 100,
+            "delay": 200,
         },
     }
 
