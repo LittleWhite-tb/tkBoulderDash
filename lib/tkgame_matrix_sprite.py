@@ -33,20 +33,17 @@ class TkGameMatrixSprite (CS.TkGameCanvasSprite):
         several states such as wait, walk, run, jump, etc;
     """
 
-    def __init__ (self, owner, matrix, canvas, **kw):
+    def __init__ (self, owner, matrix, canvas, subclassed=False, **kw):
         """
             class constructor
         """
-        # inits
-        _kw = kw.copy()
-        _kw.update(subclassed=True)
         # super class inits
-        super().__init__(owner, canvas, **_kw)
+        super().__init__(owner, canvas, subclassed=True, **_kw)
         # member inits
         self.matrix = matrix
         self.row_column = (kw.get("row") or 0, kw.get("column") or 0)
         # for best simplification - hook method
-        if not kw.get("subclassed"):
+        if not subclassed:
             self.init_sprite(**kw)
         # end if
     # end def
@@ -57,7 +54,7 @@ class TkGameMatrixSprite (CS.TkGameCanvasSprite):
             event handler for sprite destruction;
             should be reimplemented in subclass;
         """
-        # stop animations
+        # stop all
         super().destroy(*args, **kw)
         # delete from matrix
         self.matrix.drop_xy(self.xy)
