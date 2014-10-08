@@ -982,6 +982,9 @@ class GamePlay:
         """
         # clean-ups
         self.clear_canvas()
+
+        exit("won_level(): stopped for debugging")
+
         # new graphical special effects
         FXRS.TkGameFXRotatingSun(
             self.canvas, bgcolor="saddle brown", fgcolor="sienna"
