@@ -105,7 +105,7 @@ class GamePlay:
             "Game:Treasure:TouchedDown": self.treasure_touched_down,
         }
 
-        self.level = 6 # debugging
+        self.level = 5 # debugging
 
     # end def
 
@@ -177,7 +177,11 @@ class GamePlay:
         if self.objects.diamonds_count < 1:
             # yeah! winner!
             self.won_level()
+            # confirm it is finished
+            return True
         # end if
+        # not finished
+        return False
     # end def
 
 
@@ -801,7 +805,7 @@ class GamePlay:
         # update score
         self.score_add(score)
         # decrement diamonds count
-        self.decrease_diamonds_count()
+        return self.decrease_diamonds_count()
     # end def
 
 
@@ -982,9 +986,6 @@ class GamePlay:
         """
         # clean-ups
         self.clear_canvas()
-
-        exit("won_level(): stopped for debugging")
-
         # new graphical special effects
         FXRS.TkGameFXRotatingSun(
             self.canvas, bgcolor="saddle brown", fgcolor="sienna"
@@ -1044,24 +1045,25 @@ class GamePlay:
         """
             event handler for zdiamond catch;
         """
-        # remove only one zombie at a time
-        for sprite in self.objects.matrix.objects():
-            if "zombie" in sprite.role and hasattr(sprite, "killed"):
-                sprite.killed()
-                break
-            # end if
-        # end for
-        # show cool info on canvas
-        self.show_cool_info(
-            sprite.xy,
-            text=_("you killed a zombie!"),
-            font="{} 20".format(FONT1),
-            fill="white",
-            delay=100,
-            frames=10,
-        )
         # counted falling sprite has been collected
-        self.sprite_collected(sprite, "zdiamond", 500)
+        if not self.sprite_collected(sprite, "zdiamond", 500):
+            # show cool info on canvas
+            self.show_cool_info(
+                sprite.xy,
+                text=_("you killed a zombie!"),
+                font="{} 20".format(FONT1),
+                fill="white",
+                delay=100,
+                frames=10,
+            )
+            # remove only one zombie at a time
+            for sprite in self.objects.matrix.objects():
+                if "zombie" in sprite.role and hasattr(sprite, "killed"):
+                    sprite.killed()
+                    break
+                # end if
+            # end for
+        # end if
     # end def
 
 
