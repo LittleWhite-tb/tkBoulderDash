@@ -82,6 +82,28 @@ class GamePlay:
             "<r>": self.run,
             "<Key>": self.on_key_pressed,
         }
+        self.events_dict = {
+            "Game:Earth:Digged": self.earth_digged,
+            "Game:Player:Moved": self.player_moved,
+            "Game:Player:Splashed": self.player_splashed,
+            "Game:Player:Frozen": self.player_frozen,
+            "Game:Player:Dead": self.player_dead,
+            "Game:Diamond:Collected": self.diamond_collected,
+            "Game:Diamond:TouchedDown": self.diamond_touched_down,
+            "Game:Rock:Pushed": self.rock_pushed_aside,
+            "Game:Rock:TouchedDown": self.rock_touched_down,
+            "Game:RockDiamond:Changing": self.rockdiamond_changing,
+            "Game:RockDiamond:Changed": self.rockdiamond_changed,
+            "Game:ZDiamond:Collected": self.zdiamond_collected,
+            "Game:ZDiamond:TouchedDown": self.diamond_touched_down,
+            "Game:Zombie:Attacking": self.zombie_attacking,
+            "Game:Zombie:Dying": self.zombie_dying,
+            "Game:GoldenKey:Collected": self.golden_key_collected,
+            "Game:GoldenKey:TouchedDown": self.golden_key_touched_down,
+            "Game:Treasure:Collected": self.treasure_collected,
+            "Game:Treasure:Pushed": self.treasure_pushed_aside,
+            "Game:Treasure:TouchedDown": self.treasure_touched_down,
+        }
 
         self.level = 6 # debugging
 
@@ -110,25 +132,7 @@ class GamePlay:
             app-wide event bindings;
         """
         # connecting people...
-        self.events.connect_dict(
-            {
-                "Game:Earth:Digged": self.earth_digged,
-                "Game:Player:Moved": self.player_moved,
-                "Game:Player:Splashed": self.player_splashed,
-                "Game:Player:Frozen": self.player_frozen,
-                "Game:Player:Dead": self.player_dead,
-                "Game:Diamond:Collected": self.diamond_collected,
-                "Game:Diamond:TouchedDown": self.diamond_touched_down,
-                "Game:Rock:Pushed": self.rock_pushed_aside,
-                "Game:Rock:TouchedDown": self.rock_touched_down,
-                "Game:RockDiamond:Changing": self.rockdiamond_changing,
-                "Game:RockDiamond:Changed": self.rockdiamond_changed,
-                "Game:ZDiamond:Collected": self.zdiamond_collected,
-                "Game:ZDiamond:TouchedDown": self.diamond_touched_down,
-                "Game:Zombie:Attacking": self.zombie_attacking,
-                "Game:Zombie:Dying": self.zombie_dying,
-            }
-        )
+        self.events.connect_dict(self.events_dict)
         self.bind_canvas_events()
     # end def
 
@@ -181,18 +185,8 @@ class GamePlay:
         """
             event handler for diamond catch;
         """
-        # play sound
-        self.play_sound("diamond collected", trackname="diamond")
-        # drop diamond from managed list
-        self.remove_falling(sprite)
-        # show cool info on canvas
-        self.show_cool_info(sprite.xy, text="+200")
-        # free some memory
-        del sprite
-        # update score
-        self.score_add(200)
-        # decrement diamonds count
-        self.decrease_diamonds_count()
+        # counted falling sprite has been collected
+        self.sprite_collected(sprite, "diamond", 200)
     # end def
 
 
@@ -202,9 +196,6 @@ class GamePlay:
         """
         # play sound
         self.play_sound("diamond touched down", trackname="diamond")
-        # update general falldown procedure
-        # CAUTION: falldown procedure is now independent
-        pass
     # end def
 
 
@@ -340,6 +331,24 @@ class GamePlay:
                 self.TPL_LEVEL_FILE.format(max(1, int(level)))
             )
         )
+    # end def
+
+
+    def golden_key_collected (self, sprite, *args, **kw):
+        """
+            event handler for golden key catch;
+        """
+        # counted falling sprite has been collected
+        self.sprite_collected(sprite, "golden key", 500)
+    # end def
+
+
+    def golden_key_touched_down (self, *args, **kw):
+        """
+            event handler for golden key touchdown;
+        """
+        # play sound
+        self.play_sound("golden key touched down", trackname="diamond")
     # end def
 
 
@@ -599,9 +608,6 @@ class GamePlay:
         """
         # play sound
         self.play_sound("rock touched down", trackname="rock")
-        # update general falldown procedure
-        # CAUTION: falldown procedure is now independent
-        pass
     # end def
 
 
@@ -780,6 +786,52 @@ class GamePlay:
     # end def
 
 
+    def sprite_collected (self, sprite, sname, score, trackname="diamond"):
+        """
+            counted falling sprite has been collected;
+        """
+        # play sound
+        self.play_sound("{} collected".format(sname), trackname)
+        # drop sprite from managed list
+        self.remove_falling(sprite)
+        # show cool info on canvas
+        self.show_cool_info(sprite.xy, text="+{}".format(score))
+        # free some memory
+        del sprite
+        # update score
+        self.score_add(score)
+        # decrement diamonds count
+        self.decrease_diamonds_count()
+    # end def
+
+
+    def treasure_collected (self, sprite, *args, **kw):
+        """
+            event handler for open treasure catch;
+        """
+        # counted falling sprite has been collected
+        self.sprite_collected(sprite, "treasure", 1000)
+    # end def
+
+
+    def treasure_pushed_aside (self, *args, **kw):
+        """
+            event handler for treasure pushes;
+        """
+        # play sound
+        self.play_sound("treasure pushed aside", trackname="player")
+    # end def
+
+
+    def treasure_touched_down (self, *args, **kw):
+        """
+            event handler for treasure touchdown;
+        """
+        # play sound
+        self.play_sound("treasure touched down", trackname="diamond")
+    # end def
+
+
     def unbind_canvas_events (self, *args, **kw):
         """
             event handler;
@@ -802,6 +854,10 @@ class GamePlay:
             gameplay event unbindings;
         """
         # unbind gameplay events
+        # CAUTION: do *NOT* use
+        # self.events.disconnect_dict(self.events_dict)
+        # here as we must also disconnect sprites' refs
+        # to get entirely clear
         self.events.disconnect_group("Game:")
         self.events.disconnect_group("Main:Game:")
         # unbind canvas events
@@ -985,12 +1041,14 @@ class GamePlay:
         """
             event handler for zdiamond catch;
         """
-        # play sound
-        self.play_sound("zdiamond collected", trackname="diamond")
-        # drop diamond from managed list
-        self.remove_falling(sprite)
+        # remove only one zombie at a time
+        for sprite in self.objects.matrix.objects():
+            if "zombie" in sprite.role and hasattr(sprite, "killed"):
+                sprite.killed()
+                break
+            # end if
+        # end for
         # show cool info on canvas
-        self.show_cool_info(sprite.xy, text="+500")
         self.show_cool_info(
             sprite.xy,
             text=_("you killed a zombie!"),
@@ -999,19 +1057,8 @@ class GamePlay:
             delay=100,
             frames=10,
         )
-        # free some memory
-        del sprite
-        # update score
-        self.score_add(500)
-        # decrement diamonds count
-        self.decrease_diamonds_count()
-        # remove only one zombie at a time
-        for sprite in self.objects.matrix.objects():
-            if "zombie" in sprite.role and hasattr(sprite, "killed"):
-                sprite.killed()
-                break
-            # end if
-        # end for
+        # counted falling sprite has been collected
+        self.sprite_collected(sprite, "zdiamond", 500)
     # end def
 
 

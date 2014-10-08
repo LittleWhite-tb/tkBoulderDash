@@ -120,4 +120,15 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
         self.events.disconnect_dict(self.events_dict)
     # end def
 
+
+    def unlock_treasure (self, *args, **kw):
+        """
+            event handler;
+            opens treasure when golden key is collected;
+        """
+        self.state = "open"
+        self.is_movable = False
+        self.is_overable = True
+    # end def
+
 # end class TkBDTreasureSprite
