@@ -103,9 +103,10 @@ class GamePlay:
             "Game:Treasure:Collected": self.treasure_collected,
             "Game:Treasure:Pushed": self.treasure_pushed_aside,
             "Game:Treasure:TouchedDown": self.treasure_touched_down,
+            "Game:Treasure:Opened": self.treasure_opened,
         }
 
-        self.level = 5 # debugging
+        self.level = 6 # debugging
 
     # end def
 
@@ -815,6 +816,15 @@ class GamePlay:
         """
         # counted falling sprite has been collected
         self.sprite_collected(sprite, "treasure", 1000)
+    # end def
+
+
+    def treasure_opened (self, *args, **kw):
+        """
+            event handler for treasure opening;
+        """
+        # play sound
+        self.play_sound("treasure opened", trackname="player")
     # end def
 
 

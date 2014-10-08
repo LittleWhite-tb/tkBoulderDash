@@ -26,7 +26,6 @@
 """
 
 # lib imports
-import tkinter.constants as TK
 from . import tkbd_diamond_sprite as S
 
 
@@ -65,7 +64,7 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
             event handler for game start;
         """
         # raise sprite to foreground
-        self.canvas.tag_raise(self.canvas_id, TK.ALL)
+        self.canvas.tag_raise(self.canvas_id, "all")
     # end def
 
 
@@ -140,6 +139,7 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
         self.state = "open"
         self.is_movable = False
         self.is_overable = True
+        self.events.raise_event("Game:Treasure:Opened", sprite=self)
     # end def
 
 # end class TkBDTreasureSprite
