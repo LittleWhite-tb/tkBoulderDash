@@ -26,6 +26,7 @@
 """
 
 # lib imports
+import tkinter.constants as TK
 from . import tkbd_diamond_sprite as S
 
 
@@ -45,7 +46,7 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
         "open": {
             "loop": False,
             "sequence": True,
-            "delay": 200,
+            "delay": 100,
         },
     }
 
@@ -56,6 +57,15 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
         """
         # bind events
         self.events.connect_dict(self.events_dict)
+    # end def
+
+
+    def game_started (self, *args, **kw):
+        """
+            event handler for game start;
+        """
+        # raise sprite to foreground
+        self.canvas.tag_raise(self.canvas_id, TK.ALL)
     # end def
 
 
@@ -107,6 +117,7 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
         self.is_movable = True
         # event inits
         self.events_dict = {
+            "Main:Game:Started": self.game_started,
             "Game:GoldenKey:Collected": self.unlock_treasure,
         }
     # end def
