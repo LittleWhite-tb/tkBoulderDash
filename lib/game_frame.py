@@ -28,6 +28,7 @@
 import tkinter as TK
 import tkinter.messagebox as MB
 from . import game_play as GP
+from . import game_database as DB
 from . import tkgame_audio as AU
 from . import tkgame_canvas as GC
 from . import tkgame_frame as GF
@@ -51,7 +52,7 @@ __game_frame = None
 # app-wide unique instance getter
 def get_game (master=None, **kw):
     """
-        retrieves app-wide unique instance of game frame;
+        retrieves app-wide unique instance;
     """
     global __game_frame
     if not isinstance(__game_frame, TkBoulderDash):
@@ -106,6 +107,7 @@ class TkBoulderDash (GF.TkGameFrame):
             )
         )
         # member inits
+        self.database = DB.get_database()
         self.music = AU.new_audio_player()
         self.TKEVENTS = {
             "<Escape>": self.quit_game,
@@ -130,7 +132,7 @@ class TkBoulderDash (GF.TkGameFrame):
         self.events.connect_dict(
             {
                 "Main:Menu:ShowSplash": self.screen_splash,
-                "Main:Menu:ShowMainMenu": self.screen_main_menu,
+                "Main:Menu:ShowMainMenu": self.verify_high_score,
                 "Main:Menu:ShowGameRules": self.screen_game_rules,
                 "Main:Menu:ShowKeymap": self.screen_keymap,
                 "Main:Music:Start": self.start_music,
@@ -174,6 +176,14 @@ class TkBoulderDash (GF.TkGameFrame):
             # rebind events
             self.bind_tkevents()
         # end if
+    # end def
+
+
+    def register_new_best_score (self, new_score):
+        """
+            registers winner's name and new best score in database;
+        """
+        pass                                                                # FIXME
     # end def
 
 
@@ -413,6 +423,27 @@ Have fun!""")
         for _seq in self.TKEVENTS:
             self.unbind_all(_seq)
         # end for
+    # end def
+
+
+    def verify_high_score (self, *args, **kw):
+        """
+            event handler;
+            verifies if current high-score is the new best score;
+            goes to main menu otherwise;
+        """
+        # get current best score
+        best_score = self.database.get_best_score()
+        high_score = self.game_play.high_score
+        # new best score?
+        if high_score > best_score:
+            # register winner
+            self.register_new_best_score(high_score)
+        # no best score
+        else:
+            # go to main menu
+            self.screen_main_menu()
+        # end if
     # end def
 
 # end class TkBoulderDash
