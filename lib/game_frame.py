@@ -44,6 +44,23 @@ __builtins__["FONT1"] = "{bd cartoon shout}"
 __builtins__["FONT2"] = "{andrea karime}"
 
 
+# module private member
+__game_frame = None
+
+
+# app-wide unique instance getter
+def get_game (master=None, **options):
+    """
+        retrieves app-wide unique instance of game frame;
+    """
+    global __game_frame
+    if not isinstance(__game_frame, TkBoulderDash):
+        __game_frame = TkBoulderDash(master, **options)
+    # end if
+    return __game_frame
+# end def
+
+
 class TkBoulderDash (GF.TkGameFrame):
     """
         game main frame;
