@@ -163,11 +163,46 @@ class TkGameDatabase:
     # end def
 
 
+    @property
+    def last_row_id (self):
+        """
+            READ-ONLY attribute;
+            returns row id of the last modified row using SQL INSERT
+            statement;
+            returns None when not relevant;
+        """
+        # enabled?
+        if self.cursor:
+            # last row id
+            return self.cursor.lastrowid
+        else:
+            # throw exception
+            raise TkGameDatabaseError(
+                "could not retrieve last row id: "
+                "no pending cursor by now (DB not open?)."
+            )
+        # end if
+    # end def
+
+
+    @last_row_id.setter
+    def last_row_id (self, value):
+        """
+            READ-ONLY attribute;
+        """
+        # throw exception
+        raise TkGameDatabaseError(
+            "'last_row_id' is a READ-ONLY attribute."
+        )
+    # end def
+
+
     def open_database (self, *args, **kw):
         """
             event handler;
             opens database along with @db_path pathname;
             falls back to self.DEFAULT_PATH if omitted;
+            sets row factory to recommended sqlite3.Row structure;
             initializes a DB self.cursor on-the-fly;
         """
         # open database
@@ -238,6 +273,7 @@ class TkGameDatabase:
             # throw exception
             raise TkGameDatabaseError(
                 "could not set up row factory for database: "
+                "value is not a callable or "
                 "no pending connection by now (DB not open?)."
             )
         # end if
