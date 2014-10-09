@@ -49,12 +49,16 @@ class TkGameDatabase:
         TkGame SQLite3 database manager;
     """
 
+    # class constant defs
+    DEFAULT_PATH = "data/sqlite3/game.db"
+
+
     def __init__ (self, **kw):
         """
             class constructor;
         """
         # mandatory inits
-        self.db_path = kw.get("db_path") or "data/sqlite3/game.db"
+        self.db_path = kw.get("db_path") or self.DEFAULT_PATH
         # hook_method
         self.init_members(**kw)
         # hook method
@@ -121,7 +125,17 @@ class TkGameDatabase:
 
     @db_path.setter
     def db_path (self, value):
-        self.__db_path = OP.abspath(OP.expanduser(value))
+        # got value?
+        if value:
+            # init absolute canonized path
+            self.__db_path = OP.abspath(OP.expanduser(value))
+        else:
+            # throw exception
+            raise TkGameDatabaseError(
+                "expected plain string of chars in "
+                "'db_path' attribute."
+            )
+        # end if
     # end def
 
 
@@ -149,14 +163,20 @@ class TkGameDatabase:
     # end def
 
 
-    def open (self, *args, **kw):
+    def open_database (self, *args, **kw):
         """
             event handler;
-            opens database along with self.db_path DB pathname;
+            opens database along with @db_path pathname;
+            falls back to self.DEFAULT_PATH if omitted;
+            initializes a DB self.cursor on-the-fly;
         """
         # open database
-        self.connection = DB.connect(self.db_path)
-        # get cursor
+        self.connection = DB.connect(
+            self.db_path or kw.get("db_path") or self.DEFAULT_PATH
+        )
+        # set row factory with default sqlite3.Row (recommended)
+        self.row_factory = DB.Row
+        # get a new db cursor
         self.cursor = self.connection.cursor()
     # end def
 
@@ -164,38 +184,81 @@ class TkGameDatabase:
     def rollback (self, *args, **kw):
         """
             event handler;
-            commits current pending transaction in database;
+            cancels current pending transaction in database;
             raises TkGameDatabaseError otherwise;
         """
         # pending connection?
         if self.connection:
-            # commit transaction
-            self.connection.commit()
+            # cancel transaction
+            self.connection.rollback()
         # no pending connection
         else:
             # throw exception
             raise TkGameDatabaseError(
-                "could not commit current transaction in database: "
+                "could not rollback current transaction in database: "
                 "no pending connection by now (DB not open?)."
             )
         # end if
     # end def
 
 
-    def sql_query (self, sql, *args, **kw):
+    @property
+    def row_factory (self):
+        """
+            gets current row factory;
+            raises TkGameDatabaseError otherwise;
+        """
+        # pending connection?
+        if self.connection:
+            # get current row factory
+            return self.connection.row_factory
+        # no pending connection
+        else:
+            # throw exception
+            raise TkGameDatabaseError(
+                "could not retrieve current row factory: "
+                "no pending connection by now (DB not open?)."
+            )
+        # end if
+    # end def
+
+
+    @row_factory.setter
+    def row_factory (self, value):
+        """
+            sets a new row factory for current database;
+            raises TkGameDatabaseError otherwise;
+        """
+        # pending connection?
+        if self.connection and callable(value):
+            # set new row factory
+            self.connection.row_factory = value
+        # no pending connection
+        else:
+            # throw exception
+            raise TkGameDatabaseError(
+                "could not set up row factory for database: "
+                "no pending connection by now (DB not open?)."
+            )
+        # end if
+    # end def
+
+
+    def sql_query (self, query, *args, **kw):
         """
             executes a unique SQL statement;
-            use sql_script() for many SQL statements;
+            use sql_script() instead, if you're looking for many SQL
+            statements with no arguments (SQL script);
         """
         # enabled?
         if self.cursor:
-            # execute SQL statement
-            self.cursor.execute(sql, args or kw)
+            # execute unique SQL statement
+            self.cursor.execute(query, args or kw)
         else:
             # throw exception
             raise TkGameDatabaseError(
                 "could not execute SQL statement: "
-                "no pending cursor by now."
+                "no pending cursor by now (DB not open?)."
             )
         # end if
     # end def
@@ -203,19 +266,19 @@ class TkGameDatabase:
 
     def sql_script (self, script):
         """
-            executes an SQL multiple statements script;
-            use sql_query() if you're looking for only one SQL
-            statement with optional arguments;
+            executes an SQL multiple statement script;
+            use sql_query() instead, if you're looking for only one
+            SQL statement with optional arguments;
         """
         # enabled?
         if self.cursor:
-            # execute SQL statement
+            # execute SQL script
             self.cursor.executescript(script)
         else:
             # throw exception
             raise TkGameDatabaseError(
                 "could not execute SQL script: "
-                "no pending cursor by now."
+                "no pending cursor by now (DB not open?)."
             )
         # end if
     # end def
