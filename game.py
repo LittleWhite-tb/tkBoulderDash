@@ -34,7 +34,7 @@ class Game (TK.Tk):
         game app wrapper;
     """
 
-    def __init__ (self, **options):
+    def __init__ (self, **kw):
         """
             class constructor;
         """
@@ -43,7 +43,7 @@ class Game (TK.Tk):
         # member inits
         self.title("Tkinter Game")
         self.resizable(width=False, height=False)
-        self.game = GAME.get_game(self, **options)
+        self.game = GAME.get_game(self, **kw)
         self.game.pack(padx=5, pady=5)
     # end def
 

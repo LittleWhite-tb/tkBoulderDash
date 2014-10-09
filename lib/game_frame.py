@@ -49,13 +49,13 @@ __game_frame = None
 
 
 # app-wide unique instance getter
-def get_game (master=None, **options):
+def get_game (master=None, **kw):
     """
         retrieves app-wide unique instance of game frame;
     """
     global __game_frame
     if not isinstance(__game_frame, TkBoulderDash):
-        __game_frame = TkBoulderDash(master, **options)
+        __game_frame = TkBoulderDash(master, **kw)
     # end if
     return __game_frame
 # end def
@@ -63,7 +63,7 @@ def get_game (master=None, **options):
 
 class TkBoulderDash (GF.TkGameFrame):
     """
-        game main frame;
+        TkBoulderDash main game frame;
     """
 
     # class constants
