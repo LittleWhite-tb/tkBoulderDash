@@ -105,13 +105,13 @@
         "XXXXXXXX......X...X........T..R....X.!X..X.X...............X",
         "X......XXXXXXXX.X.X.XXX..XX.XX.XX..XX.XX.X.X...............X",
         "X.XXXX..P..M.*X.X.X.*X..RX..KX....Z...X..X.X......Z........X",
-        "X....X.X.XRRXXX.X.XX.XX**XXXXXX.XXXX..X.XX.................X",
-        "X....X.X..*...X.X*X..X..*.....*.......X*.X.X...............X",
-        "X....X.XXXXXXXX.X.X.XXXXXXXXXXXXXXXXXXXX.X.X...............X",
-        "X....X..........X.X............*.........X.X...............X",
-        "X....X.X*MM***X.X.XXXXXXXXXXXXXXXXXXXXXXXX.X...............X",
-        "X....X.X**R**RX.X.X....RX.....X.....XR...X.X...............X",
-        "X......X*R***RX.X*...X.....X*....X.....X...X...............X",
+        "X.M**X.X.XRRXXX.X.XX.XX**XXXXXX.XXXX..X.XX.................X",
+        "X.R.MX.X..*...X.X*X..X..*.....*.......X*.X.X...............X",
+        "X.M.*X.XXXXXXXX.X.X.XXXXXXXXXXXXXXXXXXXX.X.X...............X",
+        "X.RM*X..........X.X............*.........X.X...............X",
+        "X.R.RX.X*MMR*RX.X.XXXXXXXXXXXXXXXXXXXXXXXX.X...............X",
+        "X.RRRX.X**R**RX.X.X....RX.....X.....XR...X.X...............X",
+        "X*.....X*R***RX.X*...X.....X*....X.....X...X...............X",
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     ]
 }
