@@ -210,7 +210,20 @@ class GamePlay:
         """
         # inits
         self.clear_canvas()
-        self.objects.load_data(self.get_level_fpath(self.level))
+        # try to set up current level
+        try:
+            # load level data
+            self.objects.load_data(self.get_level_fpath(self.level))
+        # got in trouble
+        except Exception as e:
+            #~ raise e from None
+            # stop all!
+            exit(
+                "An exception has occurred:\n{}\n"
+                "Fatal error while trying to draw current level!"
+                .format(e)
+            )
+        # end try
         for _sprite in self.objects.matrix.objects():
             _sprite.start()
         # end for
@@ -641,22 +654,10 @@ class GamePlay:
             event handler;
             game play inits;
         """
-        # try to draw current level
-        try:
-            # reset score from here
-            self.score = 0
-            # draw current level
-            self.draw_level()
-        # got in trouble
-        except Exception as e:
-            #~ raise e from None
-            # stop all!
-            exit(
-                "An exception has occurred:\n{}\n"
-                "Fatal error while trying to draw current level!"
-                .format(e)
-            )
-        # end try
+        # reset score from here
+        self.score = 0
+        # draw current level
+        self.draw_level()
     # end def
 
 
