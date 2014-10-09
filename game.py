@@ -26,7 +26,7 @@
 
 # lib imports
 import tkinter as TK
-from lib import tk_boulder_dash as GAME
+from lib import game_frame as GAME
 
 
 class Game (TK.Tk):
@@ -43,7 +43,7 @@ class Game (TK.Tk):
         # member inits
         self.title("Tkinter Game")
         self.resizable(width=False, height=False)
-        self.game = GAME.TkBoulderDash(**kw)
+        self.game = GAME.get_game(**kw)
         self.game.pack(padx=5, pady=5)
     # end def
 

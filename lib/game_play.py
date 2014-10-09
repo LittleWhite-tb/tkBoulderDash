@@ -74,6 +74,7 @@ class GamePlay:
         self.mouse_down = False
         self.game_paused = False
         self.score = 0
+        self.high_score = 0
         # instance constant defs
         self.KEYMAP = {
             "<Escape>": self.on_key_escape,
@@ -1012,6 +1013,8 @@ class GamePlay:
         self.events.raise_event("Main:Music:Stop")
         # play sound
         self.play_sound("player won level", trackname="background")
+        # update high score
+        self.high_score = max(self.high_score, self.score)
         # go to next level
         self.animations.run_after(4000, self.next_level)
         # events binding
