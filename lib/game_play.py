@@ -220,7 +220,7 @@ class GamePlay:
             # stop all!
             exit(
                 "An exception has occurred:\n{}\n"
-                "Fatal error while trying to draw level {}!"
+                "Fatal error while trying to draw level {}"
                 .format(e, self.level)
             )
         # end try
