@@ -59,8 +59,7 @@ class GameDatabase (DB.TkGameDatabase):
             "select SCO_SCORE from SCORES "
             "order by SCO_SCORE desc limit 1"
         )
-        row = self.fetch()
-        return row[0] if row else 0
+        return self.fetch(default=[0])[0]
     # end def
 
 

@@ -146,7 +146,7 @@ class TkGameDatabase:
     # end def
 
 
-    def fetch (self, qty=1):
+    def fetch (self, qty=1, default=None):
         """
             fetches @qty rows resulting from a self.sql_query();
             if @qty < 2, same as self.cursor.fetchone();
@@ -159,16 +159,16 @@ class TkGameDatabase:
         if self.cursor:
             # fetch many rows?
             if qty is None:
-                return self.cursor.fetchmany()
+                return self.cursor.fetchmany() or default
             # fetch one row at a time?
             elif qty < 2:
-                return self.cursor.fetchone()
+                return self.cursor.fetchone() or default
             # fetch all rows?
             elif str(qty).lower() == self.ALL:
-                return self.cursor.fetchall()
+                return self.cursor.fetchall() or default
             # fetch many rows with size
             else:
-                return self.cursor.fetchmany(qty)
+                return self.cursor.fetchmany(qty) or default
             # end if
         else:
             # throw exception
