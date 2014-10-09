@@ -50,6 +50,7 @@ class TkGameDatabase:
     """
 
     # class constant defs
+    ALL = "all"
     DEFAULT_PATH = "data/sqlite3/game.db"
 
 
@@ -142,6 +143,40 @@ class TkGameDatabase:
     @db_path.deleter
     def db_path (self):
         del self.__db_path
+    # end def
+
+
+    def fetch (self, qty=1):
+        """
+            fetches @qty rows resulting from a self.sql_query();
+            if @qty < 2, same as self.cursor.fetchone();
+            if @qty == "all", same as self.cursor.fetchall();
+            if @qty == None, same as self.cursor.fetchmany();
+            otherwise, same as self.cursor.fetchmany(size=@qty);
+            by default, @qty = 1;
+        """
+        # enabled?
+        if self.cursor:
+            # fetch many rows?
+            if qty is None:
+                return self.cursor.fetchmany()
+            # fetch one row at a time?
+            elif qty < 2:
+                return self.cursor.fetchone()
+            # fetch all rows?
+            elif str(qty).lower() == self.ALL:
+                return self.cursor.fetchall()
+            # fetch many rows with size
+            else:
+                return self.cursor.fetchmany(qty)
+            # end if
+        else:
+            # throw exception
+            raise TkGameDatabaseError(
+                "could not retrieve last row id: "
+                "no pending cursor by now (DB not open?)."
+            )
+        # end if
     # end def
 
 
