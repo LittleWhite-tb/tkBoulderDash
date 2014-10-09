@@ -183,7 +183,7 @@ class TkBoulderDash (GF.TkGameFrame):
         """
             registers winner's name and new best score in database;
         """
-        pass                                                                # FIXME
+        print("should register winner + new best score")                    # FIXME
     # end def
 
 
@@ -435,6 +435,7 @@ Have fun!""")
         # get current best score
         best_score = self.database.get_best_score()
         high_score = self.game_play.high_score
+        print("best_score:", best_score, "high score:", high_score)
         # new best score?
         if high_score > best_score:
             # register winner
