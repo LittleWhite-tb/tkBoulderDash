@@ -220,8 +220,8 @@ class GamePlay:
             # stop all!
             exit(
                 "An exception has occurred:\n{}\n"
-                "Fatal error while trying to draw current level!"
-                .format(e)
+                "Fatal error while trying to draw level {}!"
+                .format(e, self.level)
             )
         # end try
         for _sprite in self.objects.matrix.objects():
