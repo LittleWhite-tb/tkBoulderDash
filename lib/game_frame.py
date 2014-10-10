@@ -463,8 +463,7 @@ Have fun!""")
         # get current best score
         best_score = self.database.get_best_score()
         high_score = self.game_play.high_score
-        print("best_score:", best_score, "high score:", high_score)
-        self.register_new_best_score(high_score)                            # FIXME
+        #~ self.register_new_best_score(high_score)                            # FIXME
         # new best score?
         if high_score > best_score:
             # register winner
