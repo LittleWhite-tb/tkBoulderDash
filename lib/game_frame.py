@@ -93,6 +93,15 @@ class TkBoulderDash (GF.TkGameFrame):
     # end def
 
 
+    def deferred_inits (self, **kw):
+        """
+            threaded inits for slow ops;
+        """
+        # database inits (may take a while)
+        self.database = DB.get_database()
+    # end def
+
+
     def init_widget (self, **kw):
         """
             hook method to be reimplemented in subclass;
@@ -106,15 +115,10 @@ class TkBoulderDash (GF.TkGameFrame):
                 "famous Boulder Dash\u2122 game"
             )
         )
+        # deferred inits - do *NOT* use self.animations /!\
+        self.root.after_idle(self.deferred_inits)
         # member inits
-        self.database = DB.get_database()
         self.music = AU.new_audio_player()
-        self.TKEVENTS = {
-            "<Escape>": self.quit_game,
-            "<Return>": self.run_game,
-            "<r>": self.run_game,
-            "<Key>": self.screen_main_menu,
-        }
         # init widgets
         self.canvas = GC.TkGameCanvas(
             self,
@@ -128,7 +132,14 @@ class TkBoulderDash (GF.TkGameFrame):
         self.cw, self.ch = self.canvas.size()
         # gameplay inits
         self.game_play = GP.GamePlay(self.canvas, level=1)
-        # app-wide events (not to be unbound in any case)
+        # tk event inits
+        self.TKEVENTS = {
+            "<Escape>": self.quit_game,
+            "<Return>": self.run_game,
+            "<r>": self.run_game,
+            "<Key>": self.screen_main_menu,
+        }
+        # app-wide events (should never be unbound in any case)
         self.events.connect_dict(
             {
                 "Main:Menu:ShowSplash": self.screen_splash,
