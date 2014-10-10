@@ -93,9 +93,10 @@ class TkBoulderDash (GF.TkGameFrame):
     # end def
 
 
-    def deferred_inits (self, **kw):
+    def deferred_inits (self, *args, **kw):
         """
-            threaded inits for slow ops;
+            event handler;
+            threaded inits for non-vital/slow ops;
         """
         # database inits (may take a while)
         self.database = DB.get_database()
@@ -117,9 +118,7 @@ class TkBoulderDash (GF.TkGameFrame):
         )
         # deferred inits - do *NOT* use self.animations /!\
         self.root.after_idle(self.deferred_inits)
-        # member inits
-        self.music = AU.new_audio_player()
-        # init widgets
+        # widget inits
         self.canvas = GC.TkGameCanvas(
             self,
             # aspect ratio 16:9 (800x450)
@@ -132,6 +131,8 @@ class TkBoulderDash (GF.TkGameFrame):
         self.cw, self.ch = self.canvas.size()
         # gameplay inits
         self.game_play = GP.GamePlay(self.canvas, level=1)
+        # music inits
+        self.music = AU.new_audio_player()
         # tk event inits
         self.TKEVENTS = {
             "<Escape>": self.quit_game,

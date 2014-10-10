@@ -105,7 +105,7 @@ class GameDatabase (DB.TkGameDatabase):
         """
         # create tables
         self.sql_script("""\
-            -- FIXME please, comment the following once debugging is done:
+            -- FIXME comment the following once debugging is done:
             drop table if exists SCORES;
             /*
                 HIGH SCORES and HALL OF FAME;
