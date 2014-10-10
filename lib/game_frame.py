@@ -98,12 +98,8 @@ class TkBoulderDash (GF.TkGameFrame):
             event handler;
             threaded inits for non-vital/slow ops;
         """
-        import time
-        t0 = time.perf_counter()
-        print("deferred inits - IN")
         # database inits (may take a while)
         self.database = DB.get_database()
-        print("deferred inits - OUT", time.perf_counter() - t0)
     # end def
 
 
@@ -120,8 +116,6 @@ class TkBoulderDash (GF.TkGameFrame):
                 "famous Boulder Dash\u2122 game"
             )
         )
-        # deferred inits - do *NOT* use self.animations /!\
-        self.root.after(100, self.deferred_inits)
         # widget inits
         self.canvas = GC.TkGameCanvas(
             self,
@@ -155,6 +149,8 @@ class TkBoulderDash (GF.TkGameFrame):
                 "Main:Music:Stop": self.stop_music,
             }
         )
+        # deferred inits - do *NOT* use self.animations /!\
+        self.root.after(500, self.deferred_inits)
     # end def
 
 
@@ -214,6 +210,7 @@ class TkBoulderDash (GF.TkGameFrame):
         """
         print("FIXME: should register winner + new best score")                    # FIXME
         row_id = self.database.add_best_score("player", new_score)
+        print(tuple(self.database.get_score_record(row_id)))
         self.screen_main_menu()
     # end def
 

@@ -103,9 +103,12 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         """
             player has been frozen by an enemy;
         """
-        self.animations.lock(self.player_idle)
-        self.state = "frozen"
-        self.events.raise_event("Game:Player:Frozen", sprite=self)
+        # enabled?
+        if not self.locked:
+            self.animations.lock(self.player_idle)
+            self.state = "frozen"
+            self.events.raise_event("Game:Player:Frozen", sprite=self)
+        # end if
     # end def
 
 
@@ -194,9 +197,12 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         """
             player has been splashed;
         """
-        self.animations.lock(self.player_idle)
-        self.state = "splashed"
-        self.events.raise_event("Game:Player:Splashed", sprite=self)
+        # enabled?
+        if not self.locked:
+            self.animations.lock(self.player_idle)
+            self.state = "splashed"
+            self.events.raise_event("Game:Player:Splashed", sprite=self)
+        # end if
     # end def
 
 # end class TkBDPlayerSprite

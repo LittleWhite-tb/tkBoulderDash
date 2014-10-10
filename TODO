@@ -15,7 +15,7 @@ TODO
 
     * [FAIT] ajouter une BDD sqlite3 avec son wrapper de gestion;
 
-    * [FAIT] ajouter high-score + hall of fame géré par BDD;
+    * ajouter affichage high-score + hall of fame géré par BDD;
 
     * ajouter possibilité de saisir son nom dans la BDD lorsque le
     joueur franchit le high-score;
