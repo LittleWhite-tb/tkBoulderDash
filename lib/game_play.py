@@ -107,7 +107,7 @@ class GamePlay:
             "Game:Treasure:Opened": self.treasure_opened,
         }
 
-        self.level = 6 # debugging
+        self.level = 7 # debugging
 
     # end def
 
