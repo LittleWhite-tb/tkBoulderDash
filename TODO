@@ -2,10 +2,10 @@
 TODO
 ====
 
-    * ajouter le coffre "treasure trove" avec le sprite "clé en or"
-    à collecter pour déclencher l'ouverture de ce coffre au look
-    pirates des caraïbes; le coffre reste inactif tant que la clé
-    n'a pas d'abord été collectée;
+    * [FAIT] ajouter le coffre "treasure trove" avec le sprite "clé
+    en or" à collecter pour déclencher l'ouverture de ce coffre au
+    look pirates des caraïbes; le coffre reste inactif tant que la
+    clé n'a pas d'abord été collectée;
 
     * au dernier niveau, finir en beauté avec la coupe "the prize"
     qui empêche le joueur de l'approcher tant que des diamants
@@ -13,9 +13,9 @@ TODO
 
     * passer en phase "development status - Beta";
 
-    * ajouter une BDD sqlite3 avec son wrapper de gestion;
+    * [FAIT] ajouter une BDD sqlite3 avec son wrapper de gestion;
 
-    * ajouter high-score + hall of fame géré par BDD;
+    * [FAIT] ajouter high-score + hall of fame géré par BDD;
 
     * ajouter possibilité de saisir son nom dans la BDD lorsque le
     joueur franchit le high-score;

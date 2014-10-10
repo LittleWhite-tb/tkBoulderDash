@@ -98,8 +98,12 @@ class TkBoulderDash (GF.TkGameFrame):
             event handler;
             threaded inits for non-vital/slow ops;
         """
+        import time
+        t0 = time.perf_counter()
+        print("deferred inits - IN")
         # database inits (may take a while)
         self.database = DB.get_database()
+        print("deferred inits - OUT", time.perf_counter() - t0)
     # end def
 
 
@@ -117,7 +121,7 @@ class TkBoulderDash (GF.TkGameFrame):
             )
         )
         # deferred inits - do *NOT* use self.animations /!\
-        self.root.after_idle(self.deferred_inits)
+        self.root.after(100, self.deferred_inits)
         # widget inits
         self.canvas = GC.TkGameCanvas(
             self,
@@ -208,10 +212,9 @@ class TkBoulderDash (GF.TkGameFrame):
         """
             registers winner's name and new best score in database;
         """
-        print("should register winner + new best score")                    # FIXME
-        row_id = self.database.add_best_score("toto", new_score)
-        print("row id:", row_id)
-        print("score record:", tuple(self.database.get_score_record(row_id)))
+        print("FIXME: should register winner + new best score")                    # FIXME
+        row_id = self.database.add_best_score("player", new_score)
+        self.screen_main_menu()
     # end def
 
 
@@ -463,7 +466,6 @@ Have fun!""")
         # get current best score
         best_score = self.database.get_best_score()
         high_score = self.game_play.high_score
-        #~ self.register_new_best_score(high_score)                            # FIXME
         # new best score?
         if high_score > best_score:
             # register winner

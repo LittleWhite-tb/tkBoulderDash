@@ -107,7 +107,7 @@ class GamePlay:
             "Game:Treasure:Opened": self.treasure_opened,
         }
 
-        self.level = 6 # debugging
+        #~ self.level = 6 # debugging
 
     # end def
 
@@ -996,6 +996,7 @@ class GamePlay:
         """
             player won the current level;
         """
+        #~ print("remaining time:", self.objects.countdown)
         # clean-ups
         self.clear_canvas()
         # new graphical special effects
