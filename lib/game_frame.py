@@ -160,6 +160,17 @@ class TkBoulderDash (GF.TkGameFrame):
     # end def
 
 
+    def on_quit_game (self, *args, **kw):
+        """
+            hook method to be reimplemented in subclass;
+            happens unconditionnaly just before app is destroyed;
+            put here what needs to be stopped before ending;
+        """
+        # close database
+        self.database.close_database()
+    # end def
+
+
     def quit_game (self, *args, **kw):
         """
             event handler;
@@ -169,6 +180,8 @@ class TkBoulderDash (GF.TkGameFrame):
         self.unbind_tkevents()
         # dialog confirmation
         if MB.askyesno(_("Question"), _("Really quit game?")):
+            # hook method
+            self.on_quit_game(*args, **kw)
             # quit game app
             self.root.destroy()
         # cancelled
@@ -184,6 +197,9 @@ class TkBoulderDash (GF.TkGameFrame):
             registers winner's name and new best score in database;
         """
         print("should register winner + new best score")                    # FIXME
+        row_id = self.database.add_best_score("toto", new_score)
+        print("row id:", row_id)
+        print("score record:", tuple(self.database.get_score_record(row_id)))
     # end def
 
 
@@ -436,6 +452,7 @@ Have fun!""")
         best_score = self.database.get_best_score()
         high_score = self.game_play.high_score
         print("best_score:", best_score, "high score:", high_score)
+        self.register_new_best_score(high_score)                            # FIXME
         # new best score?
         if high_score > best_score:
             # register winner

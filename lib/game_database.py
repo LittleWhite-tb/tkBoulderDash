@@ -50,6 +50,33 @@ class GameDatabase (DB.TkGameDatabase):
         Game database wrapper;
     """
 
+    def _get_record (self, table_name, row_id):
+        """
+            retrieves an entire record for table @table_name along
+            with @row_id row identifier;
+        """
+        self.sql_query(
+            "select * from {} where ROWID = ?".format(table_name),
+            row_id
+        )
+        return self.fetch()
+    # end def
+
+
+    def add_best_score (self, winner_name, best_score):
+        """
+            adds a new record for winner + best score;
+        """
+        # insert new record
+        self.sql_query(
+            "insert into SCORES(SCO_NAME, SCO_SCORE) values (?, ?)",
+            winner_name, best_score
+        )
+        # give created row id
+        return self.last_row_id
+    # end def
+
+
     def get_best_score (self):
         """
             retrieves current best score;
@@ -63,18 +90,29 @@ class GameDatabase (DB.TkGameDatabase):
     # end def
 
 
+    def get_score_record (self, row_id):
+        """
+            retrieves score record along with @row_id;
+        """
+        # get record
+        return self._get_record("SCORES", row_id)
+    # end def
+
+
     def init_database (self, **kw):
         """
             hook method to be reimplemented in subclass;
         """
         # create tables
         self.sql_script("""\
+            -- FIXME please, comment the following once debugging is done:
+            drop table if exists SCORES;
             /*
                 HIGH SCORES and HALL OF FAME;
             */
             create table if not exists SCORES
             (
-                SCO_KEY         integer primary key autoincrement,
+                SCO_KEY         integer primary key, -- do NOT use autoincrement!
                 SCO_CREATED     date not null default current_date,
                 SCO_NAME        not null,
                 SCO_SCORE       not null
