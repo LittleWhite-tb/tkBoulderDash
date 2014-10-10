@@ -105,14 +105,16 @@ class GameDatabase (DB.TkGameDatabase):
         """
         # create tables
         self.sql_script("""\
-            -- FIXME comment the following once debugging is done:
+            -- FIXME: comment out the following line after debugging
             drop table if exists SCORES;
             /*
                 HIGH SCORES and HALL OF FAME;
             */
             create table if not exists SCORES
             (
-                SCO_KEY         integer primary key, -- do NOT use autoincrement!
+                -- do *NOT* use autoincrement!
+                -- see https://www.sqlite.org/autoinc.html
+                SCO_KEY         integer primary key,
                 SCO_CREATED     date not null default current_date,
                 SCO_NAME        not null,
                 SCO_SCORE       not null
