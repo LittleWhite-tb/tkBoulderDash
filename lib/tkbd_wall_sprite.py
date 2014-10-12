@@ -26,22 +26,21 @@
 """
 
 # lib imports
-from . import tkgame_matrix_sprite as S
+from . import tkgame_base_sprite as S
 
 
-class TkBDWallSprite (S.TkGameMatrixSprite):
+class TkBDWallSprite (S.TkGameBaseSprite):
     """
         Wall sprite in the mine;
     """
 
-    def init_sprite (self, **kw):
-        """
-            hook method to be reimplemented in subclass;
-            this avoids re-declaring __init__ signatures all the time;
-        """
-        # member inits
-        self.is_overable = False
-        self.is_movable = False
-    # end def
+    # class constant defs
+    STATUS = {
+        "default": {
+            "loop": False,
+            "sequence": False,
+            "delay": 0,
+        },
+    }
 
 # end class TkBDWallSprite
