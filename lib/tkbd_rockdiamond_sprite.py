@@ -96,12 +96,12 @@ class TkBDRockDiamondSprite (R.TkBDRockSprite, D.TkBDDiamondSprite):
                 self.notify_event("Changing")
             else:
                 # rock part has touched down
-                R.TkBDRockSprite.touched_down(self)
+                self.notify_event("TouchedDown")
             # end if
         # became a diamond
         else:
             # diamond part has touched down
-            D.TkBDDiamondSprite.touched_down(self)
+            self.notify_event("TouchedDown")
         # end if
     # end def
 

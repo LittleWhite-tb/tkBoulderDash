@@ -97,6 +97,7 @@ class GamePlay:
             "Game:RockDiamond:Changing": self.rockdiamond_changing,
             "Game:RockDiamond:Destroyed": self.diamond_collected,
             "Game:RockDiamond:Pushed": self.rock_pushed_aside,
+            "Game:RockDiamond:TouchedDown": self.rockdiamond_touched_down,
             "Game:Rock:Pushed": self.rock_pushed_aside,
             "Game:Rock:TouchedDown": self.rock_touched_down,
             "Game:Treasure:Destroyed": self.treasure_collected,
@@ -653,6 +654,21 @@ class GamePlay:
         self.play_sound(
             "rockdiamond changing", trackname="rockdiamond"
         )
+    # end def
+
+
+    def rockdiamond_touched_down (self, sprite, *args, **kw):
+        """
+            event handler for rockdiamond touchdown;
+        """
+        # rock state?
+        if sprite.state == "default":
+            # rock touched down
+            self.rock_touched_down()
+        else:
+            # diamond touched down
+            self.diamond_touched_down()
+        # end if
     # end def
 
 
