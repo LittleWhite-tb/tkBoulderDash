@@ -112,17 +112,6 @@ class TkBDPlayerSprite (S.TkBDBaseSprite):
     # end def
 
 
-    def game_started (self, *args, **kw):
-        """
-            event handler;
-            hook method to be reimplemented in subclass;
-            game has started;
-        """
-        # raise sprite to foreground
-        self.canvas.tag_raise(self.canvas_id, "all")
-    # end def
-
-
     def move_down (self, *args, **kw):
         """
             moves down;

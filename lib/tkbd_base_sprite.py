@@ -101,7 +101,7 @@ class TkBDBaseSprite (S.TkGameMatrixSprite):
             #~ "Main:Game:Over": self.game_over,
             #~ "Main:Game:Paused": self.game_suspended,
             #~ "Main:Game:Resumed": self.game_resumed,
-            #~ "Main:Game:Started": self.game_started,
+            "Main:Game:Started": self.game_started,
         }
     # end def
 
@@ -117,7 +117,6 @@ class TkBDBaseSprite (S.TkGameMatrixSprite):
         """
         # tkBoulderDash Naming Convention:
         # TkBD{sprite_name}Sprite
-        print("sprite name:", self.class_name[4:-6], "classname:", self.class_name)
         return self.class_name[4:-6]
     # end def
 
