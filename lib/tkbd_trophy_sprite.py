@@ -29,7 +29,7 @@
 from . import tkbd_falling_sprite as S
 
 
-class TkBDPrizeSprite (S.TkBDFallingSprite):
+class TkBDTrophySprite (S.TkBDFallingSprite):
     """
         Prize sprite in the mine;
     """
@@ -43,7 +43,7 @@ class TkBDPrizeSprite (S.TkBDFallingSprite):
         },
 
         "open": {
-            "loop": False,
+            "loop": True,
             "sequence": True,
             "delay": 100,
         },
@@ -72,8 +72,12 @@ class TkBDPrizeSprite (S.TkBDFallingSprite):
             hook method to be reimplemented in subclass;
             game has started;
         """
-        # raise sprite to foreground
-        self.canvas.tag_raise(self.canvas_id, "all")
+        def deferred ():
+            # raise sprite to foreground
+            self.canvas.tag_raise(self.canvas_id, "all")
+        # end def
+        # deferred action
+        self.animations.run_after(2000, deferred)
     # end def
 
 
@@ -82,8 +86,10 @@ class TkBDPrizeSprite (S.TkBDFallingSprite):
             event handler;
             increments Prize-Unlocker Diamond count;
         """
+        print("increment PU count")
         # inits
         self.diamonds_count += 1
+        print("pu-diamonds:", self.diamonds_count)
     # end def
 
 
@@ -119,4 +125,4 @@ class TkBDPrizeSprite (S.TkBDFallingSprite):
         self.notify_event("Opened")
     # end def
 
-# end class TkBDPrizeSprite
+# end class TkBDTrophySprite

@@ -92,6 +92,8 @@ class GamePlay:
             "Game:Player:Destroyed": self.player_dead,
             "Game:Player:Frozen": self.player_frozen,
             "Game:Player:Splashed": self.player_splashed,
+            "Game:PUDiamond:Destroyed": self.diamond_collected,
+            "Game:PUDiamond:TouchedDown": self.diamond_touched_down,
             "Game:RockDiamond:Changed": self.rockdiamond_changed,
             "Game:RockDiamond:Changing": self.rockdiamond_changing,
             "Game:RockDiamond:Destroyed": self.diamond_collected,
@@ -103,13 +105,17 @@ class GamePlay:
             "Game:Treasure:Opened": self.treasure_opened,
             "Game:Treasure:Pushed": self.treasure_pushed_aside,
             "Game:Treasure:TouchedDown": self.treasure_touched_down,
+            "Game:Trophy:Destroyed": self.treasure_collected,
+            "Game:Trophy:Opened": self.treasure_opened,
+            "Game:Trophy:Pushed": self.treasure_pushed_aside,
+            "Game:Trophy:TouchedDown": self.treasure_touched_down,
             "Game:ZDiamond:Destroyed": self.zdiamond_collected,
             "Game:ZDiamond:TouchedDown": self.diamond_touched_down,
             "Game:Zombie:Attacking": self.zombie_attacking,
             "Game:Zombie:Dying": self.zombie_dying,
         }
 
-        self.level = 4 # debugging
+        self.level = 7 # debugging
 
     # end def
 
