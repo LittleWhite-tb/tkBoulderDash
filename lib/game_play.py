@@ -96,6 +96,7 @@ class GamePlay:
             "Game:RockDiamond:Changed": self.rockdiamond_changed,
             "Game:RockDiamond:Changing": self.rockdiamond_changing,
             "Game:RockDiamond:Destroyed": self.diamond_collected,
+            "Game:RockDiamond:Pushed": self.rock_pushed_aside,
             "Game:Rock:Pushed": self.rock_pushed_aside,
             "Game:Rock:TouchedDown": self.rock_touched_down,
             "Game:Treasure:Destroyed": self.treasure_collected,
