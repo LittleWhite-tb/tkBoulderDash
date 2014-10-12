@@ -28,7 +28,7 @@
 from . import tkbd_base_sprite as S
 
 
-class TkBDFallingSprite (S.TkGameBaseSprite):
+class TkBDFallingSprite (S.TkBDBaseSprite):
     """
         Generic falling sprite in the mine;
     """

@@ -26,10 +26,10 @@
 """
 
 # lib imports
-from . import tkgame_base_sprite as S
+from . import tkbd_base_sprite as S
 
 
-class TkBDWallSprite (S.TkGameBaseSprite):
+class TkBDWallSprite (S.TkBDBaseSprite):
     """
         Wall sprite in the mine;
     """

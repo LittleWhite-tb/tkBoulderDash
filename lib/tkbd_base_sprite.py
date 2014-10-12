@@ -34,6 +34,57 @@ class TkBDBaseSprite (S.TkGameMatrixSprite):
         TkBoulderDash game base sprite (root ancestor);
     """
 
+    def bind_events (self, *args, **kw):
+        """
+            event handler;
+            hook method to be reimplemented in subclass;
+            class event bindings;
+        """
+        self.events.connect_dict(self.events_dict)
+    # end def
+
+
+    def game_over (self, *args, **kw):
+        """
+            event handler;
+            hook method to be reimplemented in subclass;
+            game is over;
+        """
+        pass
+    # end def
+
+
+    def game_resumed (self, *args, **kw):
+        """
+            event handler;
+            hook method to be reimplemented in subclass;
+            game is resumed;
+        """
+        # inits
+        self.game_paused = False
+    # end def
+
+
+    def game_started (self, *args, **kw):
+        """
+            event handler;
+            hook method to be reimplemented in subclass;
+            game has started;
+        """
+        pass
+    # end def
+
+
+    def game_suspended (self, *args, **kw):
+        """
+            event handler;
+            hook method to be reimplemented in subclass;
+            game is paused;
+        """
+        # inits
+        self.game_paused = True
+    # end def
+
 
     def init_sprite (self, **kw):
         """
@@ -45,6 +96,13 @@ class TkBDBaseSprite (S.TkGameMatrixSprite):
         # member inits
         self.is_overable = False
         self.is_movable = False
+        self.game_paused = False
+        self.events_dict = {
+            "Main:Game:Over": self.game_over,
+            "Main:Game:Paused": self.game_suspended,
+            "Main:Game:Resumed": self.game_resumed,
+            "Main:Game:Started": self.game_started,
+        }
     # end def
 
 
@@ -61,6 +119,16 @@ class TkBDBaseSprite (S.TkGameMatrixSprite):
         # TkBD{sprite_name}Sprite
         print("sprite name:", self.class_name[4:-6], "classname:", self.class_name)
         return self.class_name[4:-6]
+    # end def
+
+
+    def unbind_events (self, *args, **kw):
+        """
+            event handler;
+            hook method to be reimplemented in subclass;
+            class event unbindings;
+        """
+        self.events.disconnect_dict(self.events_dict)
     # end def
 
 # end class TkBDBaseSprite

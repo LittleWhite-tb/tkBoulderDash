@@ -26,10 +26,10 @@
 """
 
 # lib imports
-from . import tkgame_base_sprite as S
+from . import tkbd_base_sprite as S
 
 
-class TkBDWaterSprite (S.TkGameBaseSprite):
+class TkBDWaterSprite (S.TkBDBaseSprite):
     """
         Water sprite in the mine;
     """

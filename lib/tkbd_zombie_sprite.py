@@ -26,10 +26,10 @@
 
 # lib imports
 import random
-from . import tkgame_base_sprite as S
+from . import tkbd_base_sprite as S
 
 
-class TkBDZombieSprite (S.TkGameBaseSprite):
+class TkBDZombieSprite (S.TkBDBaseSprite):
     """
         Zombie sprite in the mine;
     """
@@ -129,15 +129,6 @@ class TkBDZombieSprite (S.TkGameBaseSprite):
     # end def
 
 
-    def bind_events (self):
-        """
-            hook method to be reimplemented in subclass;
-            class event bindings;
-        """
-        self.events.connect_dict(self.events_dict)
-    # end def
-
-
     def filter_collisions (self, c_dict):
         """
             controls whether collisions with other sprites should
@@ -165,19 +156,10 @@ class TkBDZombieSprite (S.TkGameBaseSprite):
     # end def
 
 
-    def game_resumed (self, *args, **kw):
-        """
-            event handler;
-            game is resumed;
-        """
-        # inits
-        self.game_paused = False
-    # end def
-
-
     def game_started (self, player_sprite, *args, **kw):
         """
             event handler;
+            hook method to be reimplemented in subclass;
             game has started;
         """
         # player pos
@@ -189,16 +171,6 @@ class TkBDZombieSprite (S.TkGameBaseSprite):
     # end def
 
 
-    def game_suspended (self, *args, **kw):
-        """
-            event handler;
-            game is paused;
-        """
-        # inits
-        self.game_paused = True
-    # end def
-
-
     def init_sprite (self, **kw):
         """
             hook method to be reimplemented in subclass;
@@ -207,17 +179,14 @@ class TkBDZombieSprite (S.TkGameBaseSprite):
         # super class inits
         super().init_sprite(**kw)
         # member inits
-        self.game_paused = False
         self.direction = "right"
         self.player_xy = None
         # event bindings
-        self.events_dict = {
-            "Game:Player:Moved": self.player_moved,
-            #~ "Main:Game:Over": self.game_over,
-            "Main:Game:Paused": self.game_suspended,
-            "Main:Game:Resumed": self.game_resumed,
-            "Main:Game:Started": self.game_started,
-        }
+        self.events_dict.update(
+            {
+                "Game:Player:Moved": self.player_moved,
+            }
+        )
     # end def
 
 
@@ -353,15 +322,6 @@ class TkBDZombieSprite (S.TkGameBaseSprite):
         self.state = "walk_{}".format(self.direction)
         # reset to idle in a while
         self.animations.run_after(1000, self.state_idle)
-    # end def
-
-
-    def unbind_events (self, *args, **kw):
-        """
-            hook method to be reimplemented in subclass;
-            class event unbindings;
-        """
-        self.events.disconnect_dict(self.events_dict)
     # end def
 
 # end class TkBDZombieSprite
