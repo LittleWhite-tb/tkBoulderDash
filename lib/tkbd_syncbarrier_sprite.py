@@ -40,7 +40,7 @@ class TkBDSyncBarrierSprite (S.TkBDBarrierSprite):
         """
         # bind events
         self.events.connect(
-            self.get_event_name("removed"), self.destroy
+            self.get_event_name("Destroyed"), self.destroy
         )
     # end def
 
@@ -50,7 +50,7 @@ class TkBDSyncBarrierSprite (S.TkBDBarrierSprite):
             hook method to be reimplemented in subclass;
             returns formatted event name;
         """
-        return "Group:{}:{}".format(self.role, str(action).capitalize())
+        return "Group:{}:{}".format(self.role, action)
     # end def
 
 
@@ -85,7 +85,7 @@ class TkBDSyncBarrierSprite (S.TkBDBarrierSprite):
         """
         # unbind events
         self.events.disconnect(
-            self.get_event_name("removed"), self.destroy
+            self.get_event_name("Destroyed"), self.destroy
         )
     # end def
 

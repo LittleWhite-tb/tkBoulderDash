@@ -26,47 +26,22 @@
 """
 
 # lib imports
-from . import tkgame_matrix_sprite as S
+from . import tkbd_base_sprite as S
 
 
-class TkBDBarrierSprite (S.TkGameMatrixSprite):
+class TkBDBarrierSprite (S.TkBDBaseSprite):
     """
         Barrier sprite in the mine;
     """
 
-    def destroy (self, *args, **kw):
-        """
-            falling sprites may remove this sprite;
-        """
-        # enabled?
-        if not self.locked:
-            # super class inits
-            super().destroy(*args, **kw)
-            # notify gameplay
-            self.events.raise_event(
-                self.get_event_name("removed"), sprite=self
-            )
-        # end if
-    # end def
+    # class constants
+    STATUS = {
 
-
-    def get_event_name (self, action):
-        """
-            hook method to be reimplemented in subclass;
-            returns formatted event name;
-        """
-        return "Game:Barrier:{}".format(str(action).capitalize())
-    # end def
-
-
-    def init_sprite (self, **kw):
-        """
-            hook method to be reimplemented in subclass;
-            this avoids re-declaring __init__ signatures all the time;
-        """
-        # member inits
-        self.is_overable = False
-        self.is_movable = False
-    # end def
+        "default": {
+            "loop": False,
+            "sequence": False,
+            "delay": 0,
+        },
+    }
 
 # end class TkBDBarrierSprite
