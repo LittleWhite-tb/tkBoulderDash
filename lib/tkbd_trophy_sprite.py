@@ -110,7 +110,7 @@ class TkBDTrophySprite (S.TkBDFallingSprite):
             }
         )
         # must bind events *RIGHT NOW*
-        # if you want to count PUDiamonds /!\
+        # to count PUDiamonds /!\
         self.bind_events()
     # end def
 
