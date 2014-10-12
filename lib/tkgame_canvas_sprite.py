@@ -458,6 +458,7 @@ class TkGameCanvasSprite:
         """
         # allowed to proceed?
         if self.started and not self.locked:
+            # threaded animation loop
             self.animations.run_after(1, self.image_animation_loop)
         # end if
     # end def
