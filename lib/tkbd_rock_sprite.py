@@ -33,27 +33,6 @@ class TkBDRockSprite (S.TkBDFallingSprite):
         Rock sprite in the mine;
     """
 
-    def has_moved (self, c_dict):
-        """
-            determines if the rock can be pushed in the given
-            direction, provided it is an horizontal one;
-        """
-        print("passe là")
-        # no vertical pushes admitted here
-        if c_dict["sy"]:
-            return False
-        # end if
-        # horizontal moves
-        _moved = self.move_sprite(
-            c_dict["sx"], 0, lambda c: not c["sprite"]
-        )
-        if _moved:
-            self.events.raise_event("Game:Rock:Pushed", sprite=self)
-        # end if
-        return _moved
-    # end def
-
-
     def init_sprite (self, **kw):
         """
             hook method to be reimplemented in subclass;
@@ -62,15 +41,8 @@ class TkBDRockSprite (S.TkBDFallingSprite):
         # super class inits
         super().init_sprite(**kw)
         # member inits
+        self.is_overable = False
         self.is_movable = True
-    # end def
-
-
-    def touched_down (self):
-        """
-            hook method to be implemented by subclass;
-        """
-        self.events.raise_event("Game:Rock:TouchedDown", sprite=self)
     # end def
 
 # end class TkBDRockSprite

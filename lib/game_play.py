@@ -84,12 +84,12 @@ class GamePlay:
             "<Key>": self.on_key_pressed,
         }
         self.events_dict = {
-            "Game:Diamond:Collected": self.diamond_collected,
+            "Game:Diamond:Destroyed": self.diamond_collected,
             "Game:Diamond:TouchedDown": self.diamond_touched_down,
-            "Game:Earth:Digged": self.earth_digged,
-            "Game:GoldenKey:Collected": self.golden_key_collected,
+            "Game:Earth:Destroyed": self.earth_digged,
+            "Game:GoldenKey:Destroyed": self.golden_key_collected,
             "Game:GoldenKey:TouchedDown": self.golden_key_touched_down,
-            "Game:Player:Dead": self.player_dead,
+            "Game:Player:Destroyed": self.player_dead,
             "Game:Player:Frozen": self.player_frozen,
             "Game:Player:Moved": self.player_moved,
             "Game:Player:Splashed": self.player_splashed,
@@ -97,14 +97,13 @@ class GamePlay:
             "Game:RockDiamond:Changing": self.rockdiamond_changing,
             "Game:Rock:Pushed": self.rock_pushed_aside,
             "Game:Rock:TouchedDown": self.rock_touched_down,
-            "Game:Treasure:Collected": self.treasure_collected,
+            "Game:Treasure:Destroyed": self.treasure_collected,
             "Game:Treasure:Opened": self.treasure_opened,
             "Game:Treasure:Pushed": self.treasure_pushed_aside,
             "Game:Treasure:TouchedDown": self.treasure_touched_down,
-            "Game:ZDiamond:Collected": self.zdiamond_collected,
+            "Game:ZDiamond:Destroyed": self.zdiamond_collected,
             "Game:ZDiamond:TouchedDown": self.diamond_touched_down,
             "Game:Zombie:Attacking": self.zombie_attacking,
-            #~ "Game:Zombie:Destroyed": self.zombie_dead,
             "Game:Zombie:Dying": self.zombie_dying,
         }
 

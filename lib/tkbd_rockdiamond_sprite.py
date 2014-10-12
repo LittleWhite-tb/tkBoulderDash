@@ -77,9 +77,7 @@ class TkBDRockDiamondSprite (R.TkBDRockSprite, D.TkBDDiamondSprite):
         self.is_movable = False
         self.is_overable = True
         # notify game frame
-        self.events.raise_event(
-            "Game:RockDiamond:Changed", sprite=self
-        )
+        self.notify_event("Changed")
     # end def
 
 
@@ -95,9 +93,7 @@ class TkBDRockDiamondSprite (R.TkBDRockSprite, D.TkBDDiamondSprite):
             # on a rock-like sprite!
             if "rock" in sprite.role:
                 self.state = "change"
-                self.events.raise_event(
-                    "Game:RockDiamond:Changing", sprite=self
-                )
+                self.notify_event("Changing")
             else:
                 # rock part has touched down
                 R.TkBDRockSprite.touched_down(self)

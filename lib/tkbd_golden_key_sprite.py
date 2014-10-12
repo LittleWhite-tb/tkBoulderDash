@@ -34,15 +34,14 @@ class TkBDGoldenKeySprite (S.TkBDDiamondSprite):
         Treasure/Golden Key sprite in the mine;
     """
 
-    def get_event_name (self):
-        """
-            hook method to be reimplemented in subclass;
-            returns current 'event name' for this sprite class;
-        """
-        # concerned event names:
-        # "Game:{}:Collected"
-        # "Game:{}:TouchedDown"
-        return "GoldenKey"
-    # end def
+    # class constants
+    STATUS = {
+
+        "default": {
+            "loop": True,
+            "sequence": True,
+            "delay": 100,
+        },
+    }
 
 # end class TkBDGoldenKeySprite

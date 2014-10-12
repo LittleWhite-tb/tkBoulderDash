@@ -75,6 +75,7 @@ class TkBDTreasureSprite (S.TkBDFallingSprite):
         self.events_dict.update(
             {
                 "Game:GoldenKey:Destroyed": self.unlock_treasure,
+                "Main:Game:Started": self.game_started,
             }
         )
     # end def
@@ -85,10 +86,14 @@ class TkBDTreasureSprite (S.TkBDFallingSprite):
             event handler;
             opens treasure when golden key is collected;
         """
-        self.state = "open"
-        self.is_movable = False
-        self.is_overable = True
-        self.notify_event("Opened")
+        def deferred ():
+            self.state = "open"
+            self.is_overable = True
+            self.is_movable = False
+            self.notify_event("Opened")
+        # end def
+        # deferred changes
+        self.animations.run_after(500, deferred)
     # end def
 
 # end class TkBDTreasureSprite

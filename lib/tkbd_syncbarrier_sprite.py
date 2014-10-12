@@ -26,10 +26,10 @@
 """
 
 # lib imports
-from . import tkbd_barrier_sprite as S
+from . import tkbd_base_sprite as S
 
 
-class TkBDSyncBarrierSprite (S.TkBDBarrierSprite):
+class TkBDSyncBarrierSprite (S.TkBDBaseSprite):
     """
         Role group synchronized barrier sprite in the mine;
     """

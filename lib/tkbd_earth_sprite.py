@@ -26,33 +26,21 @@
 """
 
 # lib imports
-from . import tkgame_matrix_sprite as S
+from . import tkbd_base_sprite as S
 
 
-class TkBDEarthSprite (S.TkGameMatrixSprite):
+class TkBDEarthSprite (S.TkBDBaseSprite):
     """
         Earth-block sprite in the mine;
     """
-
-    def destroy (self, *args, **kw):
-        """
-            some sprite has digged earth block;
-        """
-        # enabled?
-        if not self.locked:
-            # super class inits
-            super().destroy(*args, **kw)
-            # notify gameplay
-            self.events.raise_event("Game:Earth:Digged")
-        # end if
-    # end def
-
 
     def init_sprite (self, **kw):
         """
             hook method to be reimplemented in subclass;
             this avoids re-declaring __init__ signatures all the time;
         """
+        # super class inits
+        super().init_sprite(**kw)
         # member inits
         self.is_overable = True
         self.is_movable = False

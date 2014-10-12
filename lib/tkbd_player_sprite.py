@@ -25,10 +25,10 @@
 """
 
 # lib imports
-from . import tkgame_matrix_sprite as S
+from . import tkbd_base_sprite as S
 
 
-class TkBDPlayerSprite (S.TkGameMatrixSprite):
+class TkBDPlayerSprite (S.TkBDBaseSprite):
     """
         Player's sprite avatar;
     """
@@ -107,7 +107,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         if not self.locked:
             self.animations.lock(self.player_idle)
             self.state = "frozen"
-            self.events.raise_event("Game:Player:Frozen", sprite=self)
+            self.notify_event("Frozen")
         # end if
     # end def
 
@@ -120,17 +120,6 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         """
         # raise sprite to foreground
         self.canvas.tag_raise(self.canvas_id, "all")
-    # end def
-
-
-    def move_animation (self, c_dict):
-        """
-            sprite moving animation;
-        """
-        # super class move_animation
-        super().move_animation(c_dict)
-        # player sprite moved
-        self.events.raise_event("Game:Player:Moved", sprite=self)
     # end def
 
 
@@ -179,9 +168,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
             on image animation sequence end;
         """
         # player is dead
-        super().destroy(*args, **kw)
-        # events handling
-        self.events.raise_event("Game:Player:Dead", sprite=self)
+        self.destroy(*args, **kw)
     # end def
 
 
@@ -202,7 +189,7 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
         if not self.locked:
             self.animations.lock(self.player_idle)
             self.state = "splashed"
-            self.events.raise_event("Game:Player:Splashed", sprite=self)
+            self.notify_event("Splashed")
         # end if
     # end def
 

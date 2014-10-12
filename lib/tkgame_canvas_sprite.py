@@ -140,7 +140,7 @@ class TkGameCanvasSprite:
             sprite class;
             all arguments are CASE SENSITIVE;
             template: '{event_group}:{sprite_name}:{action}';
-            example: Game:Diamond:Collected;
+            example: Game:Player:Moved;
         """
         # param inits
         group = group or self.EVENTS_GROUP
@@ -322,11 +322,11 @@ class TkGameCanvasSprite:
         """
         # general notification
         self.events.raise_event(
-            "Canvas:Sprite:{}".format(action), sprite=self,
+            "Canvas:Sprite:{}".format(action), sprite=self
         )
         # specific notification
         self.events.raise_event(
-            self.get_event_name(action), sprite=self,
+            self.get_event_name(action), sprite=self
         )
     # end def
 
@@ -358,7 +358,9 @@ class TkGameCanvasSprite:
         if not self.canvas_id:
             # create sprite on canvas
             self.canvas_id = self.canvas.create_image(
-                self.x, self.y, anchor='center', tags=self.canvas_tags,
+                self.x, self.y,
+                anchor="center",
+                tags=self.canvas_tags,
             )
             # load sprite's animation pictures
             self.load_images()

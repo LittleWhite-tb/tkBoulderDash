@@ -185,6 +185,10 @@ class TkBDZombieSprite (S.TkBDBaseSprite):
         self.events_dict.update(
             {
                 "Game:Player:Moved": self.player_moved,
+                "Main:Game:Over": self.game_over,
+                "Main:Game:Paused": self.game_suspended,
+                "Main:Game:Resumed": self.game_resumed,
+                "Main:Game:Started": self.game_started,
             }
         )
     # end def

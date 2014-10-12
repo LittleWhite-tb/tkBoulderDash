@@ -98,10 +98,10 @@ class TkBDBaseSprite (S.TkGameMatrixSprite):
         self.is_movable = False
         self.game_paused = False
         self.events_dict = {
-            "Main:Game:Over": self.game_over,
-            "Main:Game:Paused": self.game_suspended,
-            "Main:Game:Resumed": self.game_resumed,
-            "Main:Game:Started": self.game_started,
+            #~ "Main:Game:Over": self.game_over,
+            #~ "Main:Game:Paused": self.game_suspended,
+            #~ "Main:Game:Resumed": self.game_resumed,
+            #~ "Main:Game:Started": self.game_started,
         }
     # end def
 
