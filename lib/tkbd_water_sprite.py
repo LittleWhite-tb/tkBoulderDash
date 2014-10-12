@@ -26,32 +26,21 @@
 """
 
 # lib imports
-from . import tkgame_matrix_sprite as S
+from . import tkgame_base_sprite as S
 
 
-class TkBDWaterSprite (S.TkGameMatrixSprite):
+class TkBDWaterSprite (S.TkGameBaseSprite):
     """
         Water sprite in the mine;
     """
 
-    def destroy (self, *args, **kw):
-        """
-            falling sprites may remove this sprite;
-        """
-        # ancestor first
-        super().destroy(*args, **kw)
-        # events handling
-        self.events.raise_event("Game:Water:Removed")
-    # end def
-
-
-    def init_sprite (self, **kw):
-        """
-            hook method to be reimplemented in subclass;
-            this avoids re-declaring __init__ signatures all the time;
-        """
-        # member inits
-        self.is_background = True
-    # end def
+    # class constant defs
+    STATUS = {
+        "default": {
+            "loop": False,
+            "sequence": False,
+            "delay": 0,
+        },
+    }
 
 # end class TkBDWaterSprite
