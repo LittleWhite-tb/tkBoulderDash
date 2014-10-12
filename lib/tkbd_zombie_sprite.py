@@ -291,7 +291,7 @@ class TkBDZombieSprite (S.TkGameBaseSprite):
             on image animation sequence end;
         """
         # zombie is dead
-        super().destroy(*args, **kw)
+        self.destroy(*args, **kw)
     # end def
 
 
