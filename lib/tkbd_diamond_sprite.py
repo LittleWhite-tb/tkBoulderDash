@@ -54,9 +54,7 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
             # super class inits
             super().destroy(*args, **kw)
             # notify gameplay
-            self.events.raise_event(
-                self.get_event_name("Collected"), sprite=self
-            )
+            self.notify_event("Collected")
         # end if
     # end def
 
@@ -76,10 +74,7 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
             c_dict["sx"], 0, lambda c: not c["sprite"]
         )
         if _moved:
-            self.events.raise_event(
-                "Game:{}:Pushed".format(self.get_event_name()),
-                sprite=self
-            )
+            self.notify_event("Pushed")
         # end if
         return _moved
     # end def
