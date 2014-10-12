@@ -26,10 +26,10 @@
 """
 
 # lib imports
-from . import tkbd_diamond_sprite as S
+from . import tkbd_falling_sprite as S
 
 
-class TkBDTreasureSprite (S.TkBDDiamondSprite):
+class TkBDTreasureSprite (S.TkBDFallingSprite):
     """
         Treasure sprite in the mine;
     """
@@ -50,18 +50,11 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
     }
 
 
-    def bind_events (self, *args, **kw):
-        """
-            class event bindings;
-        """
-        # bind events
-        self.events.connect_dict(self.events_dict)
-    # end def
-
-
     def game_started (self, *args, **kw):
         """
-            event handler for game start;
+            event handler;
+            hook method to be reimplemented in subclass;
+            game has started;
         """
         # raise sprite to foreground
         self.canvas.tag_raise(self.canvas_id, "all")
@@ -79,19 +72,11 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
         self.is_overable = False
         self.is_movable = True
         # event inits
-        self.events_dict = {
-            "Game:GoldenKey:Destroyed": self.unlock_treasure,
-            "Main:Game:Started": self.game_started,
-        }
-    # end def
-
-
-    def unbind_events (self, *args, **kw):
-        """
-            class event unbindings;
-        """
-        # unbind events
-        self.events.disconnect_dict(self.events_dict)
+        self.events_dict.update(
+            {
+                "Game:GoldenKey:Destroyed": self.unlock_treasure,
+            }
+        )
     # end def
 
 

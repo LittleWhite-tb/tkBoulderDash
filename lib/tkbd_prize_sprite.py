@@ -26,10 +26,10 @@
 """
 
 # lib imports
-from . import tkbd_diamond_sprite as S
+from . import tkbd_falling_sprite as S
 
 
-class TkBDTreasureSprite (S.TkBDDiamondSprite):
+class TkBDPrizeSprite (S.TkBDFallingSprite):
     """
         Prize sprite in the mine;
     """
@@ -50,34 +50,40 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
     }
 
 
-    def bind_events (self, *args, **kw):
+    def decrement_diamonds_count (self, *args, **kw):
         """
-            class event bindings;
+            event handler;
+            decrements Prize-Unlocker Diamond count;
+            unlocks prize when count = 0;
         """
-        # bind events
-        self.events.connect_dict(self.events_dict)
+        # inits
+        self.diamonds_count -= 1
+        # should unlock prize?
+        if self.diamonds_count <= 0:
+            # yes, do it
+            self.unlock_prize()
+        # end if
     # end def
 
 
     def game_started (self, *args, **kw):
         """
-            event handler for game start;
+            event handler;
+            hook method to be reimplemented in subclass;
+            game has started;
         """
         # raise sprite to foreground
         self.canvas.tag_raise(self.canvas_id, "all")
     # end def
 
 
-    def get_event_name (self):
+    def increment_diamonds_count (self, *args, **kw):
         """
-            hook method to be reimplemented in subclass;
-            returns current 'event name' for this sprite class;
+            event handler;
+            increments Prize-Unlocker Diamond count;
         """
-        # concerned event names:
-        # "Game:{}:Collected"
-        # "Game:{}:Pushed"
-        # "Game:{}:TouchedDown"
-        return "Treasure"
+        # inits
+        self.diamonds_count += 1
     # end def
 
 
@@ -91,32 +97,26 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
         # member inits
         self.is_overable = False
         self.is_movable = True
+        self.diamonds_count = 0
         # event inits
-        self.events_dict = {
-            "Main:Game:Started": self.game_started,
-            "Game:GoldenKey:Collected": self.unlock_treasure,
-        }
+        self.events_dict.update(
+            {
+                "Game:PUDiamond:Started": self.increment_diamonds_count,
+                "Game:PUDiamond:Destroyed": self.decrement_diamonds_count,
+            }
+        )
     # end def
 
 
-    def unbind_events (self, *args, **kw):
-        """
-            class event unbindings;
-        """
-        # unbind events
-        self.events.disconnect_dict(self.events_dict)
-    # end def
-
-
-    def unlock_treasure (self, *args, **kw):
+    def unlock_prize (self, *args, **kw):
         """
             event handler;
-            opens treasure when golden key is collected;
+            unlocks prize when all is OK;
         """
         self.state = "open"
         self.is_movable = False
         self.is_overable = True
-        self.events.raise_event("Game:Treasure:Opened", sprite=self)
+        self.notify_event("Opened")
     # end def
 
-# end class TkBDTreasureSprite
+# end class TkBDPrizeSprite

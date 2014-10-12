@@ -112,13 +112,14 @@ class TkBDPlayerSprite (S.TkGameMatrixSprite):
     # end def
 
 
-    def init_sprite (self, **kw):
+    def game_started (self, *args, **kw):
         """
+            event handler;
             hook method to be reimplemented in subclass;
-            this avoids re-declaring __init__ signatures all the time;
+            game has started;
         """
-        # member inits
-        pass
+        # raise sprite to foreground
+        self.canvas.tag_raise(self.canvas_id, "all")
     # end def
 
 
