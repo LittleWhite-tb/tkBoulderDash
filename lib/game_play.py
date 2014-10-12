@@ -91,7 +91,6 @@ class GamePlay:
             "Game:GoldenKey:TouchedDown": self.golden_key_touched_down,
             "Game:Player:Destroyed": self.player_dead,
             "Game:Player:Frozen": self.player_frozen,
-            "Game:Player:Moved": self.player_moved,
             "Game:Player:Splashed": self.player_splashed,
             "Game:RockDiamond:Changed": self.rockdiamond_changed,
             "Game:RockDiamond:Changing": self.rockdiamond_changing,
@@ -110,7 +109,7 @@ class GamePlay:
             "Game:Zombie:Dying": self.zombie_dying,
         }
 
-        self.level = 3 # debugging
+        self.level = 4 # debugging
 
     # end def
 
@@ -565,16 +564,6 @@ class GamePlay:
     # end def
 
 
-    def player_moved (self, *args, **kw):
-        """
-            event handler;
-            player has moved, rocks and diamonds may fall down;
-        """
-        # CAUTION: falldown procedure is now independent
-        pass
-    # end def
-
-
     def player_splashed (self, *args, **kw):
         """
             event handler;
@@ -637,7 +626,7 @@ class GamePlay:
     # end def
 
 
-    def rockdiamond_changed (self, sprite, *args, **kw):
+    def rockdiamond_changed (self, *args, **kw):
         """
             event handler for rockdiamond end of transformation;
         """
@@ -646,7 +635,7 @@ class GamePlay:
     # end def
 
 
-    def rockdiamond_changing (self, sprite, *args, **kw):
+    def rockdiamond_changing (self, *args, **kw):
         """
             event handler for rockdiamond transformation;
         """
@@ -1108,7 +1097,7 @@ class GamePlay:
     # end def
 
 
-    def zombie_attacking (self, sprite, *args, **kw):
+    def zombie_attacking (self, *args, **kw):
         """
             event handler for attacking zombie;
         """
