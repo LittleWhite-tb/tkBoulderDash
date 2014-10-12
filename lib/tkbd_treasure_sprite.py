@@ -56,8 +56,12 @@ class TkBDTreasureSprite (S.TkBDFallingSprite):
             hook method to be reimplemented in subclass;
             game has started;
         """
-        # raise sprite to foreground
-        self.canvas.tag_raise(self.canvas_id, "all")
+        def deferred ():
+            # raise sprite to foreground
+            self.canvas.tag_raise(self.canvas_id, "all")
+        # end def
+        # deferred action
+        self.animations.run_after(2000, deferred)
     # end def
 
 
