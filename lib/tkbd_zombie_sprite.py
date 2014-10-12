@@ -152,7 +152,7 @@ class TkBDZombieSprite (S.TkGameBaseSprite):
                 # freeze!
                 sprite.freeze()
             # got some earth?
-            elif "earth" in sprite.role:
+            elif "earth" in sprite.role and sprite.is_overable:
                 # dig it!
                 sprite.destroy()
             else:
@@ -231,6 +231,7 @@ class TkBDZombieSprite (S.TkGameBaseSprite):
             self.state_idle,
             self.state_attack,
             self.state_walk,
+            self.state_die,
         )
         # zombie dies now
         self.state_die()
@@ -291,8 +292,6 @@ class TkBDZombieSprite (S.TkGameBaseSprite):
         """
         # zombie is dead
         super().destroy(*args, **kw)
-        # events handling
-        self.events.raise_event("Game:Zombie:Dead", sprite=self)
     # end def
 
 
