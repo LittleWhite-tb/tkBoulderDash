@@ -56,10 +56,10 @@ class TkGameMatrixSprite (CS.TkGameCanvasSprite):
         """
         # sprite is enabled?
         if not self.locked:
-            # stop all
-            super().destroy(*args, **kw)
             # delete from matrix
             self.matrix.drop_xy(self.xy)
+            # stop all
+            super().destroy(*args, **kw)
         # end if
     # end def
 
@@ -114,6 +114,10 @@ class TkGameMatrixSprite (CS.TkGameCanvasSprite):
             here is the animation of a moving sprite;
             this overrides super class function def;
         """
+        # safety controls
+        if self.locked:
+            return
+        # end if
         # moving is quite simple here
         # but you can reimplement this in your own subclasses
         dx, dy = c_dict["rel_xy"]
@@ -124,6 +128,8 @@ class TkGameMatrixSprite (CS.TkGameCanvasSprite):
         # update pos
         self.x += dx
         self.y += dy
+        # notify system
+        self.notify_event("Moved")
     # end def
 
 

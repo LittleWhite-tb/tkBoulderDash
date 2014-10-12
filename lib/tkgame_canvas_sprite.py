@@ -291,6 +291,8 @@ class TkGameCanvasSprite:
         # update pos
         self.x += dx
         self.y += dy
+        # notify system
+        self.notify_event("Moved")
     # end def
 
 
@@ -314,6 +316,8 @@ class TkGameCanvasSprite:
         c_dict = self.look_ahead(sx, sy)
         # allowed to move?
         if callback(c_dict):
+            # notify system
+            self.notify_event("Moving")
             # move sprite
             self.move_animation(c_dict)
             # confirm sprite has moved
@@ -391,6 +395,8 @@ class TkGameCanvasSprite:
             self.setup()
             # hook method for subclass
             self.on_start()
+            # notify system
+            self.notify_event("Started")
         # notify error
         else:
             raise TkGameSpriteError("sprite has already been started.")
@@ -419,6 +425,8 @@ class TkGameCanvasSprite:
             self.__state = value
             # update animation loop if started
             self.update_image_animation_loop()
+            # notify system
+            self.notify_event("State:Changed")
         else:
             raise TkGameSpriteError(
                 "unsupported value '{v}' for 'state' attribute."

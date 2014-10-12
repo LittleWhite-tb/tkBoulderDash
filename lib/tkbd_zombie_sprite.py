@@ -26,10 +26,10 @@
 
 # lib imports
 import random
-from . import tkgame_matrix_sprite as S
+from . import tkgame_base_sprite as S
 
 
-class TkBDZombieSprite (S.TkGameMatrixSprite):
+class TkBDZombieSprite (S.TkGameBaseSprite):
     """
         Zombie sprite in the mine;
     """
@@ -234,17 +234,6 @@ class TkBDZombieSprite (S.TkGameMatrixSprite):
         )
         # zombie dies now
         self.state_die()
-    # end def
-
-
-    def move_animation (self, c_dict):
-        """
-            sprite moving animation;
-        """
-        # super class move_animation
-        super().move_animation(c_dict)
-        # zombie sprite moved
-        self.events.raise_event("Game:Zombie:Moved", sprite=self)
     # end def
 
 
