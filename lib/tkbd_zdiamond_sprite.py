@@ -44,16 +44,4 @@ class TkBDZDiamondSprite (S.TkBDDiamondSprite):
         },
     }
 
-
-    def get_event_name (self):
-        """
-            hook method to be reimplemented in subclass;
-            returns current 'event name' for this sprite class;
-        """
-        # concerned event names:
-        # "Game:{}:Collected"
-        # "Game:{}:TouchedDown"
-        return "ZDiamond"
-    # end def
-
 # end class TkBDZDiamondSprite
