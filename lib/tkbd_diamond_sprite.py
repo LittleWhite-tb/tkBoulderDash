@@ -68,8 +68,6 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
             100 + 100 * random.randint(1, 10),
             self.update_image_animation_loop
         )
-        # event bindings
-        self.bind_events()
     # end def
 
 # end class TkBDDiamondSprite

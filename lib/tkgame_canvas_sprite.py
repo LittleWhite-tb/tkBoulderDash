@@ -111,19 +111,6 @@ class TkGameCanvasSprite:
     # end def
 
 
-    @property
-    def sprite_name (self):
-        """
-            READ-ONLY property;
-            hook method to be reimplemented in subclass;
-            returns sprite's genuine name (case-sensitive);
-            you may define some logic along with your own sprite
-            naming convention;
-        """
-        return "Sprite"
-    # end def
-
-
     def destroy (self, *args, **kw):
         """
             event handler for sprite destruction;
@@ -360,8 +347,6 @@ class TkGameCanvasSprite:
         """
         # enter the loop
         self.update_image_animation_loop()
-        # bind events
-        self.bind_events()
     # end def
 
 
@@ -383,6 +368,19 @@ class TkGameCanvasSprite:
     # end def
 
 
+    @property
+    def sprite_name (self):
+        """
+            READ-ONLY property;
+            hook method to be reimplemented in subclass;
+            returns sprite's genuine name (case-sensitive);
+            you may define some logic along with your own sprite
+            naming convention;
+        """
+        return "Sprite"
+    # end def
+
+
     def start (self):
         """
             starting sprite's image animation loop;
@@ -395,6 +393,8 @@ class TkGameCanvasSprite:
             self.setup()
             # hook method for subclass
             self.on_start()
+            # bind events
+            self.bind_events()
             # notify system
             self.notify_event("Started")
         # notify error
