@@ -25,11 +25,10 @@
 """
 
 # lib imports
-from . import tkbd_rock_sprite as R
-from . import tkbd_diamond_sprite as D
+from . import tkbd_falling_sprite as S
 
 
-class TkBDRockDiamondSprite (R.TkBDRockSprite, D.TkBDDiamondSprite):
+class TkBDRockDiamondSprite (S.TkBDFallingSprite):
     """
         Magic Rock changing to Diamond sprite in the mine;
     """
@@ -94,15 +93,11 @@ class TkBDRockDiamondSprite (R.TkBDRockSprite, D.TkBDDiamondSprite):
             if "rock" in sprite.role:
                 self.state = "change"
                 self.notify_event("Changing")
-            else:
-                # rock part has touched down
-                self.notify_event("TouchedDown")
+                return
             # end if
-        # became a diamond
-        else:
-            # diamond part has touched down
-            self.notify_event("TouchedDown")
         # end if
+        # notify gameplay
+        self.notify_event("TouchedDown")
     # end def
 
 # end class TkBDRockDiamondSprite
