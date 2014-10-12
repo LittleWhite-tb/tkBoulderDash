@@ -38,6 +38,7 @@ class TkBDRockSprite (S.TkBDFallingSprite):
             determines if the rock can be pushed in the given
             direction, provided it is an horizontal one;
         """
+        print("passe là")
         # no vertical pushes admitted here
         if c_dict["sy"]:
             return False

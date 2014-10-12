@@ -38,6 +38,8 @@ class TkGameCanvasSprite:
     """
 
     # class constants
+    EVENTS_GROUP = "Game"
+
     STATUS = {
         "default": {
             "loop": False,
@@ -99,6 +101,29 @@ class TkGameCanvasSprite:
     # end def
 
 
+    @property
+    def class_name (self):
+        """
+            READ-ONLY property;
+            returns instance's class name;
+        """
+        return self.__class__.__name__
+    # end def
+
+
+    @property
+    def sprite_name (self):
+        """
+            READ-ONLY property;
+            hook method to be reimplemented in subclass;
+            returns sprite's genuine name (case-sensitive);
+            you may define some logic along with your own sprite
+            naming convention;
+        """
+        return "Sprite"
+    # end def
+
+
     def destroy (self, *args, **kw):
         """
             event handler for sprite destruction;
@@ -115,7 +140,25 @@ class TkGameCanvasSprite:
             self.unbind_events()
             # delete from canvas
             self.canvas.delete(self.canvas_id)
+            # notify system (e.g. for garbage collection)
+            self.notify_event("Destroyed")
         # end if
+    # end def
+
+
+    def get_event_name (self, action, group=None):
+        """
+            hook method to be reimplemented in subclass;
+            returns current 'event name' along @action for this
+            sprite class;
+            all arguments are CASE SENSITIVE;
+            template: '{event_group}:{sprite_name}:{action}';
+            example: Game:Diamond:Collected;
+        """
+        # param inits
+        group = group or self.EVENTS_GROUP
+        # get canonized event name
+        return "{}:{}:{}".format(group, self.sprite_name, action)
     # end def
 
 
@@ -281,6 +324,22 @@ class TkGameCanvasSprite:
     # end def
 
 
+    def notify_event (self, action):
+        """
+            hook method to be reimplemented in subclass;
+            notifies application of some general and specific actions;
+        """
+        # general notification
+        self.events.raise_event(
+            "Canvas:Sprite:{}".format(action), sprite=self,
+        )
+        # specific notification
+        self.events.raise_event(
+            self.get_event_name(action), sprite=self,
+        )
+    # end def
+
+
     def on_sequence_end (self, *args, **kw):
         """
             this is called once a status image sequence ends;
@@ -315,11 +374,7 @@ class TkGameCanvasSprite:
             # load sprite's animation pictures
             self.load_images()
             # notify sprite's creation (e.g. for registration)
-            self.events.raise_event(
-                "Canvas:Sprite:Created",
-                canvas_id=self.canvas_id,
-                sprite=self,
-            )
+            self.notify_event("Created")
         # end if
     # end def
 

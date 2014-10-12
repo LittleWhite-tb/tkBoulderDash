@@ -147,6 +147,8 @@ class TkBoulderDash (GF.TkGameFrame):
                 "Main:Menu:ShowKeymap": self.screen_keymap,
                 "Main:Music:Start": self.start_music,
                 "Main:Music:Stop": self.stop_music,
+                "Stats:Level:Started": self.stats_level_started,
+                "Stats:Level:Won": self.stats_level_won,
             }
         )
         # deferred inits - do *NOT* use self.animations /!\
@@ -420,6 +422,24 @@ Have fun!""")
         """
         self.music.set_volume(self.GAME_MUSIC_VOLUME)
         self.music.play("audio/{}".format(self.GAME_MUSIC))
+    # end def
+
+
+    def stats_level_started (self, level, *args, **kw):
+        """
+            event handler;
+            updates some stats data;
+        """
+        print("Stats:Level started:", level)
+    # end def
+
+
+    def stats_level_won (self, level, *args, **kw):
+        """
+            event handler;
+            updates some stats data;
+        """
+        print("Stats:Level won:", level)
     # end def
 
 

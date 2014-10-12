@@ -31,7 +31,7 @@ from . import tkbd_diamond_sprite as S
 
 class TkBDTreasureSprite (S.TkBDDiamondSprite):
     """
-        Treasure sprite in the mine;
+        Prize sprite in the mine;
     """
 
     # class constants

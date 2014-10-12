@@ -107,7 +107,7 @@ class GamePlay:
             "Game:Treasure:Opened": self.treasure_opened,
         }
 
-        self.level = 7 # debugging
+        self.level = 3 # debugging
 
     # end def
 
@@ -293,6 +293,10 @@ class GamePlay:
         self.animations.run_after(1000, self.bind_events)
         self.animations.run_after(1000, self.scroll_to_player)
         self.animations.run_after(800, self.update_game_data)
+        # notify stats unit
+        self.events.raise_event(
+            "Stats:Level:Started", level=self.level
+        )
         # notify game has started
         self.events.raise_event(
             "Main:Game:Started",
@@ -1016,6 +1020,10 @@ class GamePlay:
         self.play_sound("player won level", trackname="background")
         # update high score
         self.high_score = max(self.high_score, self.score)
+        # notify stats unit
+        self.events.raise_event(
+            "Stats:Level:Won", level=self.level
+        )
         # go to next level
         self.animations.run_after(4000, self.next_level)
         # events binding

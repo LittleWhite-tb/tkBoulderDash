@@ -54,10 +54,13 @@ class TkGameMatrixSprite (CS.TkGameCanvasSprite):
             event handler for sprite destruction;
             should be reimplemented in subclass;
         """
-        # stop all
-        super().destroy(*args, **kw)
-        # delete from matrix
-        self.matrix.drop_xy(self.xy)
+        # sprite is enabled?
+        if not self.locked:
+            # stop all
+            super().destroy(*args, **kw)
+            # delete from matrix
+            self.matrix.drop_xy(self.xy)
+        # end if
     # end def
 
 

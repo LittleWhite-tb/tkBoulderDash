@@ -55,22 +55,33 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
             super().destroy(*args, **kw)
             # notify gameplay
             self.events.raise_event(
-                "Game:{}:Collected".format(self.get_event_name()),
-                sprite=self
+                self.get_event_name("Collected"), sprite=self
             )
         # end if
     # end def
 
 
-    def get_event_name (self):
+    def has_moved (self, c_dict):
         """
             hook method to be reimplemented in subclass;
-            returns current 'event name' for this sprite class;
+            determines if sprite can be pushed in the given
+            direction, provided it is an horizontal one;
         """
-        # concerned event names:
-        # "Game:{}:Collected"
-        # "Game:{}:TouchedDown"
-        return "Diamond"
+        # no vertical pushes admitted here
+        if c_dict["sy"]:
+            return False
+        # end if
+        # horizontal moves
+        _moved = self.move_sprite(
+            c_dict["sx"], 0, lambda c: not c["sprite"]
+        )
+        if _moved:
+            self.events.raise_event(
+                "Game:{}:Pushed".format(self.get_event_name()),
+                sprite=self
+            )
+        # end if
+        return _moved
     # end def
 
 
@@ -83,6 +94,7 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
         super().init_sprite(**kw)
         # member inits
         self.is_overable = True
+        self.is_movable = False
     # end def
 
 
