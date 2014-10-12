@@ -105,10 +105,10 @@ class GamePlay:
             "Game:Treasure:Opened": self.treasure_opened,
             "Game:Treasure:Pushed": self.treasure_pushed_aside,
             "Game:Treasure:TouchedDown": self.treasure_touched_down,
-            "Game:Trophy:Destroyed": self.treasure_collected,
-            "Game:Trophy:Opened": self.treasure_opened,
-            "Game:Trophy:Pushed": self.treasure_pushed_aside,
-            "Game:Trophy:TouchedDown": self.treasure_touched_down,
+            "Game:Trophy:Destroyed": self.trophy_collected,
+            "Game:Trophy:Opened": self.trophy_opened,
+            "Game:Trophy:Pushed": self.trophy_pushed_aside,
+            "Game:Trophy:TouchedDown": self.trophy_touched_down,
             "Game:ZDiamond:Destroyed": self.zdiamond_collected,
             "Game:ZDiamond:TouchedDown": self.diamond_touched_down,
             "Game:Zombie:Attacking": self.zombie_attacking,
@@ -862,6 +862,42 @@ class GamePlay:
         """
         # play sound
         self.play_sound("treasure touched down", trackname="diamond")
+    # end def
+
+
+    def trophy_collected (self, sprite, *args, **kw):
+        """
+            event handler for trophy catch;
+        """
+        # counted falling sprite has been collected
+        self.sprite_collected(sprite, "trophy", 5000)
+    # end def
+
+
+    def trophy_opened (self, *args, **kw):
+        """
+            event handler for trophy opening/enabling;
+        """
+        # play sound
+        self.play_sound("trophy opened", trackname="player")
+    # end def
+
+
+    def trophy_pushed_aside (self, *args, **kw):
+        """
+            event handler for trophy pushes;
+        """
+        # play sound
+        self.play_sound("trophy pushed aside", trackname="player")
+    # end def
+
+
+    def trophy_touched_down (self, *args, **kw):
+        """
+            event handler for trophy touchdown;
+        """
+        # play sound
+        self.play_sound("trophy touched down", trackname="diamond")
     # end def
 
 

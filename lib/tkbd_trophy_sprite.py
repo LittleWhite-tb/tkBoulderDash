@@ -86,7 +86,6 @@ class TkBDTrophySprite (S.TkBDFallingSprite):
             event handler;
             increments Prize-Unlocker Diamond count;
         """
-        print("increment PU count")
         # inits
         self.diamonds_count += 1
         print("pu-diamonds:", self.diamonds_count)
@@ -111,6 +110,9 @@ class TkBDTrophySprite (S.TkBDFallingSprite):
                 "Game:PUDiamond:Destroyed": self.decrement_diamonds_count,
             }
         )
+        # must bind events *RIGHT NOW*
+        # if you want to count PUDiamonds /!\
+        self.bind_events()
     # end def
 
 

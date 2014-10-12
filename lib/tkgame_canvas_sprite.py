@@ -365,7 +365,7 @@ class TkGameCanvasSprite:
             # load sprite's animation pictures
             self.load_images()
             # notify sprite's creation (e.g. for registration)
-            self.notify_event("Created")
+            self.notify_event("Setup")
         # end if
     # end def
 
