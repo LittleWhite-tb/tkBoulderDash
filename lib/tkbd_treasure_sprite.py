@@ -68,19 +68,6 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
     # end def
 
 
-    def get_event_name (self):
-        """
-            hook method to be reimplemented in subclass;
-            returns current 'event name' for this sprite class;
-        """
-        # concerned event names:
-        # "Game:{}:Collected"
-        # "Game:{}:Pushed"
-        # "Game:{}:TouchedDown"
-        return "Treasure"
-    # end def
-
-
     def init_sprite (self, **kw):
         """
             hook method to be reimplemented in subclass;
@@ -93,8 +80,8 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
         self.is_movable = True
         # event inits
         self.events_dict = {
+            "Game:GoldenKey:Destroyed": self.unlock_treasure,
             "Main:Game:Started": self.game_started,
-            "Game:GoldenKey:Collected": self.unlock_treasure,
         }
     # end def
 
@@ -116,7 +103,7 @@ class TkBDTreasureSprite (S.TkBDDiamondSprite):
         self.state = "open"
         self.is_movable = False
         self.is_overable = True
-        self.events.raise_event("Game:Treasure:Opened", sprite=self)
+        self.notify_event("Opened")
     # end def
 
 # end class TkBDTreasureSprite

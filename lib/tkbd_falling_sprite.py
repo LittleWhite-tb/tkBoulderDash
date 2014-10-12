@@ -25,10 +25,10 @@
 """
 
 # lib imports
-from . import tkgame_matrix_sprite as S
+from . import tkbd_base_sprite as S
 
 
-class TkBDFallingSprite (S.TkGameMatrixSprite):
+class TkBDFallingSprite (S.TkGameBaseSprite):
     """
         Generic falling sprite in the mine;
     """
@@ -138,14 +138,35 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
     # end def
 
 
+    def has_moved (self, c_dict):
+        """
+            hook method to be reimplemented in subclass;
+            determines if sprite can be pushed in the given
+            direction, provided it is an horizontal one;
+        """
+        # no vertical pushes admitted here
+        if c_dict["sy"] or not self.is_movable:
+            return False
+        # end if
+        # horizontal moves
+        _moved = self.move_sprite(
+            c_dict["sx"], 0, lambda c: not c["sprite"]
+        )
+        if _moved:
+            self.notify_event("Pushed")
+        # end if
+        return _moved
+    # end def
+
+
     def init_sprite (self, **kw):
         """
             hook method to be reimplemented in subclass;
             this avoids re-declaring __init__ signatures all the time;
         """
+        # super class inits
+        super().init_sprite(**kw)
         # member inits
-        self.is_overable = False
-        self.is_movable = False
         self.is_falling = False
         self.need_looping = False
     # end def
@@ -186,7 +207,8 @@ class TkBDFallingSprite (S.TkGameMatrixSprite):
         """
             hook method to be implemented by subclass;
         """
-        pass
+        # notify gameplay
+        self.notify_event("TouchedDown")
     # end def
 
 # end class TkBDFallingSprite

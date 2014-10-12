@@ -45,41 +45,6 @@ class TkBDDiamondSprite (S.TkBDFallingSprite):
     }
 
 
-    def destroy (self, *args, **kw):
-        """
-            player caught the diamond;
-        """
-        # enabled?
-        if not self.locked:
-            # super class inits
-            super().destroy(*args, **kw)
-            # notify gameplay
-            self.notify_event("Collected")
-        # end if
-    # end def
-
-
-    def has_moved (self, c_dict):
-        """
-            hook method to be reimplemented in subclass;
-            determines if sprite can be pushed in the given
-            direction, provided it is an horizontal one;
-        """
-        # no vertical pushes admitted here
-        if c_dict["sy"]:
-            return False
-        # end if
-        # horizontal moves
-        _moved = self.move_sprite(
-            c_dict["sx"], 0, lambda c: not c["sprite"]
-        )
-        if _moved:
-            self.notify_event("Pushed")
-        # end if
-        return _moved
-    # end def
-
-
     def init_sprite (self, **kw):
         """
             hook method to be reimplemented in subclass;
