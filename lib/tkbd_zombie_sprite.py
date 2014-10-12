@@ -213,10 +213,10 @@ class TkBDZombieSprite (S.TkGameBaseSprite):
         # event bindings
         self.events_dict = {
             "Game:Player:Moved": self.player_moved,
-            "Main:Game:Started": self.game_started,
+            #~ "Main:Game:Over": self.game_over,
             "Main:Game:Paused": self.game_suspended,
             "Main:Game:Resumed": self.game_resumed,
-            #~ "Main:Game:Over": self.game_over,
+            "Main:Game:Started": self.game_started,
         }
     # end def
 
@@ -311,7 +311,7 @@ class TkBDZombieSprite (S.TkGameBaseSprite):
         # zombie attacks player
         self.state = "attack_{}".format(self.direction)
         # notify game frame
-        self.events.raise_event("Game:Zombie:Attacking", sprite=self)
+        self.notify_event("Attacking")
     # end def
 
 
@@ -322,7 +322,7 @@ class TkBDZombieSprite (S.TkGameBaseSprite):
         # zombie dies
         self.state = "die_{}".format(self.direction)
         # notify game frame
-        self.events.raise_event("Game:Zombie:Dying", sprite=self)
+        self.notify_event("Dying")
     # end def
 
 
