@@ -874,12 +874,16 @@ class GamePlay:
     # end def
 
 
-    def trophy_opened (self, *args, **kw):
+    def trophy_opened (self, sprite, *args, **kw):
         """
             event handler for trophy opening/enabling;
         """
         # play sound
         self.play_sound("trophy opened", trackname="player")
+        # show cool info on canvas
+        self.show_cool_info(sprite.xy, text="+1000", delay=100, frames=10)
+        # add some good points
+        self.score_add(1000)
     # end def
 
 

@@ -88,7 +88,6 @@ class TkBDTrophySprite (S.TkBDFallingSprite):
         """
         # inits
         self.diamonds_count += 1
-        print("pu-diamonds:", self.diamonds_count)
     # end def
 
 
@@ -128,7 +127,7 @@ class TkBDTrophySprite (S.TkBDFallingSprite):
             self.notify_event("Opened")
         # end def
         # deferred action
-        self.animations.run_after(500, deferred)
+        self.animations.run_after(250, deferred)
     # end def
 
 # end class TkBDTrophySprite
