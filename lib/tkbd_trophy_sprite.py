@@ -119,10 +119,14 @@ class TkBDTrophySprite (S.TkBDFallingSprite):
             event handler;
             unlocks prize when all is OK;
         """
-        self.state = "open"
-        self.is_movable = False
-        self.is_overable = True
-        self.notify_event("Opened")
+        def deferred ():
+            self.state = "open"
+            self.is_movable = False
+            self.is_overable = True
+            self.notify_event("Opened")
+        # end def
+        # deferred action
+        self.animations.run_after(500, deferred)
     # end def
 
 # end class TkBDTrophySprite

@@ -60,7 +60,7 @@
 
         "U":
         {
-            "role": "Prize/Trophy",
+            "role": "Prize/Trophy/Diamond",
             "class": "TkBDTrophySprite",
             "module": "tkbd_trophy_sprite",
             "images_dir": "trophy"
