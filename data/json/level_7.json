@@ -98,12 +98,12 @@
         "X.......RRRR...R%RX.M....*.XXXRXXX.....X*X....*X......%...RX",
         "X.X.X.X.XXXXX..RXXX.XXXXXXXXXXRXXXXXXXXXXX.XXXXXXXXXXXXXXXXX",
         "X.R.R.R.R.........X*.......X..%X.R*...*R.......X..*X..RR   X",
-        "X..M%M..RRRR......X.XX.X.X.XXX.X.*M*.*M*.XXRXX.X.X.X.XXRX.XX",
-        "X.R.R.R.RR*.......X...*X.M..U.*X..*...*..........X.....*X*.X",
-        "X.......R........RX.XXXX*RXXXXXX.........XXXXX.XXXXXXXXXXX.X",
-        "XXX..XX.........RRX.....*......X..*R*R*........X.%..M.. M..X",
+        "X..M%M..RRRR.M....X.XX.X.X.XXX.X.*M*.*M*.XXRXX.X.X.X.XXRX.XX",
+        "X.R.R.R.RR*....M..X...*X.M..U.*X..*...*..........X.....*X*.X",
+        "X.......R..XX....RX.XXXX*RXXXXXX.........XXXXX.XXXXXXXXXXX.X",
+        "XXX..XX......M..RRX.....*......X..*R*R*........X.%..M.. M..X",
         "X*X...X.RRRR...R%RX.XXX.XXX.XX.XXXXXXXXXRRXXXX.X.XX.XX. XX.X",
-        "X.......R%*...RRRRX*.......*X*.................X  R    R%..X",
+        "X.......RR%*..*RRRX*.......*X*.................X  R    R%..X",
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     ]
 }
