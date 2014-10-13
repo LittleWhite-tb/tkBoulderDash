@@ -64,7 +64,7 @@ along with this program.
 
 ## Development status
 
-    Development Status :: 3 - Alpha
+    Development Status :: 4 - Beta
 
 Software has been:
 
