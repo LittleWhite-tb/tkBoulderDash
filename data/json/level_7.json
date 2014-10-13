@@ -66,6 +66,14 @@
             "images_dir": "trophy"
         },
 
+        "B":
+        {
+            "role": "Background/Barrier",
+            "class": "TkBDBarrierSprite",
+            "module": "tkbd_barrier_sprite",
+            "images_dir": "barrier"
+        },
+
         "P":
         {
             "role": "Player",
@@ -89,10 +97,10 @@
         "X.................X.R ......XXMXX......X.X.XXRXX..XX.RRXX.RX",
         "X.................X.M....*.XXXRXXX.....X*X....*X......%...RX",
         "X.................X.XXXXXXXXXXRXXXXXXXXXXX.XXXXXXXXXXXXXXXXX",
-        "X.................X*.......X..%X...........................X",
-        "X.................X.XX.X.X.XXX.X...........................X",
-        "X.................X...*X.M..U.*X...........................X",
-        "X.................X.XXXX*RXXXXXXXXXXX......................X",
+        "X.................X*.......X..%X..................X.R R B  X",
+        "X.................X.XX.X.X.XXX.X.........XXXXXXXXXX.XXRXX.XX",
+        "X.................X...*X.M..U.*X......................*.X..X",
+        "X.................X.XXXX*RXXXXXXXXXXX....XXXXXXXXXXXXXXXX..X",
         "X.................X.....*......X...........................X",
         "X.................X.XXX.XXX.XX.X...........................X",
         "X.................X*.......*X*.............................X",
