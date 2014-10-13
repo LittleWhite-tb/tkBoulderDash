@@ -150,7 +150,7 @@ class TkBDFallingSprite (S.TkBDBaseSprite):
         # end if
         # horizontal moves
         _moved = self.move_sprite(
-            c_dict["sx"], 0, lambda c: self.can_move_over(c["sprite"])
+            c_dict["sx"], 0, lambda c: not c["sprite"]
         )
         if _moved:
             self.notify_event("Pushed")
