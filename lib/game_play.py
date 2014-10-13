@@ -115,7 +115,7 @@ class GamePlay:
             "Game:Zombie:Dying": self.zombie_dying,
         }
 
-        self.level = 7 # debugging
+        #~ self.level = 7 # debugging
 
     # end def
 
