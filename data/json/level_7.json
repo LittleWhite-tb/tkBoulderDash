@@ -66,12 +66,20 @@
             "images_dir": "trophy"
         },
 
-        "B":
+        "!":
         {
-            "role": "Background/Barrier",
-            "class": "TkBDBarrierSprite",
-            "module": "tkbd_barrier_sprite",
-            "images_dir": "barrier"
+            "role": "Diamond/Zombie-Killer",
+            "class": "TkBDZDiamondSprite",
+            "module": "tkbd_zdiamond_sprite",
+            "images_dir": "zdiamond"
+        },
+
+        "Z":
+        {
+            "role": "Enemy/Zombie",
+            "class": "TkBDZombieSprite",
+            "module": "tkbd_zombie_sprite",
+            "images_dir": "zombie"
         },
 
         "P":
@@ -93,17 +101,17 @@
         "X.R.X...XXXX.X..R.X.X*X..M.R.....RM..R.X*X.XRXXX.XXXX.XXXX.X",
         "X%X..*X...%X    R.X.X....R.X..R..X...M R.X.X*...%..*....*X.X",
         "XXXXXXXXXXXXXXXXX.X.X*X....X..U..XR**..R*X.XXXXXXXXXXXXXXXMX",
-        "X..................PXXXRXXXX.X*X.XXXXXXX.....M...M.........X",
-        "X.................X.R ......XXMXX......X.X.XXRXX..XX.RRXX.RX",
-        "X.................X.M....*.XXXRXXX.....X*X....*X......%...RX",
-        "X.................X.XXXXXXXXXXRXXXXXXXXXXX.XXXXXXXXXXXXXXXXX",
-        "X.................X*.......X..%X.R*...*R.......X..*X..RR   X",
-        "X.................X.XX.X.X.XXX.X.*M*.*M*.XXRXX.X.X.X.XXRX.XX",
-        "X.................X...*X.M..U.*X..*...*..........X.....*X*.X",
-        "X.................X.XXXX*RXXXXXX.........XXXXX.XXXXXXXXXXX.X",
-        "X.................X.....*......X..*R*R*........X.%..M.. M..X",
-        "X.................X.XXX.XXX.XX.XXXXXXXXXRRXXXX.X.XX.XX. XX.X",
-        "X.................X*.......*X*.................X  R    R%..X",
+        "X.!...Z...M....%X...XXXRXXXX.X*X.XXXXXXX.....M...M.........X",
+        "X.XX..X..XX..XXXX.X.R ......XXMXX......X.X.XXRXX..XX.RRXX.RX",
+        "X.......*...R...X*X.M....*.XXXRXXX.....X*X....*X......%...RX",
+        "X...M...X...X...X.X.XXXXXXXXXXRXXXXXXXXXXX.XXXXXXXXXXXXXXXXX",
+        "X...X.....Z.....X.X*.......X..%X.R*...*R.......X..*X..RR   X",
+        "X.......X%X....*X.X.XX.X.X.XXX.X.*M*.*M*.XXRXX.X.X.X.XXRX.XX",
+        "X....R..XXX...XXX.X...*X.M..P.*X..*...*..........X.....*X*.X",
+        "X%...X..........R*X.XXXX*RXXXXXX.........XXXXX.XXXXXXXXXXX.X",
+        "XXX.....*.......R.X.....*......X..*R*R*........X.%..M.. M..X",
+        "X.....XXXXX.....X X.XXX.XXX.XX.XXXXXXXXXRRXXXX.X.XX.XX. XX.X",
+        "X.RZ.....%X!RR..X X*........X*.................X  R    R%..X",
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     ]
 }
