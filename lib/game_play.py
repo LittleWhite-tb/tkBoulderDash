@@ -92,7 +92,7 @@ class GamePlay:
             "Game:Player:Destroyed": self.player_dead,
             "Game:Player:Frozen": self.player_frozen,
             "Game:Player:Splashed": self.player_splashed,
-            "Game:PUDiamond:Destroyed": self.diamond_collected,
+            "Game:PUDiamond:Destroyed": self.pudiamond_collected,
             "Game:PUDiamond:TouchedDown": self.diamond_touched_down,
             "Game:RockDiamond:Changed": self.rockdiamond_changed,
             "Game:RockDiamond:Changing": self.rockdiamond_changing,
@@ -579,6 +579,15 @@ class GamePlay:
         self.unbind_canvas_events()
         # play sound
         self.play_sound("player dead", trackname="player")
+    # end def
+
+
+    def pudiamond_collected (self, sprite, *args, **kw):
+        """
+            event handler for prize-unlocker diamond catch;
+        """
+        # counted falling sprite has been collected
+        self.sprite_collected(sprite, "diamond", 500)
     # end def
 
 
