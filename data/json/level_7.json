@@ -86,10 +86,10 @@
     "matrix":
     [
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "X....*...RR.......R.....*M....X.*.....*....X..M...R*.R..R..X",
-        "X.XXXXXXRMRXXXXXX.X.X.XXRXXXR.XRXXXRRXXX.X.X.R%R...R.R.M*M.X",
+        "X....*....R..R...*R.....*M....X.*.....*....X..M...R*.R..R..X",
+        "X.XXXXXXRMRXXRXXX.X.X.XXRXXXR.XRXXXRRXXX.X.X.R%R...R.R.M*M.X",
         "X.X............*X.X*X....................X.X..M...R.....R..X",
-        "X.X.....XRXX.XXXX.X.XXXXXXXXXXXXXXXXXXXX.X.XM.....*R.......X",
+        "X.X.....XRXX.XXXX*X.XXXXXXXXXXXXXXXXXXXX.X.XM.....*R.......X",
         "X.R........X.X..R.X.X*X..M.R.....RM..R.X*X.XRXXX.XXXX.XXXX.X",
         "X%X........X    R.X.X....R.X..R..X...M R.X.X*...%..*....*X.X",
         "XXXXXXXXXXXXXXXXX.X.X*X....X..U..XR**..R*X.XXXXXXXXXXXXXXXMX",
