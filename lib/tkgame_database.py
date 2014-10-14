@@ -160,12 +160,12 @@ class TkGameDatabase:
             # fetch many rows?
             if qty is None:
                 return self.cursor.fetchmany() or default
-            # fetch one row at a time?
-            elif qty < 2:
-                return self.cursor.fetchone() or default
             # fetch all rows?
             elif str(qty).lower() == self.ALL:
                 return self.cursor.fetchall() or default
+            # fetch one row at a time?
+            elif qty < 2:
+                return self.cursor.fetchone() or default
             # fetch many rows with size
             else:
                 return self.cursor.fetchmany(qty) or default

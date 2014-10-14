@@ -210,10 +210,70 @@ class TkBoulderDash (GF.TkGameFrame):
         """
             registers winner's name and new best score in database;
         """
-        print("FIXME: should register winner + new best score")                    # FIXME
-        row_id = self.database.add_best_score("player", new_score)
-        print(tuple(self.database.get_score_record(row_id)))
-        self.screen_main_menu()
+        # background image
+        self.show_splash("best_score")
+        # disable local events
+        self.unbind_tkevents()
+        # heading
+        self.set_heading("NEW BEST SCORE", color="gold")
+        # body
+        _opts = dict(font=self.BODY_FONT, width=self.cw * 0.9,)
+        self.canvas.create_text(
+            self.cx, self.cy - 80,
+            text=_("You scored:"),
+            fill="white",
+            **_opts
+        )
+        self.canvas.create_text(
+            self.cx, self.cy - 30,
+            text="{:06d}".format(new_score),
+            fill="lawn green",
+            **_opts
+        )
+        self.canvas.create_text(
+            self.cx, self.cy + 20,
+            text=_("Please, enter your name:"),
+            fill="white",
+            **_opts
+        )
+        # user input entry inits
+        _entry = TK.Entry(
+            self,
+            bd=0,
+            bg="#3753A6",
+            fg="lawn green",
+            font=self.BODY_FONT,
+            highlightthickness=0,
+            insertbackground="white",
+            justify=TK.CENTER,
+            relief=TK.FLAT,
+            selectbackground="lawn green",
+            selectforeground="white",
+            width=16,
+        )
+        self.canvas.create_window(
+            self.cx, self.cy + 70, window=_entry
+        )
+        _entry.insert(
+            0, self.database.get_option("Winner:Name") or _("Winner")
+        )
+        _entry.select_range(0, TK.END)
+        _entry.focus_set()
+        # footer
+        self.set_footer("Press <Return> to validate", color="gold")
+        # entry validation
+        def validate_entry (*args):
+            if MB.askyesno(_("Question"), _("Do you confirm?")):
+                _entry.unbind("<Return>")
+                _name = _entry.get() or _("Winner")
+                self.database.add_best_score(_name, new_score)
+                self.database.set_option("Winner:Name", _name)
+                #~ self.database.dump_tables()
+                self.screen_main_menu()
+            # end if
+        # end def
+        # event bindings
+        _entry.bind("<Return>", validate_entry)
     # end def
 
 
@@ -347,7 +407,7 @@ Have fun!""")
     # end def
 
 
-    def set_body (self, body):
+    def set_body (self, body, color=None):
         """
             shows a menu screen body text;
         """
@@ -356,13 +416,13 @@ Have fun!""")
             anchor=TK.CENTER,
             text=_(body),
             font=self.BODY_FONT,
-            fill=self.BODY_COLOR,
+            fill=color or self.BODY_COLOR,
             width=self.cw * 0.9,
         )
     # end def
 
 
-    def set_footer (self, footer=None):
+    def set_footer (self, footer=None, color=None):
         """
             shows a menu screen footer text;
         """
@@ -372,12 +432,12 @@ Have fun!""")
             anchor=TK.S,
             text=_(footer),
             font=self.FOOTER_FONT,
-            fill=self.FOOTER_COLOR,
+            fill=color or self.FOOTER_COLOR,
         )
     # end def
 
 
-    def set_heading (self, heading=None):
+    def set_heading (self, heading=None, color=None):
         """
             shows a menu screen heading text;
         """
@@ -392,7 +452,7 @@ Have fun!""")
         )
         self.canvas.create_text(
             self.cx, 30,
-            fill=self.HEAD_COLOR,
+            fill=color or self.HEAD_COLOR,
             **_title
         )
     # end def

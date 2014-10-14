@@ -178,6 +178,96 @@ msgstr ""
 
 
 msgid ""
+"NEW BEST SCORE"
+msgstr ""
+"NOUVEAU RECORD"
+
+
+msgid ""
+"You scored:"
+msgstr ""
+"Vous avez fait :"
+
+
+msgid ""
+"Please, enter your name:"
+msgstr ""
+"Entrez votre nom :"
+
+
+msgid ""
+"Press <Return> to validate"
+msgstr ""
+"Appuyez sur <Return> pour valider"
+
+
+msgid ""
+"Do you confirm?"
+msgstr ""
+"Vous confirmez ?"
+
+
+msgid ""
+"Winner"
+msgstr ""
+"Vainqueur"
+
+
+msgid ""
+""
+msgstr ""
+""
+
+
+msgid ""
+""
+msgstr ""
+""
+
+
+msgid ""
+""
+msgstr ""
+""
+
+
+msgid ""
+""
+msgstr ""
+""
+
+
+msgid ""
+""
+msgstr ""
+""
+
+
+msgid ""
+""
+msgstr ""
+""
+
+
+msgid ""
+""
+msgstr ""
+""
+
+
+msgid ""
+""
+msgstr ""
+""
+
+
+msgid ""
+""
+msgstr ""
+""
+
+
+msgid ""
 ""
 msgstr ""
 ""

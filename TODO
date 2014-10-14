@@ -2,12 +2,7 @@
 TODO
 ====
 
-    * passer en phase "development status - Beta";
-
     * ajouter affichage high-score + hall of fame géré par BDD;
-
-    * ajouter possibilité de saisir son nom dans la BDD lorsque le
-    joueur franchit le high-score;
 
     * ajouter options de jeu gérées par BDD;
 

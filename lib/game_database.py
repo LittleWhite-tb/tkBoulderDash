@@ -69,11 +69,39 @@ class GameDatabase (DB.TkGameDatabase):
         """
         # insert new record
         self.sql_query(
-            "insert into SCORES(SCO_NAME, SCO_SCORE) values (?, ?)",
+            "insert into SCORES (SCO_NAME, SCO_SCORE) values (?, ?)",
             winner_name, best_score
         )
         # give created row id
         return self.last_row_id
+    # end def
+
+
+    def dump_tables (self, *args, limit=100):
+        """
+            dumps listed tables to stdout (CLI);
+            dumps all tables if @args is omitted;
+        """
+        # param controls
+        if not args:
+            args = ("OPTIONS", "SCORES")
+        # end if
+        # browse table list
+        for _table in args:
+            # SQL statement
+            self.sql_query(
+                "select * from '{}' limit {}".format(_table, limit)
+            )
+            # dump table
+            print("\nTable:", _table)
+            print(
+                "Columns:",
+                tuple(c[0] for c in self.cursor.description)
+            )
+            for _idx, _row in enumerate(self.fetch(self.ALL)):
+                print("Row {:03d}:".format(_idx + 1), tuple(_row))
+            # end for
+        # end for
     # end def
 
 
@@ -87,6 +115,20 @@ class GameDatabase (DB.TkGameDatabase):
             "order by SCO_SCORE desc limit 1"
         )
         return self.fetch(default=[0])[0]
+    # end def
+
+
+    def get_option (self, opt_name):
+        """
+            retrieves app option value along with its @opt_name;
+        """
+        # get option value
+        self.sql_query(
+            "select OPT_VALUE from OPTIONS "
+            "where OPT_NAME = ? limit 1",
+            opt_name
+        )
+        return self.fetch(default=[None])[0]
     # end def
 
 
@@ -105,8 +147,9 @@ class GameDatabase (DB.TkGameDatabase):
         """
         # create tables
         self.sql_script("""\
-            -- FIXME: comment out the following line after debugging
+            -- FIXME: comment out the following lines after debugging
             drop table if exists SCORES;
+            drop table if exists OPTIONS;
             /*
                 HIGH SCORES and HALL OF FAME;
             */
@@ -120,10 +163,35 @@ class GameDatabase (DB.TkGameDatabase):
                 SCO_SCORE       not null
             );
             /*
+                APP OPTIONS;
+            */
+            create table if not exists OPTIONS
+            (
+                OPT_KEY         integer primary key,
+                OPT_CREATED     date not null default current_date,
+                OPT_NAME        not null unique,
+                OPT_VALUE       not null
+            );
+            /*
                 vacuum makes some good clean-ups before starting app;
             */
             vacuum;
         """)
+    # end def
+
+
+    def set_option (self, opt_name, opt_value):
+        """
+            creates/replaces app option value along with its @opt_name;
+        """
+        # set option value
+        self.sql_query(
+            "insert or replace into OPTIONS "
+            "(OPT_NAME, OPT_VALUE) values (?, ?)",
+            opt_name, opt_value
+        )
+        # give created row id
+        return self.last_row_id
     # end def
 
 # end class GameDatabase
