@@ -148,8 +148,8 @@ class GameDatabase (DB.TkGameDatabase):
         # create tables
         self.sql_script("""\
             -- FIXME: comment out the following lines after debugging
-            drop table if exists SCORES;
-            drop table if exists OPTIONS;
+            -- drop table if exists SCORES;
+            -- drop table if exists OPTIONS;
             /*
                 HIGH SCORES and HALL OF FAME;
             */
