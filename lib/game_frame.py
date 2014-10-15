@@ -90,8 +90,6 @@ class TkBoulderDash (GF.TkGameFrame):
         for _seq, _cb in self.TKEVENTS.items():
             self.bind_all(_seq, _cb)
         # end for
-        # canvas only mouse events
-        self.canvas.bind("<Button-1>", self.switch_to_main_menu)
     # end def
 
 
@@ -548,8 +546,10 @@ Have fun!""")
         self.canvas.create_image(0, 0, anchor=TK.NW, image=self.photo)
         # set music volume level
         self.music.set_volume(self.GAME_MUSIC_VOLUME)
-        # rebind tkevents only
+        # rebind tk events
         self.bind_tkevents()
+        # canvas only mouse events
+        self.canvas.bind("<Button-1>", self.switch_to_main_menu)
     # end def
 
 
