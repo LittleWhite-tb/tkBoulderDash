@@ -348,12 +348,30 @@ Have fun!""")
         # filled set
         else:
             # inits
-            x, y = (self.cx, self.cy - 95)
-            _opts = dict(
-                anchor=TK.CENTER,
-                font=self.BODY_FONT,
-                fill=self.BODY_COLOR2,
-            )
+            x, y = (self.cw//10, self.cy - 90)
+            _opts = dict(font=self.BODY_FONT, width=self.cw * 0.9)
+            # browse recordset
+            for _row in _rows:
+                # inits
+                _name, _score = tuple(_row)
+                # show text
+                self.canvas.create_text(
+                    x, y,
+                    text="{:.<40s}".format(_name),
+                    anchor=TK.W,
+                    fill=self.BODY_COLOR2,
+                    **_opts
+                )
+                self.canvas.create_text(
+                    self.cw - x, y,
+                    text=str(_score),
+                    anchor=TK.E,
+                    fill=self.BODY_COLOR3,
+                    **_opts
+                )
+                # update pos
+                y += 40
+            # end for
         # end if
         # footer
         self.set_footer(color=self.FOOTER_COLOR2)
