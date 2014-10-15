@@ -390,6 +390,7 @@ Have fun!""")
         """
         # inits
         self.menu_callback = self.screen_main_menu
+        self.database.dump_tables()
         # background image
         self.show_splash("main_menu")
         # heading

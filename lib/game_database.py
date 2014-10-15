@@ -93,14 +93,24 @@ class GameDatabase (DB.TkGameDatabase):
                 "select * from '{}' limit {}".format(_table, limit)
             )
             # dump table
-            print("\nTable:", _table)
-            print(
-                "Columns:",
-                tuple(c[0] for c in self.cursor.description)
-            )
-            for _idx, _row in enumerate(self.fetch(self.ALL)):
-                print("Row {:03d}:".format(_idx + 1), tuple(_row))
-            # end for
+            print("\nTable: '{}'".format(_table))
+            # init contents
+            _rows = self.fetch(self.ALL)
+            # got a recordset?
+            if _rows:
+                # show description
+                print(
+                    "Columns:",
+                    tuple(c[0] for c in self.cursor.description)
+                )
+                # dump rows
+                print("Rows:")
+                for _idx, _row in enumerate(_rows):
+                    print("{:03d}:".format(_idx + 1), tuple(_row))
+                # end for
+            else:
+                print("This table is *empty*.")
+            # end if
         # end for
     # end def
 
