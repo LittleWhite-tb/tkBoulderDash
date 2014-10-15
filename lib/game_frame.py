@@ -302,13 +302,13 @@ class TkBoulderDash (GF.TkGameFrame):
             game options menu screen;
         """
         # background image
-        self.show_splash("main_menu")
+        self.show_splash("game_options")
         # heading
-        self.set_heading("GAME OPTIONS")
+        self.set_heading("GAME OPTIONS", color=self.HEAD_COLOR2)
         # body
-        self.set_body("""TODO""")
+        self.set_body("""TODO""", color=self.BODY_COLOR2)
         # footer
-        self.set_footer()
+        self.set_footer(color=self.FOOTER_COLOR2)
     # end def
 
 
