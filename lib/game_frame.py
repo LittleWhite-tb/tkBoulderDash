@@ -307,16 +307,17 @@ class TkBoulderDash (GF.TkGameFrame):
         # heading
         self.set_heading("GAME OPTIONS", color=self.HEAD_COLOR2)
         # inits
-        x, y = (self.cx, self.cy - 90)
+        x, y = (self.cx, self.cy - 70)
         # game option
         self.set_game_option(
             x, y, "Switch off music",
             db_option="Music:Switch:Off",
             on_check=self.stop_music,
+            on_uncheck=self.start_music,
         )
         # game option
         self.set_game_option(
-            x, y + 50, "Switch off sound", db_option="Sound:Switch:Off"
+            x, y + 80, "Switch off sound", db_option="Sound:Switch:Off"
         )
         # footer
         self.set_footer(color=self.FOOTER_COLOR2)
@@ -540,21 +541,25 @@ Have fun!""")
             # end if
         # end def
         # inits
-        _value = int(bool(self.database.get_option(db_option)))
         _cvar = TK.IntVar()
+        _cvar.set(int(bool(self.database.get_option(db_option))))
         _chk = TK.Checkbutton(
             self,
             text=_(name),
             command=toggle,
             variable=_cvar,
             activebackground="#8A2E2E",
+            activeforeground=self.BODY_COLOR4,
             anchor=TK.W,
             bg="#8A2E2E",
-            bd=3,
+            bd=2,
             font=self.MENU_ITEM_FONT,
             fg=self.BODY_COLOR2,
             highlightthickness=0,
             indicatoron=0,
+            padx=10,
+            pady=5,
+            selectcolor="#AB3939",
         )
         # set game option
         self.canvas.create_window(x, y, window=_chk)
