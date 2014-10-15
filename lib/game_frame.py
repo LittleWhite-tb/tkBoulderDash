@@ -90,6 +90,8 @@ class TkBoulderDash (GF.TkGameFrame):
         for _seq, _cb in self.TKEVENTS.items():
             self.bind_all(_seq, _cb)
         # end for
+        # canvas only mouse events
+        self.canvas.bind("<Button-1>", self.switch_to_main_menu)
     # end def
 
 
@@ -131,12 +133,14 @@ class TkBoulderDash (GF.TkGameFrame):
         self.game_play = GP.GamePlay(self.canvas, level=1)
         # music inits
         self.music = AU.new_audio_player()
+        # menu callback
+        self.menu_callback = self.screen_main_menu
         # tk event inits
         self.TKEVENTS = {
             "<Escape>": self.quit_game,
             "<Return>": self.run_game,
             "<r>": self.run_game,
-            "<Key>": self.screen_main_menu,
+            "<Key>": self.switch_to_main_menu,
         }
         # app-wide events (should never be unbound in any case)
         self.events.connect_dict(
@@ -299,6 +303,21 @@ class TkBoulderDash (GF.TkGameFrame):
     # end def
 
 
+    def screen_game_options (self, *args):
+        """
+            game options menu screen;
+        """
+        # background image
+        self.show_splash("main_menu")                                       # FIXME
+        # heading
+        self.set_heading("GAME OPTIONS")
+        # body
+        self.set_body("""TODO""")
+        # footer
+        self.set_footer()
+    # end def
+
+
     def screen_game_rules (self, *args):
         """
             game rules menu screen;
@@ -315,8 +334,36 @@ But never forget: it's only a game.
 Have fun!""")
         # footer
         self.set_footer()
-        # canvas only mouse events
-        self.canvas.bind("<Button-1>", self.screen_main_menu)
+    # end def
+
+
+    def screen_game_scores (self, *args):
+        """
+            game high-scores menu screen;
+        """
+        # background image
+        self.show_splash("main_menu")                                       # FIXME
+        # heading
+        self.set_heading("HALL OF FAME")
+        # body
+        self.set_body("""TODO""")
+        # footer
+        self.set_footer()
+    # end def
+
+
+    def screen_game_stats (self, *args):
+        """
+            game stats menu screen;
+        """
+        # background image
+        self.show_splash("main_menu")                                       # FIXME
+        # heading
+        self.set_heading("GAME STATISTICS")
+        # body
+        self.set_body("""TODO""")
+        # footer
+        self.set_footer()
     # end def
 
 
@@ -336,8 +383,6 @@ Have fun!""")
 * <escape> key to trap/quit game.""")
         # footer
         self.set_footer()
-        # canvas only mouse events
-        self.canvas.bind("<Button-1>", self.screen_main_menu)
     # end def
 
 
@@ -345,53 +390,55 @@ Have fun!""")
         """
             main menu menu screen;
         """
+        # inits
+        self.menu_callback = self.screen_main_menu
         # background image
         self.show_splash("main_menu")
         # heading
         self.set_heading("MAIN MENU")
-        # inits
-        x, y = (self.cx, self.cy)
-        _opts = dict(
-            anchor=TK.CENTER,
-            font=self.MENU_ITEM_FONT,
-            fill=self.MENU_ITEM_COLOR,
+        # show menu items
+        self.show_menu(
+            (
+                ("Play", self.run_game),
+                ("Keyboard mappings", self.screen_keymap),
+                ("Game rules", self.screen_game_rules),
+                ("More options", self.screen_main_menu_2),
+                ("Quit game", self.quit_game),
+            )
         )
-        # CAUTION:
-        # canvas.tag_bind() is buggy /!\
-        # do *NOT* use it
-        self.menu_id = dict()
-        # menu item inits
-        _id = self.canvas.create_text(
-            x, y - 100, text=_("Play"), **_opts
-        )
-        self.menu_id[_id] = self.run_game
-        # menu item inits
-        _id = self.canvas.create_text(
-            x, y - 40, text=_("Keyboard mappings"), **_opts
-        )
-        self.menu_id[_id] = self.screen_keymap
-        # menu item inits
-        _id = self.canvas.create_text(
-            x, y + 10, text=_("Game rules"), **_opts
-        )
-        self.menu_id[_id] = self.screen_game_rules
-        # menu item inits
-        _id = self.canvas.create_text(
-            x, y + 60, text=_("Splash screen"), **_opts
-        )
-        self.menu_id[_id] = self.screen_splash
-        # menu item inits
-        _id = self.canvas.create_text(
-            x, y + 110, text=_("Quit game"), **_opts
-        )
-        self.menu_id[_id] = self.quit_game
         # footer
         self.set_footer(
             "a Python3-Tkinter port of the "
             "famous Boulder Dash\u2122 game"
         )
-        # canvas only mouse events
-        self.canvas.bind("<Button-1>", self.menu_clicked)
+    # end def
+
+
+    def screen_main_menu_2 (self, *args):
+        """
+            main menu 2 menu screen;
+        """
+        # inits
+        self.menu_callback = self.screen_main_menu_2
+        # background image
+        self.show_splash("main_menu")
+        # heading
+        self.set_heading("MORE OPTIONS")
+        # show menu items
+        self.show_menu(
+            (
+                ("Hall of fame", self.screen_game_scores),
+                ("Game stats", self.screen_game_stats),
+                ("Game options", self.screen_game_options),
+                ("Main menu", self.screen_main_menu),
+                ("Quit game", self.quit_game),
+            )
+        )
+        # footer
+        self.set_footer(
+            "a Python3-Tkinter port of the "
+            "famous Boulder Dash\u2122 game"
+        )
     # end def
 
 
@@ -399,11 +446,12 @@ Have fun!""")
         """
             first menu screen;
         """
+        # background image
         self.show_splash("splash")
+        # game music play off
         self.start_music()
+        # show game rules after a while
         self.animations.run_after(7000, self.screen_game_rules)
-        # canvas only mouse events
-        self.canvas.bind("<Button-1>", self.screen_main_menu)
     # end def
 
 
@@ -458,6 +506,36 @@ Have fun!""")
     # end def
 
 
+    def show_menu (self, menu_list):
+        """
+            shows off menu items;
+        """
+        # inits
+        x, y = (self.cx, self.cy - 100)
+        _opts = dict(
+            anchor=TK.CENTER,
+            font=self.MENU_ITEM_FONT,
+            fill=self.MENU_ITEM_COLOR,
+        )
+        # CAUTION:
+        # canvas.tag_bind() is buggy /!\
+        # do *NOT* use it
+        self.menu_id = dict()
+        # browse menu items
+        for (menu_text, menu_cb) in menu_list:
+            # menu item inits
+            _id = self.canvas.create_text(
+                x, y, text=_(menu_text), **_opts
+            )
+            self.menu_id[_id] = menu_cb
+            # update pos
+            y += 60
+        # end for
+        # canvas only mouse events
+        self.canvas.bind("<Button-1>", self.menu_clicked)
+    # end def
+
+
     def show_splash (self, fname):
         """
             shows a menu screen background image (splash picture);
@@ -509,6 +587,17 @@ Have fun!""")
             stops game music background;
         """
         self.music.stop()
+    # end def
+
+
+    def switch_to_main_menu (self, *args, **kw):
+        """
+            event handler;
+            switches to last selected main menu page;
+        """
+        if callable(self.menu_callback):
+            self.menu_callback(*args, **kw)
+        # end if
     # end def
 
 
