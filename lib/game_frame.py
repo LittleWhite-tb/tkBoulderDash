@@ -76,6 +76,7 @@ class TkBoulderDash (GF.TkGameFrame):
     BODY_COLOR = "bisque2"
     BODY_COLOR2 = "white"
     BODY_COLOR3 = "lawn green"
+    BODY_COLOR4 = "lemon chiffon"
     MENU_ITEM_FONT = "{} 32".format(FONT2)
     MENU_ITEM_COLOR = "bisque2"
     FOOTER_FONT ="{} 20".format(FONT2)
@@ -348,8 +349,7 @@ Have fun!""")
         # filled set
         else:
             # inits
-            x, y = (self.cw//10, self.cy - 90)
-            _opts = dict(font=self.BODY_FONT, width=self.cw * 0.9)
+            x, y = (self.cw//10, self.cy - 100)
             # browse recordset
             for _row in _rows:
                 # inits
@@ -357,17 +357,17 @@ Have fun!""")
                 # show text
                 self.canvas.create_text(
                     x, y,
-                    text="{:.<40s}".format(_name),
+                    text=str(_name),
                     anchor=TK.W,
-                    fill=self.BODY_COLOR2,
-                    **_opts
+                    fill=self.BODY_COLOR4,
+                    font=self.BODY_FONT,
                 )
                 self.canvas.create_text(
                     self.cw - x, y,
-                    text=str(_score),
+                    text="{:n}".format(_score),
                     anchor=TK.E,
-                    fill=self.BODY_COLOR3,
-                    **_opts
+                    fill=self.BODY_COLOR2,
+                    font=self.BODY_FONT,
                 )
                 # update pos
                 y += 40

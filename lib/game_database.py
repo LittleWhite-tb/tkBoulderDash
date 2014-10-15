@@ -198,6 +198,7 @@ class GameDatabase (DB.TkGameDatabase):
             /*
                 testing and debugging
             */
+            /*
             insert into SCORES (SCO_NAME, SCO_SCORE)
                 values
                     ('fafi le foofoo', 329568),
@@ -211,6 +212,7 @@ class GameDatabase (DB.TkGameDatabase):
                     ('fornicator45', 500),
                     ('turluru pouet pouet', 123045)
             ;
+            */
             /*
                 vacuum makes some good clean-ups before starting app;
             */
