@@ -70,13 +70,17 @@ class TkBoulderDash (GF.TkGameFrame):
     # class constants
     HEAD_FONT = "{} 36".format(FONT1)
     HEAD_COLOR = "indian red"
+    HEAD_COLOR2 = "gold"
     HEAD_SHADOW_COLOR = "grey20"
     BODY_FONT = "{} 24".format(FONT2)
     BODY_COLOR = "bisque2"
+    BODY_COLOR2 = "white"
+    BODY_COLOR3 = "lawn green"
     MENU_ITEM_FONT = "{} 32".format(FONT2)
     MENU_ITEM_COLOR = "bisque2"
     FOOTER_FONT ="{} 20".format(FONT2)
     FOOTER_COLOR = "indian red"
+    FOOTER_COLOR2 = "gold"
 
     GAME_MUSIC = "david-filskov-boulder-dash-trash-mix.wav"
     GAME_MUSIC_VOLUME = 0.5
@@ -207,25 +211,25 @@ class TkBoulderDash (GF.TkGameFrame):
         # disable local events
         self.unbind_tkevents()
         # heading
-        self.set_heading("NEW BEST SCORE", color="gold")
+        self.set_heading("NEW BEST SCORE", color=self.HEAD_COLOR2)
         # body
         _opts = dict(font=self.BODY_FONT, width=self.cw * 0.9,)
         self.canvas.create_text(
             self.cx, self.cy - 80,
             text=_("You scored:"),
-            fill="white",
+            fill=self.BODY_COLOR2,
             **_opts
         )
         self.canvas.create_text(
             self.cx, self.cy - 30,
             text="{:06d}".format(new_score),
-            fill="lawn green",
+            fill=self.BODY_COLOR3,
             **_opts
         )
         self.canvas.create_text(
             self.cx, self.cy + 20,
             text=_("Please, enter your name:"),
-            fill="white",
+            fill=self.BODY_COLOR2,
             **_opts
         )
         # user input entry inits
@@ -233,14 +237,14 @@ class TkBoulderDash (GF.TkGameFrame):
             self,
             bd=0,
             bg="#3753A6",
-            fg="lawn green",
+            fg=self.BODY_COLOR3,
             font=self.BODY_FONT,
             highlightthickness=0,
-            insertbackground="white",
+            insertbackground=self.BODY_COLOR2,
             justify=TK.CENTER,
             relief=TK.FLAT,
-            selectbackground="lawn green",
-            selectforeground="white",
+            selectbackground=self.BODY_COLOR3,
+            selectforeground=self.BODY_COLOR2,
             width=16,
         )
         self.canvas.create_window(
@@ -252,7 +256,9 @@ class TkBoulderDash (GF.TkGameFrame):
         _entry.select_range(0, TK.END)
         _entry.focus_set()
         # footer
-        self.set_footer("Press <Return> to validate", color="gold")
+        self.set_footer(
+            "Press <Return> to validate", color=self.FOOTER_COLOR2
+        )
         # entry validation
         def validate_entry (*args):
             if MB.askyesno(_("Question"), _("Do you confirm?")):
@@ -332,25 +338,25 @@ Have fun!""")
         # background image
         self.show_splash("game_scores")
         # heading
-        self.set_heading("HALL OF FAME")
+        self.set_heading("HALL OF FAME", color=self.HEAD_COLOR2)
         # get recordset
         _rows = self.database.get_hall_of_fame()
         # empty set?
         if not _rows:
             # body
-            self.set_body("No heroes by there.")
+            self.set_body("No heroes by there.", color=self.BODY_COLOR2)
         # filled set
         else:
             # inits
             x, y = (self.cx, self.cy - 95)
             _opts = dict(
                 anchor=TK.CENTER,
-                font=self.MENU_ITEM_FONT,
-                fill=self.MENU_ITEM_COLOR,
+                font=self.BODY_FONT,
+                fill=self.BODY_COLOR2,
             )
         # end if
         # footer
-        self.set_footer()
+        self.set_footer(color=self.FOOTER_COLOR2)
     # end def
 
 
@@ -359,13 +365,13 @@ Have fun!""")
             game stats menu screen;
         """
         # background image
-        self.show_splash("main_menu")
+        self.show_splash("game_stats")
         # heading
-        self.set_heading("GAME STATISTICS")
+        self.set_heading("GAME STATISTICS", color=self.HEAD_COLOR2)
         # body
-        self.set_body("""TODO""")
+        self.set_body("""TODO""", self.BODY_COLOR2)
         # footer
-        self.set_footer()
+        self.set_footer(color=self.FOOTER_COLOR2)
     # end def
 
 
