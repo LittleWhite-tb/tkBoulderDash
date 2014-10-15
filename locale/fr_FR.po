@@ -88,9 +88,45 @@ msgstr ""
 
 
 msgid ""
+"More options"
+msgstr ""
+"Plus d'options"
+
+
+msgid ""
 "Quit game"
 msgstr ""
 "Quitter"
+
+
+msgid ""
+"MORE OPTIONS"
+msgstr ""
+"PLUS D'OPTIONS"
+
+
+msgid ""
+"Hall of fame"
+msgstr ""
+"Meilleurs scores"
+
+
+msgid ""
+"Game stats"
+msgstr ""
+"Stats de jeu"
+
+
+msgid ""
+"Game options"
+msgstr ""
+"Options"
+
+
+msgid ""
+"Main menu"
+msgstr ""
+"Menu principal"
 
 
 msgid ""

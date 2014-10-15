@@ -154,7 +154,7 @@ class TkBoulderDash (GF.TkGameFrame):
             }
         )
         # deferred inits - do *NOT* use self.animations /!\
-        self.root.after(500, self.deferred_inits)
+        self.root.after(100, self.deferred_inits)
     # end def
 
 
@@ -390,7 +390,6 @@ Have fun!""")
         """
         # inits
         self.menu_callback = self.screen_main_menu
-        self.database.dump_tables()
         # background image
         self.show_splash("main_menu")
         # heading
@@ -399,8 +398,8 @@ Have fun!""")
         self.show_menu(
             (
                 ("Play", self.run_game),
-                ("Keyboard mappings", self.screen_keymap),
                 ("Game rules", self.screen_game_rules),
+                ("Keyboard mappings", self.screen_keymap),
                 ("More options", self.screen_main_menu_2),
                 ("Quit game", self.quit_game),
             )
@@ -510,7 +509,7 @@ Have fun!""")
             shows off menu items;
         """
         # inits
-        x, y = (self.cx, self.cy - 100)
+        x, y = (self.cx, self.cy - 95)
         _opts = dict(
             anchor=TK.CENTER,
             font=self.MENU_ITEM_FONT,
@@ -528,7 +527,7 @@ Have fun!""")
             )
             self.menu_id[_id] = menu_cb
             # update pos
-            y += 60
+            y += 55
         # end for
         # canvas only mouse events
         self.canvas.bind("<Button-1>", self.menu_clicked)

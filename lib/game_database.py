@@ -94,7 +94,7 @@ class GameDatabase (DB.TkGameDatabase):
             )
             # dump table
             print("\nTable: '{}'".format(_table))
-            # init contents
+            # get table contents
             _rows = self.fetch(self.ALL)
             # got a recordset?
             if _rows:
