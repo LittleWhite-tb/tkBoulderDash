@@ -306,8 +306,18 @@ class TkBoulderDash (GF.TkGameFrame):
         self.show_splash("game_options")
         # heading
         self.set_heading("GAME OPTIONS", color=self.HEAD_COLOR2)
-        # body
-        self.set_body("""TODO""", color=self.BODY_COLOR2)
+        # inits
+        x, y = (self.cx, self.cy - 90)
+        # game option
+        self.set_game_option(
+            x, y, "Switch off music",
+            db_option="Music:Switch:Off",
+            on_check=self.stop_music,
+        )
+        # game option
+        self.set_game_option(
+            x, y + 50, "Switch off sound", db_option="Sound:Switch:Off"
+        )
         # footer
         self.set_footer(color=self.FOOTER_COLOR2)
     # end def
@@ -508,6 +518,46 @@ Have fun!""")
             font=self.FOOTER_FONT,
             fill=color or self.FOOTER_COLOR,
         )
+    # end def
+
+
+    def set_game_option (self, x, y, name, db_option, **kw):
+        """
+            sets up a canvas graphical checkbutton for game option;
+        """
+        def toggle ():
+            # inits
+            _value = _cvar.get()
+            _on_check = kw.get("on_check")
+            _on_uncheck = kw.get("on_uncheck")
+            # save option into database
+            self.database.set_option(db_option, _value)
+            # make some callbacks
+            if _value and callable(_on_check):
+                _on_check()
+            elif not _value and callable(_on_uncheck):
+                _on_uncheck()
+            # end if
+        # end def
+        # inits
+        _value = int(bool(self.database.get_option(db_option)))
+        _cvar = TK.IntVar()
+        _chk = TK.Checkbutton(
+            self,
+            text=_(name),
+            command=toggle,
+            variable=_cvar,
+            activebackground="#8A2E2E",
+            anchor=TK.W,
+            bg="#8A2E2E",
+            bd=3,
+            font=self.MENU_ITEM_FONT,
+            fg=self.BODY_COLOR2,
+            highlightthickness=0,
+            indicatoron=0,
+        )
+        # set game option
+        self.canvas.create_window(x, y, window=_chk)
     # end def
 
 

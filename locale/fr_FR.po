@@ -154,6 +154,18 @@ msgstr ""
 
 
 msgid ""
+"Switch off music"
+msgstr ""
+"Couper la musique"
+
+
+msgid ""
+"Switch off sound"
+msgstr ""
+"Couper les bruitages"
+
+
+msgid ""
 "a Python3-Tkinter port of the famous Boulder Dash\u2122 game"
 msgstr ""
 "une adaptation Python3-Tkinter du célèbre jeu Boulder Dash\u2122"

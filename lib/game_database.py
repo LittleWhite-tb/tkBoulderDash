@@ -171,8 +171,8 @@ class GameDatabase (DB.TkGameDatabase):
         # create tables
         self.sql_script("""\
             -- FIXME: comment out the following lines after debugging
-            drop table if exists SCORES;
-            drop table if exists OPTIONS;
+            -- drop table if exists SCORES;
+            -- drop table if exists OPTIONS;
             /*
                 HIGH SCORES and HALL OF FAME;
             */
@@ -195,24 +195,6 @@ class GameDatabase (DB.TkGameDatabase):
                 OPT_NAME        not null unique,
                 OPT_VALUE       not null
             );
-            /*
-                testing and debugging
-            */
-            /*
-            insert into SCORES (SCO_NAME, SCO_SCORE)
-                values
-                    ('fafi le foofoo', 329568),
-                    ('chtumlu69', 23587),
-                    ('zoubi123568', 12547),
-                    ('nom super long de la mort', 1235698),
-                    ('toto147', 655878),
-                    ('barouette29', 998055),
-                    ('bozo le zobo', 6332455),
-                    ('miss_tigri56', 2350),
-                    ('fornicator45', 500),
-                    ('turluru pouet pouet', 123045)
-            ;
-            */
             /*
                 vacuum makes some good clean-ups before starting app;
             */
