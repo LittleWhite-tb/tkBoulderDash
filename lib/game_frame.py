@@ -296,7 +296,7 @@ class TkBoulderDash (GF.TkGameFrame):
             game options menu screen;
         """
         # background image
-        self.show_splash("main_menu")                                       # FIXME
+        self.show_splash("main_menu")
         # heading
         self.set_heading("GAME OPTIONS")
         # body
@@ -330,11 +330,25 @@ Have fun!""")
             game high-scores menu screen;
         """
         # background image
-        self.show_splash("main_menu")                                       # FIXME
+        self.show_splash("main_menu")
         # heading
         self.set_heading("HALL OF FAME")
-        # body
-        self.set_body("""TODO""")
+        # get recordset
+        _rows = self.database.get_hall_of_fame()
+        # empty set?
+        if not _rows:
+            # body
+            self.set_body("No heroes by there.")
+        # filled set
+        else:
+            # inits
+            x, y = (self.cx, self.cy - 95)
+            _opts = dict(
+                anchor=TK.CENTER,
+                font=self.MENU_ITEM_FONT,
+                fill=self.MENU_ITEM_COLOR,
+            )
+        # end if
         # footer
         self.set_footer()
     # end def

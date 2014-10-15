@@ -136,6 +136,12 @@ msgstr ""
 
 
 msgid ""
+"No heroes by there."
+msgstr ""
+"Personne n'a encore cassé la baraque."
+
+
+msgid ""
 "GAME STATISTICS"
 msgstr ""
 "STATS DE JEU"
@@ -265,12 +271,6 @@ msgid ""
 "Winner"
 msgstr ""
 "Vainqueur"
-
-
-msgid ""
-""
-msgstr ""
-""
 
 
 msgid ""

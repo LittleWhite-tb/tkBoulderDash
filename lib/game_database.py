@@ -128,6 +128,19 @@ class GameDatabase (DB.TkGameDatabase):
     # end def
 
 
+    def get_hall_of_fame (self):
+        """
+            retrieves last best scores (hall of fame);
+        """
+        # get last best scores
+        self.sql_query(
+            "select SCO_NAME, SCO_SCORE from SCORES "
+            "order by SCO_SCORE desc, SCO_CREATED desc limit 5"
+        )
+        return self.fetch(self.ALL)
+    # end def
+
+
     def get_option (self, opt_name):
         """
             retrieves app option value along with its @opt_name;
