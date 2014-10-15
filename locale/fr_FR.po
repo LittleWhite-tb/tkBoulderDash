@@ -130,6 +130,24 @@ msgstr ""
 
 
 msgid ""
+"HALL OF FAME"
+msgstr ""
+"MEILLEURS SCORES"
+
+
+msgid ""
+"GAME STATISTICS"
+msgstr ""
+"STATS DE JEU"
+
+
+msgid ""
+"GAME OPTIONS"
+msgstr ""
+"OPTIONS DE JEU"
+
+
+msgid ""
 "a Python3-Tkinter port of the famous Boulder Dash\u2122 game"
 msgstr ""
 "une adaptation Python3-Tkinter du célèbre jeu Boulder Dash\u2122"

@@ -93,16 +93,6 @@ class TkBoulderDash (GF.TkGameFrame):
     # end def
 
 
-    def deferred_inits (self, *args, **kw):
-        """
-            event handler;
-            threaded inits for non-vital/slow ops;
-        """
-        # database inits (may take a while)
-        self.database = DB.get_database()
-    # end def
-
-
     def init_widget (self, **kw):
         """
             hook method to be reimplemented in subclass;
@@ -129,6 +119,8 @@ class TkBoulderDash (GF.TkGameFrame):
         self.cw, self.ch = self.canvas.size()
         # gameplay inits
         self.game_play = GP.GamePlay(self.canvas, level=1)
+        # database inits (may take a while)
+        self.database = DB.get_database()
         # music inits
         self.music = AU.new_audio_player()
         # menu callback
@@ -153,8 +145,6 @@ class TkBoulderDash (GF.TkGameFrame):
                 "Stats:Level:Won": self.stats_level_won,
             }
         )
-        # deferred inits - do *NOT* use self.animations /!\
-        self.root.after(100, self.deferred_inits)
     # end def
 
 
@@ -558,8 +548,10 @@ Have fun!""")
             event handler;
             starts game music background;
         """
-        self.music.set_volume(self.GAME_MUSIC_VOLUME)
-        self.music.play("audio/{}".format(self.GAME_MUSIC))
+        if not self.database.get_option("Music:Switch:Off"):
+            self.music.set_volume(self.GAME_MUSIC_VOLUME)
+            self.music.play("audio/{}".format(self.GAME_MUSIC))
+        # end if
     # end def
 
 
