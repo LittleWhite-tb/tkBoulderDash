@@ -294,7 +294,8 @@ class TkBoulderDash (GF.TkGameFrame):
         # inits
         self.unbind_all_events()
         self.music.set_volume(self.GAME_MUSIC_VOLUME/2.0)
-        self.game_play.run(db=self.database)
+        self.game_play.update_db_options(self.database)
+        self.game_play.run()
     # end def
 
 
@@ -399,6 +400,7 @@ Have fun!""")
         self.set_heading("GAME STATISTICS", color=self.HEAD_COLOR2)
         # body
         self.set_body("""TODO""", self.BODY_COLOR2)
+        self.database.dump_tables("GAME_STATS")
         # footer
         self.set_footer(color=self.FOOTER_COLOR2)
     # end def

@@ -196,6 +196,38 @@ class GameDatabase (DB.TkGameDatabase):
                 OPT_VALUE       not null
             );
             /*
+                GAME STATS;
+            */
+            create table if not exists STATS
+            (
+                STA_KEY         integer primary key,
+                STA_CREATED     date not null default current_date,
+                STA_LEVEL       not null unique,
+                STA_PLAYED      not null,
+                STA_WON         not null,
+                STA_BEST_SCORE  not null
+            );
+            create temporary view GAME_STATS as
+                select
+                    STA_LEVEL as 'Level',
+                    STA_PLAYED as 'Played',
+                    STA_WON as 'Won',
+                    round(100*STA_WON/STA_PLAYED) as 'Success (%)',
+                    STA_BEST_SCORE as 'Best score'
+                from STATS
+                order by STA_LEVEL asc
+            ;
+            /*
+                testing and debugging;
+            */
+            insert or replace into STATS
+                (STA_LEVEL, STA_PLAYED, STA_WON, STA_BEST_SCORE)
+            values
+                (1, 30, 22, 235640),
+                (2, 25, 12, 365988),
+                (3, 12, 6, 562300),
+                (4, 6, 5, 2300544);
+            /*
                 vacuum makes some good clean-ups before starting app;
             */
             vacuum;

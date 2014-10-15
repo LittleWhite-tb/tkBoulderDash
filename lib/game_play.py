@@ -688,8 +688,6 @@ class GamePlay:
         """
         # reset score from here
         self.score = 0
-        # update DB options
-        self.update_db_options(kw.get("db"))
         # draw current level
         self.draw_level()
     # end def
