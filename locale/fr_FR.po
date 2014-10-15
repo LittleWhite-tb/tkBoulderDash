@@ -138,7 +138,7 @@ msgstr ""
 msgid ""
 "No heroes by there."
 msgstr ""
-"Personne n'a encore cassé la baraque."
+"Désolé, mais...\n\npersonne n'a encore cassé la baraque."
 
 
 msgid ""

@@ -330,7 +330,7 @@ Have fun!""")
             game high-scores menu screen;
         """
         # background image
-        self.show_splash("main_menu")
+        self.show_splash("game_scores")
         # heading
         self.set_heading("HALL OF FAME")
         # get recordset
@@ -359,7 +359,7 @@ Have fun!""")
             game stats menu screen;
         """
         # background image
-        self.show_splash("main_menu")                                       # FIXME
+        self.show_splash("main_menu")
         # heading
         self.set_heading("GAME STATISTICS")
         # body
