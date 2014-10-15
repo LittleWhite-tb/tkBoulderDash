@@ -523,12 +523,17 @@ class GamePlay:
         """
             plays asynchronous sound;
         """
-        track = self.SNDTRACK.get(str(trackname).lower()) or 1
-        track = max(1, min(track, len(self.soundtracks))) - 1
-        sound_name = str(sound_name).replace(" ", "-")
-        self.soundtracks[track].play(
-            "audio/{}.wav".format(sound_name), volume
-        )
+        # game options
+        if not self.switch_off_sound:
+            # inits
+            track = self.SNDTRACK.get(str(trackname).lower()) or 1
+            track = max(1, min(track, len(self.soundtracks))) - 1
+            sound_name = str(sound_name).replace(" ", "-")
+            # play sound
+            self.soundtracks[track].play(
+                "audio/{}.wav".format(sound_name), volume
+            )
+        # end if
     # end def
 
 
@@ -683,6 +688,8 @@ class GamePlay:
         """
         # reset score from here
         self.score = 0
+        # update DB options
+        self.update_db_options(kw.get("db"))
         # draw current level
         self.draw_level()
     # end def
@@ -978,6 +985,21 @@ class GamePlay:
         # keep on counting down
         else:
             self.animations.run_after(1000, self.update_countdown)
+        # end if
+    # end def
+
+
+    def update_db_options (self, db):
+        """
+            updates game options along with @db database, if any;
+        """
+        # param controls
+        if db:
+            # inits
+            self.switch_off_sound = db.get_option("Sound:Switch:Off")
+        else:
+            # default values
+            self.switch_off_sound = False
         # end if
     # end def
 

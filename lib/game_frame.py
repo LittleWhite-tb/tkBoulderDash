@@ -294,7 +294,7 @@ class TkBoulderDash (GF.TkGameFrame):
         # inits
         self.unbind_all_events()
         self.music.set_volume(self.GAME_MUSIC_VOLUME/2.0)
-        self.game_play.run()
+        self.game_play.run(db=self.database)
     # end def
 
 
@@ -524,13 +524,11 @@ Have fun!""")
 
     def set_game_option (self, x, y, name, db_option, **kw):
         """
-            sets up a canvas graphical checkbutton for game option;
+            sets up a canvas checkbutton for game option;
         """
         def toggle ():
             # inits
             _value = _cvar.get()
-            _on_check = kw.get("on_check")
-            _on_uncheck = kw.get("on_uncheck")
             # save option into database
             self.database.set_option(db_option, _value)
             # make some callbacks
@@ -541,6 +539,8 @@ Have fun!""")
             # end if
         # end def
         # inits
+        _on_check = kw.pop("on_check", None)
+        _on_uncheck = kw.pop("on_uncheck", None)
         _cvar = TK.IntVar()
         _cvar.set(int(bool(self.database.get_option(db_option))))
         _chk = TK.Checkbutton(
@@ -562,7 +562,7 @@ Have fun!""")
             selectcolor="#AB3939",
         )
         # set game option
-        self.canvas.create_window(x, y, window=_chk)
+        self.canvas.create_window(x, y, window=_chk, **kw)
     # end def
 
 
