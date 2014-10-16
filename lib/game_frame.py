@@ -267,8 +267,7 @@ class TkBoulderDash (GF.TkGameFrame):
                 _name = _entry.get() or _("Winner")
                 self.database.add_best_score(_name, new_score)
                 self.database.set_option("Winner:Name", _name)
-                #~ self.database.dump_tables()
-                self.screen_main_menu()
+                self.screen_game_scores()
             # end if
         # end def
         # event bindings
@@ -398,9 +397,51 @@ Have fun!""")
         self.show_splash("game_stats")
         # heading
         self.set_heading("GAME STATISTICS", color=self.HEAD_COLOR2)
-        # body
-        self.set_body("""TODO""", self.BODY_COLOR2)
-        self.database.dump_tables("GAME_STATS")
+        # get stats
+        _rows = self.database.get_stats()
+        # nothing?
+        if not _rows:
+            # show message
+            self.set_body(
+                "Sorry, no available stats by now.",
+                color=self.BODY_COLOR2
+            )
+        else:
+            # inits
+            _frame = TK.Frame(self, bg="#722E8A")
+            _font = self.FOOTER_FONT
+            def label (_text, _row, _column, _color):
+                TK.Label(
+                    _frame,
+                    text=_(_text),
+                    font=_font,
+                    fg=_color,
+                    bg=_frame["bg"],
+                    highlightbackground=self.BODY_COLOR,
+                    highlightthickness=1,
+                ).grid(
+                    row=_row,
+                    column=_column,
+                    ipadx=5,
+                    sticky=TK.NW+TK.SE,
+                )
+            # end def
+            # show field names
+            for _column, _name in enumerate(self.database.get_column_names()):
+                label(_name, 0, _column, self.BODY_COLOR)
+            # end for
+            # show data
+            for _row, _record in enumerate(_rows):
+                for _column, _data in enumerate(_record):
+                    label(_data, _row + 1, _column, self.BODY_COLOR2)
+                    _frame.columnconfigure(_column, weight=1)
+                # end for
+            # end for
+            # put frame onto canvas
+            self.canvas.create_window(
+                self.cx, 105, window=_frame, anchor=TK.N,
+            )
+        # end if
         # footer
         self.set_footer(color=self.FOOTER_COLOR2)
     # end def
@@ -655,16 +696,18 @@ Have fun!""")
             event handler;
             updates some stats data;
         """
-        print("Stats:Level started:", level)
+        # feed stats data in database
+        self.database.stats_update_played(level)
     # end def
 
 
-    def stats_level_won (self, level, *args, **kw):
+    def stats_level_won (self, level, score, *args, **kw):
         """
             event handler;
             updates some stats data;
         """
-        print("Stats:Level won:", level)
+        # feed stats data in database
+        self.database.stats_update_won(level, score)
     # end def
 
 

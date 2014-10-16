@@ -1062,6 +1062,7 @@ class GamePlay:
         self.won_text(
             "Champion!",
             "You won all!",
+            self.high_score,
             title_color="lemon chiffon",
             subtitle_color="powder blue"
         )
@@ -1069,6 +1070,10 @@ class GamePlay:
         self.events.raise_event("Main:Music:Stop")
         # play sound
         self.play_sound("player won all", trackname="background")
+        # notify stats unit
+        self.events.raise_event(
+            "Stats:Level:Won:All", score=self.high_score
+        )
         # reset level
         self.level = 1
         # main menu screen
@@ -1093,6 +1098,7 @@ class GamePlay:
         self.won_text(
             "Great!",
             "You got it!",
+            self.score,
             title_color="yellow",
             subtitle_color="antique white"
         )
@@ -1104,7 +1110,7 @@ class GamePlay:
         self.high_score = max(self.high_score, self.score)
         # notify stats unit
         self.events.raise_event(
-            "Stats:Level:Won", level=self.level
+            "Stats:Level:Won", level=self.level, score=self.score
         )
         # go to next level
         self.animations.run_after(4000, self.next_level)
@@ -1113,7 +1119,7 @@ class GamePlay:
     # end def
 
 
-    def won_text (self, title, subtitle, **kw):
+    def won_text (self, title, subtitle, score, **kw):
         """
             texts for winning screens;
         """
@@ -1139,7 +1145,7 @@ class GamePlay:
         )
         self.canvas.create_text(
             x, y + 70,
-            text=_("Score: {}").format(self.score),
+            text=_("Score: {}").format(score),
             font="{} 24".format(FONT2),
             fill=kw.get("title_color") or "white",
         )

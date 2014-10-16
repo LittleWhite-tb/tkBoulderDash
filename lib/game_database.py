@@ -50,17 +50,9 @@ class GameDatabase (DB.TkGameDatabase):
         Game database wrapper;
     """
 
-    def _get_record (self, table_name, row_id):
-        """
-            retrieves an entire record for table @table_name along
-            with @row_id row identifier;
-        """
-        self.sql_query(
-            "select * from {} where ROWID = ?".format(table_name),
-            row_id
-        )
-        return self.fetch()
-    # end def
+    # class constant defs
+    # current DB tables and views
+    TABLES = ("OPTIONS", "SCORES", "STATS", "GAME_STATS")
 
 
     def add_best_score (self, winner_name, best_score):
@@ -82,36 +74,8 @@ class GameDatabase (DB.TkGameDatabase):
             dumps listed tables to stdout (CLI);
             dumps all tables if @args is omitted;
         """
-        # param controls
-        if not args:
-            args = ("OPTIONS", "SCORES")
-        # end if
-        # browse table list
-        for _table in args:
-            # SQL statement
-            self.sql_query(
-                "select * from '{}' limit {}".format(_table, limit)
-            )
-            # dump table
-            print("\nTable: '{}'".format(_table))
-            # get table contents
-            _rows = self.fetch(self.ALL)
-            # got a recordset?
-            if _rows:
-                # show description
-                print(
-                    "Columns:",
-                    tuple(c[0] for c in self.cursor.description)
-                )
-                # dump rows
-                print("Rows:")
-                for _idx, _row in enumerate(_rows):
-                    print("{:03d}:".format(_idx + 1), tuple(_row))
-                # end for
-            else:
-                print("This table is *empty*.")
-            # end if
-        # end for
+        # super class inits
+        super().dump_tables(*(args or self.TABLES), limit=limit)
     # end def
 
 
@@ -160,7 +124,16 @@ class GameDatabase (DB.TkGameDatabase):
             retrieves score record along with @row_id;
         """
         # get record
-        return self._get_record("SCORES", row_id)
+        return self.get_record("SCORES", row_id)
+    # end def
+
+
+    def get_stats (self):
+        """
+            retrieves game stats for all levels;
+        """
+        # get game stats
+        return self.get_all("GAME_STATS")
     # end def
 
 
@@ -173,6 +146,7 @@ class GameDatabase (DB.TkGameDatabase):
             -- FIXME: comment out the following lines after debugging
             -- drop table if exists SCORES;
             -- drop table if exists OPTIONS;
+            -- drop table if exists STATS;
             /*
                 HIGH SCORES and HALL OF FAME;
             */
@@ -203,9 +177,9 @@ class GameDatabase (DB.TkGameDatabase):
                 STA_KEY         integer primary key,
                 STA_CREATED     date not null default current_date,
                 STA_LEVEL       not null unique,
-                STA_PLAYED      not null,
-                STA_WON         not null,
-                STA_BEST_SCORE  not null
+                STA_PLAYED      not null default 0,
+                STA_WON         not null default 0,
+                STA_BEST_SCORE  not null default 0
             );
             create temporary view GAME_STATS as
                 select
@@ -217,16 +191,6 @@ class GameDatabase (DB.TkGameDatabase):
                 from STATS
                 order by STA_LEVEL asc
             ;
-            /*
-                testing and debugging;
-            */
-            insert or replace into STATS
-                (STA_LEVEL, STA_PLAYED, STA_WON, STA_BEST_SCORE)
-            values
-                (1, 30, 22, 235640),
-                (2, 25, 12, 365988),
-                (3, 12, 6, 562300),
-                (4, 6, 5, 2300544);
             /*
                 vacuum makes some good clean-ups before starting app;
             */
@@ -247,6 +211,42 @@ class GameDatabase (DB.TkGameDatabase):
         )
         # give created row id
         return self.last_row_id
+    # end def
+
+
+    def stats_update_played (self, level):
+        """
+            updates stats data for started/played game level;
+        """
+        # CAUTION: since UPDATE OR REPLACE does *NOT* work as expected,
+        # we must set up default row by ourselves;
+        # set default row, if needed
+        self.sql_query(
+            "insert or ignore into STATS (STA_LEVEL) values (?)",
+            level
+        )
+        # update data
+        self.sql_query(
+            "update STATS "
+            "set STA_PLAYED = STA_PLAYED + 1 "
+            "where STA_LEVEL = ?",
+            level
+        )
+    # end def
+
+
+    def stats_update_won (self, level, score):
+        """
+            updates stats data for won game level;
+        """
+        # update data
+        self.sql_query(
+            "update STATS "
+            "set STA_WON = STA_WON + 1, "
+            "STA_BEST_SCORE = max(STA_BEST_SCORE, ?) "
+            "where STA_LEVEL = ?",
+            score, level
+        )
     # end def
 
 # end class GameDatabase

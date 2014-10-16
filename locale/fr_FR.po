@@ -138,13 +138,49 @@ msgstr ""
 msgid ""
 "No heroes by there."
 msgstr ""
-"Désolé, mais...\n\npersonne n'a encore cassé la baraque.\n\n\n"
+"Désolé, mais...\npersonne n'a encore cassé la baraque."
 
 
 msgid ""
 "GAME STATISTICS"
 msgstr ""
 "STATS DE JEU"
+
+
+msgid ""
+"Sorry, no available stats by now."
+msgstr ""
+"Désolé, pas de stats pour le moment."
+
+
+msgid ""
+"Level"
+msgstr ""
+"Niveau"
+
+
+msgid ""
+"Played"
+msgstr ""
+"Joué"
+
+
+msgid ""
+"Won"
+msgstr ""
+"Gagné"
+
+
+msgid ""
+"Success (%)"
+msgstr ""
+"Réussite (%)"
+
+
+msgid ""
+"Best score"
+msgstr ""
+"Meilleur score"
 
 
 msgid ""

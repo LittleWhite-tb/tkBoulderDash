@@ -2,12 +2,6 @@
 TODO
 ====
 
-    * ajouter affichage high-score + hall of fame géré par BDD;
-
-    * ajouter options de jeu gérées par BDD;
-
-    * ajouter stats de jeu gérées par BDD;
-
     * ajouter possibilité de partager sur réseaux sociaux lorsqu'un
     nouveau high-score vient d'être franchi e.g. publier un petit
     message récapitulant l'exploit, s'il existe des APIs qui le

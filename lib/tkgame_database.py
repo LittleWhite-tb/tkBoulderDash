@@ -146,6 +146,34 @@ class TkGameDatabase:
     # end def
 
 
+    def dump_tables (self, *args, limit=100):
+        """
+            dumps listed tables/views to stdout (CLI);
+            debug utility - should be reimplemented in subclass to
+            meet your real needs;
+        """
+        # browse table list
+        for _table in args:
+            # dump table
+            print("\nTable: '{}'".format(_table))
+            # get all records along with @limit
+            _rows = self.get_all(_table, limit)
+            # got a recordset?
+            if _rows:
+                # show description
+                print("Columns:", self.get_column_names())
+                # dump rows
+                print("Rows:")
+                for _idx, _row in enumerate(_rows):
+                    print("{:03d}:".format(_idx + 1), tuple(_row))
+                # end for
+            else:
+                print("This table is *empty*.")
+            # end if
+        # end for
+    # end def
+
+
     def fetch (self, qty=1, default=None):
         """
             fetches @qty rows resulting from a self.sql_query();
@@ -177,6 +205,40 @@ class TkGameDatabase:
                 "no pending cursor by now (DB not open?)."
             )
         # end if
+    # end def
+
+
+    def get_column_names (self):
+        """
+            retrieves field names of the last SQL query, if any;
+        """
+        return tuple(c[0] for c in self.cursor.description)
+    # end def
+
+
+    def get_record (self, table_name, row_id):
+        """
+            retrieves an unique record for table @table_name along
+            with @row_id row identifier;
+        """
+        self.sql_query(
+            "select * from '{}' where ROWID = ? limit 1"
+            .format(table_name),
+            row_id
+        )
+        return self.fetch()
+    # end def
+
+
+    def get_all (self, table_name, limit=100):
+        """
+            retrieves all fields in a recordset of max. @limit rows
+            for table @table_name;
+        """
+        self.sql_query(
+            "select * from '{}' limit {}".format(table_name, limit)
+        )
+        return self.fetch(self.ALL)
     # end def
 
 
