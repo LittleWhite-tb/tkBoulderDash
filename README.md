@@ -10,6 +10,8 @@ Software** famous **Boulder Dash&trade;** 1980s retro game.
 
 This game is a **freefullware** (see below).
 
+<a href="https://plus.google.com/share?url=https%3A%2F%2Fgithub.com%2Ftarball69%2FtkBoulderDash%2F" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" title="Share on Google+"><img src="https://www.gstatic.com/images/icons/gplus-32.png" alt="Share on Google+"/></a>
+
 
 ## Screenshots
 
