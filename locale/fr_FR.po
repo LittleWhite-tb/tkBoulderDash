@@ -322,15 +322,15 @@ msgstr ""
 
 
 msgid ""
-""
+"Information"
 msgstr ""
-""
+"Information"
 
 
 msgid ""
-""
+"Launching web browser, please wait."
 msgstr ""
-""
+"Lancement du navigateur internet.\nVeuillez patienter, SVP."
 
 
 msgid ""

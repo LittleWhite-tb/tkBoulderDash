@@ -161,7 +161,7 @@ class TkBoulderDash (GF.TkGameFrame):
         """
         import webbrowser
         webbrowser.open(
-            "https://github.com/tarball69/tkBoulderDash/www/share.html",
+            "https://tarball69.github.io/tkBoulderDash/",
             new=2,
             autoraise=True
         )
