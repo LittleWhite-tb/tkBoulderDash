@@ -13,28 +13,6 @@ This game is a **freefullware** (see [below](#freefullware)).
 Please, feel free to visit [project's website] (http://tarball69.github.io/tkBoulderDash/).
 
 
-## Screenshots
-
-![screenshot 1] (images/screenshots/tkboulderdash-screenshot-001.png)
-![screenshot 2] (images/screenshots/tkboulderdash-screenshot-002.png)
-![screenshot 3] (images/screenshots/tkboulderdash-screenshot-003.png)
-![screenshot 4] (images/screenshots/tkboulderdash-screenshot-004.png)
-![screenshot 5] (images/screenshots/tkboulderdash-screenshot-005.png)
-![screenshot 6] (images/screenshots/tkboulderdash-screenshot-006.png)
-![screenshot 7] (images/screenshots/tkboulderdash-screenshot-007.png)
-![screenshot 8] (images/screenshots/tkboulderdash-screenshot-008.png)
-![screenshot 9] (images/screenshots/tkboulderdash-screenshot-009.png)
-![screenshot 10] (images/screenshots/tkboulderdash-screenshot-010.png)
-![screenshot 11] (images/screenshots/tkboulderdash-screenshot-011.png)
-![screenshot 12] (images/screenshots/tkboulderdash-screenshot-012.png)
-![screenshot 13] (images/screenshots/tkboulderdash-screenshot-013.png)
-![screenshot 14] (images/screenshots/tkboulderdash-screenshot-014.png)
-![screenshot 15] (images/screenshots/tkboulderdash-screenshot-015.png)
-![screenshot 16] (images/screenshots/tkboulderdash-screenshot-016.png)
-![screenshot 17] (images/screenshots/tkboulderdash-screenshot-017.png)
-![screenshot 18] (images/screenshots/tkboulderdash-screenshot-018.png)
-
-
 ## Copyright
 
 tkBoulderDash - a Python3/Tkinter port of the famous game.
@@ -62,32 +40,6 @@ General Public License for more details.
 along with this program.
 
 > If not, see http://www.gnu.org/licenses/
-
-
-## Development status
-
-    Development Status :: 4 - Beta
-
-Software has been:
-
-* Linux:
-
-    * TESTED OK under Ubuntu 14.04;
-    * should work fine on any recent Linux distro;
-    * best sound with GNOME/GStreamer v1.0;
-
-* MacOS&trade;:
-
-    * NOT YET TESTED;
-
-* MS-Windows&trade;:
-
-    * TESTED OK under MS-Windows&trade; 8;
-    * should work fine on any recent MS-Windows&trade; platform;
-
-Any feedback is the welcome:
-
-https://github.com/tarball69/tkBoulderDash/issues
 
 
 ## Freefullware
