@@ -2,11 +2,6 @@
 TODO
 ====
 
-    * ajouter possibilité de partager sur réseaux sociaux lorsqu'un
-    nouveau high-score vient d'être franchi e.g. publier un petit
-    message récapitulant l'exploit, s'il existe des APIs qui le
-    permettent, évidemment;
-
     * passer en stable/production lorsque tous les tests effectués
     auront été évalués OK;
 

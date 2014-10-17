@@ -340,6 +340,8 @@ class TkBoulderDash (GF.TkGameFrame):
         )
         # footer
         self.set_footer(color=self.FOOTER_COLOR2)
+        # show 'share' button
+        self.show_share_button()
     # end def
 
 
@@ -405,6 +407,8 @@ Have fun!""")
         # end if
         # footer
         self.set_footer(color=self.FOOTER_COLOR2)
+        # show 'share' button
+        self.show_share_button()
     # end def
 
 
@@ -463,6 +467,8 @@ Have fun!""")
         # end if
         # footer
         self.set_footer(color=self.FOOTER_COLOR2)
+        # show 'share' button
+        self.show_share_button()
     # end def
 
 
