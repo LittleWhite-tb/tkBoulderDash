@@ -49,17 +49,11 @@ What is a freefullware?
 A **freefullware** is a new kind of software:
 
 * Free as in Freedom;
-
 * Free of charge (gratis);
-
 * Ad-free (no advertisement at all);
-
 * Donate-free (no 'Donate' button at all);
-
 * 100% virus-free;
-
 * no counterpart at all;
-
 * really absolutely free;
 
 Just get it and enjoy.
