@@ -153,6 +153,25 @@ class TkBoulderDash (GF.TkGameFrame):
     # end def
 
 
+    def launch_sharing (self, *args, **kw):
+        """
+            event handler;
+            launches social network 'sharing' service throughout web
+            browser;
+        """
+        import webbrowser
+        webbrowser.open(
+            "https://github.com/tarball69/tkBoulderDash/www/share.html",
+            new=2,
+            autoraise=True
+        )
+        MB.showinfo(
+            _("Information"),
+            _("Launching web browser, please wait.")
+        )
+    # end def
+
+
     def menu_clicked (self, event):
         """
             as canvas.tag_bind() has been found buggy, we must
@@ -491,6 +510,8 @@ Have fun!""")
             "a Python3-Tkinter port of the "
             "famous Boulder Dash\u2122 game"
         )
+        # show 'share' button
+        #~ self.show_share_button()
     # end def
 
 
@@ -519,6 +540,8 @@ Have fun!""")
             "a Python3-Tkinter port of the "
             "famous Boulder Dash\u2122 game"
         )
+        # show 'share' button
+        self.show_share_button()
     # end def
 
 
@@ -657,6 +680,22 @@ Have fun!""")
         # end for
         # canvas only mouse events
         self.canvas.bind("<Button-1>", self.menu_clicked)
+    # end def
+
+
+    def show_share_button (self, *args, **kw):
+        """
+            event handler;
+            shows social networks 'share' button;
+        """
+        # inits
+        self.share_button = TK.PhotoImage(file="images/share_button.gif")
+        _id = self.canvas.create_image(
+            self.cw - 10, self.ch - 10,
+            anchor=TK.SE,
+            image=self.share_button,
+        )
+        self.canvas.tag_bind(_id, "<Button-1>", self.launch_sharing)
     # end def
 
 
