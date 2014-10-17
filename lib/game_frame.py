@@ -196,6 +196,8 @@ class TkBoulderDash (GF.TkGameFrame):
             happens unconditionnaly just before app is destroyed;
             put here what needs to be stopped before ending;
         """
+        # stop music playback
+        self.stop_music()
         # close database
         self.database.close_database()
     # end def
