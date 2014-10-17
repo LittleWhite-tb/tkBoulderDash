@@ -8,7 +8,7 @@ A Python3/Tkinter port of the famous game.
 **tkBoulderDash** is a simple Python3/Tkinter port of **First Star
 Software** famous **Boulder Dash&trade;** 1980s retro game.
 
-This game is a **freefullware** (see below).
+This game is a **freefullware** (see [below](#freefullware)).
 
 Please, feel free to visit [project's website] (http://tarball69.github.io/tkBoulderDash/).
 
