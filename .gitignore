@@ -52,4 +52,6 @@ coverage.xml
 docs/_build/
 
 # user-specific
+setup.py
+MANIFEST*
 *.db
