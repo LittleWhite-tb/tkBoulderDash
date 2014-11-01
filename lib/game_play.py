@@ -79,8 +79,8 @@ class GamePlay:
         self.KEYMAP = {
             "<Escape>": self.on_key_escape,
             "<space>": self.pause_game,
-            "<Return>": self.run,
-            "<r>": self.run,
+            "<Return>": self.reset_game,
+            "<r>": self.reset_game,
             "<Key>": self.on_key_pressed,
         }
         self.events_dict = {
@@ -1200,5 +1200,14 @@ class GamePlay:
         # update score
         self.score_add(100)
     # end def
+    
+    def reset_game(self, *args, **kw):
+        """
+            event handler to reset the game
+            
+            Afterwards, we can add a number of life and so, decrease it
+            from here too
+        """
+        self.objects.player_sprite.splashed()
 
 # end class GamePlay
